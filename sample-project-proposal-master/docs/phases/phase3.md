@@ -1,44 +1,40 @@
-# Phase 3: Notebooks and Tags (2 days)
+# Phase 3: Shelves (2 days)
 
 ## Rails
 ### Models
-* Notebook
-* Tag
-* Tagging
+* Shelf
 
 ### Controllers
-* Api::NotebooksController (create, destroy, index, show, update)
+* Api::ShelvesController (create, destroy, index, show, update)
 
 ### Views
-* notebooks/index.json.jbuilder
-* notebooks/show.json.jbuilder
-* tags/show.json.jbuilder
+* shelves/index.json.jbuilder
+* shelves/show.json.jbuilder
 
 ## Flux
 ### Views (React Components)
-* NotebooksIndex
-  - NotebookIndexItem
-* NotebookForm
-* SearchIndex
+* ShelvesIndex
+  - ShelvesIndexItem
+* ShelfForm
 
 ### Stores
-* Notebook
+* Shelf
 
 ### Actions
-* ApiActions.receiveAllNotebooks -> triggered by ApiUtil
-* ApiActions.receiveSingleNotebook
-* ApiActions.deleteNotebook
-* NotebookActions.fetchAllNotebooks -> triggers ApiUtil
-* NotebookActions.fetchSingleNotebook
-* NotebookActions.createNotebook
-* NotebookActions.editNotebook
-* NotebookActions.destroyNotebook
+* ApiActions.receiveAllShelves -> triggered by ApiUtil
+* ApiActions.receiveSingleShelf
+* ApiActions.deleteShelf
+* ShelfActions.fetchAllShelves -> triggers ApiUtil
+* ShelfActions.fetchSingleShelf
+* ShelfActions.createShelf
+* ShelfActions.editShelf
+* ShelfActions.destroyShelf
 
 ### ApiUtil
-* ApiUtil.fetchAllNotebooks
-* ApiUtil.fetchSingleNotebook
-* ApiUtil.createNotebook
-* ApiUtil.editNotebook
-* ApiUtil.destroyNotebook
+* ApiUtil.fetchAllShelves
+* ApiUtil.fetchSingleShelf
+* ApiUtil.createShelf
+* ApiUtil.editShelf
+* ApiUtil.destroyShelf
 
 ## Gems/Libraries

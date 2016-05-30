@@ -2,12 +2,12 @@
 
 * `App`
   * `SearchIndex`
-  * `NotebooksIndex`
-    * `NotebookIndexItem`
-  * `NotebookForm`
-  * `NotesIndex`
-    * `NoteForm`
-    * `NoteIndexItem`
-  * `NoteDetail`
-    * `NoteTags`
-    * `NoteEditArea`
+  * `ShelvesIndex`
+    * `ShelfIndexItem`
+  * `ShelfForm`
+  * `ReviewsIndex`
+    * `ReviewForm`
+    * `ReviewIndexItem`
+  * `ReviewDetail`
+    * `ReviewTags`
+    * `ReviewEditArea`

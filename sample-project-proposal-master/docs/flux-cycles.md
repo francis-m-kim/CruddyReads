@@ -12,108 +12,108 @@ because once you start implementing your flux loops, that's precisely
 what you'll need to do.
 
 
-## Note Cycles
+## Review Cycles
 
-### Notes API Request Actions
+### Reviews API Request Actions
 
-* `fetchAllNotes`
-  0. invoked from `NotesIndex` `didMount`/`willReceiveProps`
-  0. `GET /api/notes` is called.
-  0. `receiveAllNotes` is set as the callback.
+* `fetchAllReviews`
+  0. invoked from `ReviewsIndex` `didMount`/`willReceiveProps`
+  0. `GET /api/reviews` is called.
+  0. `receiveAllReviews` is set as the callback.
 
-* `createNote`
+* `createReview`
   0. invoked from new note button `onClick`
-  0. `POST /api/notes` is called.
-  0. `receiveSingleNote` is set as the callback.
+  0. `POST /api/reviews` is called.
+  0. `receiveSingleReview` is set as the callback.
 
-* `fetchSingleNote`
-  0. invoked from `NoteDetail` `didMount`/`willReceiveProps`
-  0. `GET /api/notes/:id` is called.
-  0. `receiveSingleNote` is set as the callback.
+* `fetchSingleReview`
+  0. invoked from `ReviewDetail` `didMount`/`willReceiveProps`
+  0. `GET /api/reviews/:id` is called.
+  0. `receiveSingleReview` is set as the callback.
 
-* `updateNote`
-  0. invoked from `NoteForm` `onSubmit`
-  0. `POST /api/notes` is called.
-  0. `receiveSingleNote` is set as the callback.
+* `updateReview`
+  0. invoked from `ReviewForm` `onSubmit`
+  0. `POST /api/reviews` is called.
+  0. `receiveSingleReview` is set as the callback.
 
-* `destroyNote`
+* `destroyReview`
   0. invoked from delete note button `onClick`
-  0. `DELETE /api/notes/:id` is called.
-  0. `removeNote` is set as the callback.
+  0. `DELETE /api/reviews/:id` is called.
+  0. `removeReview` is set as the callback.
 
-### Notes API Response Actions
+### Reviews API Response Actions
 
-* `receiveAllNotes`
+* `receiveAllReviews`
   0. invoked from an API callback.
-  0. `Note` store updates `_notes` and emits change.
+  0. `Review` store updates `_reviews` and emits change.
 
-* `receiveSingleNote`
+* `receiveSingleReview`
   0. invoked from an API callback.
-  0. `Note` store updates `_notes[id]` and emits change.
+  0. `Review` store updates `_reviews[id]` and emits change.
 
-* `removeNote`
+* `removeReview`
   0. invoked from an API callback.
-  0. `Note` store removes `_notes[id]` and emits change.
+  0. `Review` store removes `_reviews[id]` and emits change.
 
 ### Store Listeners
 
-* `NotesIndex` component listens to `Note` store.
-* `NoteDetail` component listens to `Note` store.
+* `ReviewsIndex` component listens to `Review` store.
+* `ReviewDetail` component listens to `Review` store.
 
 
-## Notebook Cycles
+## Shelves Cycles
 
-### Notebooks API Request Actions
+### Shelves API Request Actions
 
-* `fetchAllNotebooks`
-  0. invoked from `NotebooksIndex` `didMount`/`willReceiveProps`
-  0. `GET /api/notebooks` is called.
-  0. `receiveAllNotebooks` is set as the callback.
+* `fetchAllShelves`
+  0. invoked from `ShelvesIndex` `didMount`/`willReceiveProps`
+  0. `GET /api/shelves` is called.
+  0. `receiveAllShelves` is set as the callback.
 
-* `createNotebook`
+* `createShelves`
   0. invoked from new notebook button `onClick`
-  0. `POST /api/notebooks` is called.
-  0. `receiveSingleNotebook` is set as the callback.
+  0. `POST /api/shelves` is called.
+  0. `receiveSingleShelves` is set as the callback.
 
-* `fetchSingleNotebook`
-  0. invoked from `NotebookDetail` `didMount`/`willReceiveProps`
-  0. `GET /api/notebooks/:id` is called.
-  0. `receiveSingleNotebook` is set as the callback.
+* `fetchSingleShelves`
+  0. invoked from `ShelvesDetail` `didMount`/`willReceiveProps`
+  0. `GET /api/shelves/:id` is called.
+  0. `receiveSingleShelves` is set as the callback.
 
-* `updateNotebook`
-  0. invoked from `NotebookForm` `onSubmit`
-  0. `POST /api/notebooks` is called.
-  0. `receiveSingleNotebook` is set as the callback.
+* `updateShelves`
+  0. invoked from `ShelvesForm` `onSubmit`
+  0. `POST /api/shelves` is called.
+  0. `receiveSingleShelves` is set as the callback.
 
-* `destroyNotebook`
+* `destroyShelves`
   0. invoked from delete notebook button `onClick`
-  0. `DELETE /api/notebooks/:id` is called.
-  0. `removeNotebook` is set as the callback.
+  0. `DELETE /api/shelves/:id` is called.
+  0. `removeShelves` is set as the callback.
 
-### Notebooks API Response Actions
+### Shelves API Response Actions
 
-* `receiveAllNotebooks`
+* `receiveAllShelves`
   0. invoked from an API callback.
-  0. `Notebook` store updates `_notebooks` and emits change.
+  0. `Shelves` store updates `_shelves` and emits change.
 
-* `receiveSingleNotebook`
+* `receiveSingleShelves`
   0. invoked from an API callback.
-  0. `Notebook` store updates `_notebooks[id]` and emits change.
+  0. `Shelves` store updates `_shelves[id]` and emits change.
 
-* `removeNotebook`
+* `removeShelves`
   0. invoked from an API callback.
-  0. `Notebook` store removes `_notebooks[id]` and emits change.
+  0. `Shelves` store removes `_shelves[id]` and emits change.
 
 ### Store Listeners
 
-* `NotebooksIndex` component listens to `Notebook` store.
+* `ShelvesIndex` component listens to `Shelves` store.
 
 
 ## SearchSuggestion Cycles
 
 * `fetchSearchSuggestions`
-  0. invoked from `NoteSearchBar` `onChange` when there is text
-  0. `GET /api/notes` is called with `text` param.
+  0. invoked from `ReviewSearchBar` `onChange` when there is text
+  0. `GET /api/reviews` is called with `text` param.
   0. `receiveSearchSuggestions` is set as the callback.
 
 * `receiveSearchSuggestions`
@@ -121,7 +121,7 @@ what you'll need to do.
   0. `SearchSuggestion` store updates `_suggestions` and emits change.
 
 * `removeSearchSuggestions`
-  0. invoked from `NoteSearchBar` `onChange` when empty
+  0. invoked from `ReviewSearchBar` `onChange` when empty
   0. `SearchSuggestion` store resets `_suggestions` and emits change.
 
 ### Store Listeners
