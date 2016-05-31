@@ -1,4 +1,4 @@
-# -----------
+Don't README.
 
 [Heroku link][heroku] **NB:** This should be a link to your production site
 
