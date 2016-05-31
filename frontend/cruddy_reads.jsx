@@ -13,7 +13,7 @@ var App = React.createClass({
     return(
       <div>
         <header><h1>CRUDDY READS</h1></header>
-        <LoginForm/>
+
         {this.props.children}
       </div>
     );
@@ -28,5 +28,5 @@ var Router = (
 
 
 document.addEventListener("DOMContentLoaded", function() {
-  ReactDOM.render(Router, document.getElementById("content"));
+  ReactDOM.render(<p>WELCOME TO MY SHITTY WEBSITE. ENJOY!</p>, document.getElementById("content"));
 })

@@ -70,7 +70,6 @@
 	          "CRUDDY READS"
 	        )
 	      ),
-	      React.createElement(LoginForm, null),
 	      this.props.children
 	    );
 	  }
@@ -83,7 +82,11 @@
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  ReactDOM.render(Router, document.getElementById("content"));
+	  ReactDOM.render(React.createElement(
+	    "p",
+	    null,
+	    "WELCOME TO MY SHITTY WEBSITE. ENJOY!"
+	  ), document.getElementById("content"));
 	});
 
 /***/ },
