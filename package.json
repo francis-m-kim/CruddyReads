@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/francis-m-kim/good-reads-clone#readme",
   "engines": {
-   "node": "4.4.4",
-   "npm": "2.15.1"
+    "node": "4.4.4",
+    "npm": "2.15.1"
+  },
+  "dependencies": {
+    "react-router": "^2.4.1"
   }
 }
