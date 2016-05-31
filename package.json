@@ -26,11 +26,3 @@
    "npm": "2.15.1"
   }
 }
-
-
-
-Add these lines to your package.json:
-  "engines": {
-   "node": "4.4.4",
-   "npm": "2.15.1"
-  }
