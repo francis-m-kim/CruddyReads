@@ -4,6 +4,8 @@
 }
 
 #landing-page nav h1 {
-  font-size: 30px;
   float: left;
+  font-size: 40px;
+  letter-spacing: .45em;
+  text-shadow: 6px 0px 1px orange;
 }

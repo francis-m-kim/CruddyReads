@@ -1,3 +1,32 @@
 #signup-form {
-  font-size: 30px;
+  float: right;
+  margin: 20px 40px 20px;
+  font-size: 14px;
+}
+
+#signup-form input{
+  padding: 5px;
+  /*margin-bottom: 5px;*/
+}
+
+#signup-form * {
+  margin-bottom: 5px;
+}
+
+#signup-form input:not([type="submit"]) {
+  width: calc(100%);
+}
+
+#signup-form input[type="submit"] {
+  background: #fdd05f;
+  font-size: 18px;
+  border: none;
+}
+#signup-form input[type="submit"]:hover {
+  background: #FDD893;
+}
+
+#signup-form header {
+  font-size: 17px;
+
 }

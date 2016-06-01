@@ -4,11 +4,14 @@
   border: 0;
 
   font-family: inherit;
+  font-size: inherit;
   display: block;
+
 
 }
 
 body {
+  font-size: 11px;
   font-family: 'Noto Sans', times;
 }
 
@@ -27,4 +30,11 @@ body {
 form > input {
   border: 1px solid lightgrey;
   border-radius: 2px;
+
+}
+
+form > input:not([type="submit"]):focus {
+  outline: none;
+  border:1px solid #F4A460;
+  box-shadow: 0 0 30px orange;
 }

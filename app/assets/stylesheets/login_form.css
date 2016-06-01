@@ -1,5 +1,7 @@
 #login-form {
+  margin-top: 15px;
   float: right;
+  font-size: 12px;
 
 }
 
@@ -8,7 +10,19 @@
 }
 
 #login-form input {
-  padding:100px;
+  padding: 5px;
   margin-right: 4px;
   size: 20;
+}
+
+#login-form input[type="submit"] {
+  border: none;
+  margin-left: 3px;
+  padding: 6px 10px 6px;
+  color: white;
+  background: #382110;
+}
+
+#login-form input[type="submit"]:hover {
+  background: rgb(80,65,40);
 }

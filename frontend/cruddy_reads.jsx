@@ -29,12 +29,13 @@ var LandingPage = React.createClass({
       <div id="landing-page">
         <div className="container">
           <nav className="group">
-            <h1>CRUDDY READS</h1>
+            <h1>CRUDDYREADS</h1>
             <LogInForm/>
           </nav>
 
           <SignUpForm/>
           {this.props.children}
+          <img src={window.booksImg}/>
           <LogOutButton/>
         </div>
       </div>
@@ -77,4 +78,8 @@ var Router = (
 
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(Router, document.getElementById("content"));
+  // 
+  // var img = document.createElement("img")
+  // img.src = booksImg;
+  // document.body.appendChild(img);
 })

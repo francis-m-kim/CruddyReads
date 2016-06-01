@@ -82,12 +82,13 @@
 	          React.createElement(
 	            "h1",
 	            null,
-	            "CRUDDY READS"
+	            "CRUDDYREADS"
 	          ),
 	          React.createElement(LogInForm, null)
 	        ),
 	        React.createElement(SignUpForm, null),
 	        this.props.children,
+	        React.createElement("img", { src: window.booksImg }),
 	        React.createElement(LogOutButton, null)
 	      )
 	    );
@@ -140,6 +141,10 @@
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  ReactDOM.render(Router, document.getElementById("content"));
+	  //
+	  // var img = document.createElement("img")
+	  // img.src = booksImg;
+	  // document.body.appendChild(img);
 	});
 
 /***/ },
@@ -32939,6 +32944,11 @@
 	    return React.createElement(
 	      "div",
 	      { id: "signup-form" },
+	      React.createElement(
+	        "header",
+	        null,
+	        "New here? Create a free account!"
+	      ),
 	      React.createElement(
 	        "form",
 	        { onSubmit: this.handleSubmit },
