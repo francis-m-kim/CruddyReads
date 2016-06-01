@@ -7,7 +7,7 @@ class Api::SessionsController < ApplicationController
       render json: @user
     else
       @errors = ["Sorry couldn't find you!"]
-      render @errors, status: 401
+      render json: @errors, status: 401
     end
   end
 

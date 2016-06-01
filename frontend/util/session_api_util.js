@@ -1,30 +1,56 @@
 var AppDispatcher = require('../dispatcher/dispatcher');
-
+var ServerActions = require('../actions/server_actions')
 
 module.exports = {
-  post: function(options) {
+  signup: function(user, redirect) {
     $.ajax({
-      url: options.url,
-      type: "post",
-      data: {user: options.user},
-      success: options.success,
-      error: options.error
+      url: "/api/users",
+      type: "POST",
+      data: {user: user},
+      success: function(user) {
+        ServerActions.receiveCurrentUser(user);
+        redirect();
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
     });
   },
-  logout: function(success, error) {
+  login: function(user) {
+    $.ajax({
+      url: "/api/session",
+      type: "POST",
+      data: {user: user},
+      success: function(user) {
+        // debugger;
+        ServerActions.receiveCurrentUser(user)
+      },
+      error: function(error) {
+        // debugger;
+        ServerActions.handleError(error)
+      }
+    });
+  },
+  getCurrentUser: function() {
+		$.ajax({
+			url: '/api/session',
+			method: 'get',
+			success: function(user) {
+        ServerActions.receiveCurrentUser(user)
+      },
+			error: function(error) {
+        ServerActions.handleError(error)
+      }
+		});
+	},
+  logout: function() {
     $.ajax({
       url: '/api/session',
       method: 'delete',
-      success: success,
-      error: error
+      success: ServerActions.removeCurrentUser,
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
     });
-  },
-  getCurrentUser: function(success, error) {
-    $.ajax({
-      url: '/api/session',
-      method: 'get',
-      success: success,
-      error: error
-    });
-  },
+  }
 };

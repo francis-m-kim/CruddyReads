@@ -25,7 +25,6 @@ SessionStore.currentUser = function(){
 };
 
 SessionStore.setErrors = function(errors){
-  debugger;
   _errors = errors;
 };
 
@@ -38,16 +37,16 @@ SessionStore.errors = function(){
 SessionStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "LOGIN":
-    SessionStore.login(payload.user);
-    break;
-  case "LOGOUT":
-    SessionStore.logout();
-    break;
-  case "ERROR":
-    SessionStore.setErrors(payload.errors);
-    break;
-    SessionStore.__emitChange();
+      SessionStore.login(payload.user);
+      break;
+    case "LOGOUT":
+      SessionStore.logout();
+      break;
+    case "ERROR":
+      SessionStore.setErrors(payload.errors);
+      break;
   };
+  SessionStore.__emitChange();
 };
 
 module.exports = SessionStore;

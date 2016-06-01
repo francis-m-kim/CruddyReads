@@ -16,7 +16,7 @@ class Api::UsersController < ApplicationController
     if @user
       render "api/users/show"
     else
-      render json: "nothing to show"
+      render json: {}
     end
   end
 

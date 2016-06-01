@@ -44,15 +44,16 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// import {React} from "react"
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(38);
 	
-	// var UserActions = require("./actions/user_actions");
+	var UserActions = __webpack_require__(168);
 	// var UserConstants = require("./constants/user_constants");
 	// var SessionUtil = require("./util/session_api_util");
 	// var SessionStore = require("./stores/session_store");
 	var SignUpForm = __webpack_require__(255);
+	var LogInForm = __webpack_require__(254);
+	var LogOutButton = __webpack_require__(261);
 	var CurrentUserState = __webpack_require__(256);
 	
 	var ReactRouter = __webpack_require__(176);
@@ -64,6 +65,10 @@
 	var App = React.createClass({
 	  displayName: "App",
 	
+	  mixins: [CurrentUserState],
+	  componentDidMount: function () {
+	    UserActions.getCurrentUser();
+	  },
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -78,29 +83,32 @@
 	        )
 	      ),
 	      React.createElement(SignUpForm, null),
-	      this.props.children
+	      React.createElement(LogInForm, null),
+	      this.props.children,
+	      React.createElement(LogOutButton, null)
 	    );
 	  }
 	});
 	
-	var Shit = React.createClass({
-	  displayName: "Shit",
+	var NextPageSPLAT = React.createClass({
+	  displayName: "NextPageSPLAT",
 	
 	  mixins: [CurrentUserState],
 	  render: function () {
-	    debugger;
+	    // debugger;
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        "p",
 	        null,
-	        "Logged in as ",
-	        this.state.currentUser.name
+	        "WELCOME ",
+	        this.state.currentUser.username,
+	        " "
 	      );
 	    };
 	    return React.createElement(
 	      "div",
 	      null,
-	      "SHIT"
+	      "Nobody logged in?"
 	    );
 	  }
 	
@@ -109,8 +117,11 @@
 	var Router = React.createElement(
 	  Router,
 	  { history: hashHistory },
-	  React.createElement(Route, { path: "/", component: App }),
-	  React.createElement(Route, { path: "whereamI", component: Shit })
+	  React.createElement(
+	    Route,
+	    { path: "/", component: App },
+	    React.createElement(Route, { path: "nextpage", component: NextPageSPLAT })
+	  )
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -20391,58 +20402,20 @@
 
 	var UserConstants = __webpack_require__(169);
 	var SessionApiUtil = __webpack_require__(170);
-	var SessionStore = __webpack_require__(175);
-	var AppDispatcher = __webpack_require__(171);
 	
 	var UserActions = {
-	  getCurrentUser: function () {
-	    SessionApiUtil.getCurrentUser(UserActions.receiveCurrentUser, UserActions.handleError);
+	
+	  signup: function (user, redirect) {
+	    SessionApiUtil.signup(user, redirect);
 	  },
-	
-	  signup: function (user) {
-	    SessionApiUtil.post({
-	      url: "/api/users",
-	      user: user,
-	
-	      success: UserActions.receiveCurrentUser,
-	      error: UserActions.handleError
-	    });
-	  },
-	
 	  login: function (user) {
-	    SessionApiUtil.post({
-	      url: "/api/session",
-	      user: user,
-	      success: UserActions.receiveCurrentUser,
-	      error: UserActions.handleError
-	    });
+	    SessionApiUtil.login(user);
 	  },
-	
-	  receiveCurrentUser: function (user) {
-	    // debugger;
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.LOGIN,
-	      user: user
-	    });
+	  logout: function (user) {
+	    SessionApiUtil.logout(user);
 	  },
-	
-	  handleError: function (error) {
-	    debugger;
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.ERROR,
-	      errors: error.responseJSON.errors
-	    });
-	  },
-	  removeCurrentUser: function () {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.LOGOUT
-	    });
-	  },
-	  logout: function () {
-	    SessionApiUtil.logout(UserActions.removeCurrentUser, UserActions.handleError);
-	  },
-	  shout: function () {
-	    console.log("HELLO!");
+	  getCurrentUser: function () {
+	    SessionApiUtil.getCurrentUser();
 	  }
 	};
 	
@@ -20465,31 +20438,58 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(171);
+	var ServerActions = __webpack_require__(257);
 	
 	module.exports = {
-	  post: function (options) {
+	  signup: function (user, redirect) {
 	    $.ajax({
-	      url: options.url,
-	      type: "post",
-	      data: { user: options.user },
-	      success: options.success,
-	      error: options.error
+	      url: "/api/users",
+	      type: "POST",
+	      data: { user: user },
+	      success: function (user) {
+	        ServerActions.receiveCurrentUser(user);
+	        redirect();
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
 	    });
 	  },
-	  logout: function (success, error) {
+	  login: function (user) {
 	    $.ajax({
-	      url: '/api/session',
-	      method: 'delete',
-	      success: success,
-	      error: error
+	      url: "/api/session",
+	      type: "POST",
+	      data: { user: user },
+	      success: function (user) {
+	        // debugger;
+	        ServerActions.receiveCurrentUser(user);
+	      },
+	      error: function (error) {
+	        // debugger;
+	        ServerActions.handleError(error);
+	      }
 	    });
 	  },
-	  getCurrentUser: function (success, error) {
+	  getCurrentUser: function () {
 	    $.ajax({
 	      url: '/api/session',
 	      method: 'get',
-	      success: success,
-	      error: error
+	      success: function (user) {
+	        ServerActions.receiveCurrentUser(user);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
+	  },
+	  logout: function () {
+	    $.ajax({
+	      url: '/api/session',
+	      method: 'delete',
+	      success: ServerActions.removeCurrentUser,
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
 	    });
 	  }
 	};
@@ -20838,7 +20838,6 @@
 	};
 	
 	SessionStore.setErrors = function (errors) {
-	  debugger;
 	  _errors = errors;
 	};
 	
@@ -20859,8 +20858,8 @@
 	    case "ERROR":
 	      SessionStore.setErrors(payload.errors);
 	      break;
-	      SessionStore.__emitChange();
 	  };
+	  SessionStore.__emitChange();
 	};
 	
 	module.exports = SessionStore;
@@ -32820,7 +32819,64 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 254 */,
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var UserActions = __webpack_require__(168);
+	var hashHistory = __webpack_require__(176).hashHistory;
+	var CurrentUserState = __webpack_require__(256);
+	
+	var LoginForm = React.createClass({
+	  displayName: "LoginForm",
+	
+	  mixins: [CurrentUserState],
+	  getInitialState: function () {
+	    return { email: "", password: "" };
+	  },
+	  updateEmail: function (event) {
+	    this.setState({ email: event.target.value });
+	  },
+	  updatePassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    var user = {
+	      email: this.state.email,
+	      password: this.state.password
+	    };
+	    UserActions.login(user, function () {
+	
+	      hashHistory.push("nextpage");
+	    });
+	    this.setState({ email: "", password: "" });
+	  },
+	
+	  render: function () {
+	    var divStyle = { background: "red" };
+	    return React.createElement(
+	      "div",
+	      { id: "login-form" },
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement("input", { type: "text", field: "email", placeholder: "Email Address",
+	          value: this.state.email,
+	          onChange: this.updateEmail }),
+	        React.createElement("input", { type: "password", field: "password", placeholder: "Password",
+	          value: this.state.password,
+	          onChange: this.updatePassword }),
+	        React.createElement("input", { type: "submit", value: "Login" })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = LoginForm;
+
+/***/ },
 /* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32859,22 +32915,16 @@
 	      email: this.state.email,
 	      password: this.state.password
 	    };
-	    UserActions.signup(user);
-	    hashHistory.push("whereamI");
+	    UserActions.signup(user, function () {
+	      hashHistory.push("nextpage");
+	    });
+	    this.setState({ username: "", email: "", password: "" });
 	  },
 	
 	  render: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        "p",
-	        null,
-	        "Logged in as ",
-	        this.state.currentUser.name
-	      );
-	    }
 	    return React.createElement(
 	      "div",
-	      { id: "login-form" },
+	      { id: "signup-form" },
 	      React.createElement(
 	        "form",
 	        { onSubmit: this.handleSubmit },
@@ -32912,10 +32962,10 @@
 			};
 		},
 		componentDidMount: function () {
-			SessionStore.addListener(this.updateUser);
-			if (typeof SessionStore.currentUser() === 'undefined') {
-				UserActions.getCurrentUser();
-			}
+			this.sessionListener = SessionStore.addListener(this.updateUser);
+		},
+		componentWillUnmount: function () {
+			this.sessionListener.remove();
 		},
 		updateUser: function () {
 			this.setState({
@@ -32927,6 +32977,67 @@
 	};
 	
 	module.exports = CurrentUserState;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(171);
+	
+	var ServerActions = {
+	
+	  receiveCurrentUser: function (user) {
+	    // debugger;
+	    AppDispatcher.dispatch({
+	      actionType: "LOGIN",
+	      user: user
+	    });
+	  },
+	
+	  handleError: function (error) {
+	    AppDispatcher.dispatch({
+	      actionType: "ERROR",
+	      errors: error.responseJSON.errors
+	    });
+	  },
+	
+	  removeCurrentUser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: "LOGOUT"
+	    });
+	  }
+	
+	};
+	
+	module.exports = ServerActions;
+
+/***/ },
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var UserActions = __webpack_require__(168);
+	
+	var LogOutButton = React.createClass({
+	  displayName: 'LogOutButton',
+	
+	  logout: function () {
+	    UserActions.logout();
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { onClick: this.logout },
+	      'Log Out'
+	    );
+	  }
+	
+	});
+	
+	module.exports = LogOutButton;
 
 /***/ }
 /******/ ]);

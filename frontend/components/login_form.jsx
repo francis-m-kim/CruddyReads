@@ -3,20 +3,10 @@ var UserActions = require("../actions/user_actions");
 var hashHistory = require('react-router').hashHistory;
 var CurrentUserState = require("../mixins/current_user_state");
 
-// var update = function(target) {
-//   var field = target.field
-//   debugger;
-//   this.setState({[field]: target.value});
-// };
-
-var SignUpForm = React.createClass({
+var LoginForm = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
-    return {username:"", email:"", password: ""};
-  },
-
-  updateUsername: function(event) {
-    this.setState({username: event.target.value})
+    return {email:"", password: ""};
   },
   updateEmail: function(event) {
     this.setState({email: event.target.value})
@@ -27,35 +17,32 @@ var SignUpForm = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var user = {
-      username: this.state.username,
       email: this.state.email,
       password: this.state.password
     }
-    UserActions.signup(user, function() {
+    UserActions.login(user, function() {
+
       hashHistory.push("nextpage");
 
     });
-    this.setState({username:"", email:"", password: ""});
+    this.setState({email:"", password: ""});
 
   },
 
 
 
   render: function() {
+    var divStyle = {background: "red"}
     return (
-
-      <div id="signup-form">
+      <div id="login-form">
         <form onSubmit={this.handleSubmit}>
-          <input type="text" field="username" placeholder="Name"
-            value={this.state.username}
-            onChange={this.updateUsername}/>
           <input type="text" field="email" placeholder="Email Address"
             value={this.state.email}
             onChange={this.updateEmail}/>
           <input type="password" field="password" placeholder="Password"
             value={this.state.password}
             onChange={this.updatePassword}/>
-          <input type="submit" value="Sign Up"/>
+          <input type="submit" value="Login"/>
         </form>
       </div>
     );
@@ -63,4 +50,4 @@ var SignUpForm = React.createClass({
 
 });
 
-module.exports = SignUpForm;
+module.exports = LoginForm;
