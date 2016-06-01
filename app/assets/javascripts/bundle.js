@@ -62,8 +62,8 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var hashHistory = ReactRouter.hashHistory;
 	
-	var App = React.createClass({
-	  displayName: "App",
+	var LandingPage = React.createClass({
+	  displayName: "LandingPage",
 	
 	  mixins: [CurrentUserState],
 	  componentDidMount: function () {
@@ -72,23 +72,37 @@
 	  render: function () {
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "landing-page" },
 	      React.createElement(
-	        "header",
-	        null,
+	        "div",
+	        { className: "container" },
 	        React.createElement(
-	          "h1",
-	          null,
-	          "CRUDDY READS"
-	        )
-	      ),
-	      React.createElement(SignUpForm, null),
-	      React.createElement(LogInForm, null),
-	      this.props.children,
-	      React.createElement(LogOutButton, null)
+	          "nav",
+	          { className: "group" },
+	          React.createElement(
+	            "h1",
+	            null,
+	            "CRUDDY READS"
+	          ),
+	          React.createElement(LogInForm, null)
+	        ),
+	        React.createElement(SignUpForm, null),
+	        this.props.children,
+	        React.createElement(LogOutButton, null)
+	      )
 	    );
 	  }
 	});
+	
+	//
+	// LandingPage {
+	//   render: fhnction () {
+	//     return <Landing />
+	//
+	//    OR
+	//    return <UserLandingPage />
+	//   }
+	// }
 	
 	var NextPageSPLAT = React.createClass({
 	  displayName: "NextPageSPLAT",
@@ -119,7 +133,7 @@
 	  { history: hashHistory },
 	  React.createElement(
 	    Route,
-	    { path: "/", component: App },
+	    { path: "/", component: LandingPage },
 	    React.createElement(Route, { path: "nextpage", component: NextPageSPLAT })
 	  )
 	);
@@ -32867,7 +32881,7 @@
 	        React.createElement("input", { type: "password", field: "password", placeholder: "Password",
 	          value: this.state.password,
 	          onChange: this.updatePassword }),
-	        React.createElement("input", { type: "submit", value: "Login" })
+	        React.createElement("input", { type: "submit", value: "Sign in" })
 	      )
 	    );
 	  }
@@ -33030,7 +33044,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'button',
-	      { onClick: this.logout },
+	      { id: 'log-out', onClick: this.logout },
 	      'Log Out'
 	    );
 	  }

@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  font-family: inherit;
+  display: block;
+
+}
+
+body {
+  font-family: 'Noto Sans', times;
+}
+
+.container {
+  width: 965px;
+  margin: auto;
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+
+form > input {
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+}

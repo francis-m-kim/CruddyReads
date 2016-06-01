@@ -1,3 +1,14 @@
 #login-form {
-  border: 2px solid orange;
+  float: right;
+
+}
+
+#login-form * {
+  display: inline;
+}
+
+#login-form input {
+  padding:100px;
+  margin-right: 4px;
+  size: 20;
 }

@@ -42,7 +42,7 @@ var LoginForm = React.createClass({
           <input type="password" field="password" placeholder="Password"
             value={this.state.password}
             onChange={this.updatePassword}/>
-          <input type="submit" value="Login"/>
+          <input type="submit" value="Sign in"/>
         </form>
       </div>
     );

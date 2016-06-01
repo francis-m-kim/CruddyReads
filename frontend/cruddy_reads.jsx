@@ -19,23 +19,38 @@ var IndexRoute = ReactRouter.IndexRoute;
 var hashHistory = ReactRouter.hashHistory;
 
 
-var App = React.createClass({
+var LandingPage = React.createClass({
   mixins: [CurrentUserState],
   componentDidMount: function() {
     UserActions.getCurrentUser();
   },
   render: function() {
     return(
-      <div>
-        <header><h1>CRUDDY READS</h1></header>
-        <SignUpForm/>
-        <LogInForm/>
-        {this.props.children}
-        <LogOutButton/>
+      <div id="landing-page">
+        <div className="container">
+          <nav className="group">
+            <h1>CRUDDY READS</h1>
+            <LogInForm/>
+          </nav>
+
+          <SignUpForm/>
+          {this.props.children}
+          <LogOutButton/>
+        </div>
       </div>
     );
   }
 });
+
+//
+// LandingPage {
+//   render: fhnction () {
+//     return <Landing />
+//
+//    OR
+//    return <UserLandingPage />
+//   }
+// }
 
 var NextPageSPLAT = React.createClass({
   mixins: [CurrentUserState],
@@ -53,7 +68,7 @@ var NextPageSPLAT = React.createClass({
 
 var Router = (
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
+    <Route path="/" component={LandingPage}>
       <Route path="nextpage" component={NextPageSPLAT}/>
     </Route>
   </Router>

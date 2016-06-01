@@ -7,7 +7,7 @@ var LogOutButton = React.createClass({
   },
   render: function() {
     return (
-      <button onClick={this.logout}>Log Out</button>
+      <button id="log-out" onClick={this.logout}>Log Out</button>
     );
   }
 
