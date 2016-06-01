@@ -38,3 +38,10 @@ form > input:not([type="submit"]):focus {
   border:1px solid #F4A460;
   box-shadow: 0 0 30px orange;
 }
+
+img:hover {
+  width: 50px;
+  height: 50px;
+  transform: rotate(20deg);
+
+}
