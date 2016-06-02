@@ -78,7 +78,7 @@ var Router = (
 
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(Router, document.getElementById("content"));
-  // 
+  //
   // var img = document.createElement("img")
   // img.src = booksImg;
   // document.body.appendChild(img);

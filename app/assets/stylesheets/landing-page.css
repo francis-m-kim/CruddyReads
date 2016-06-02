@@ -1,11 +1,13 @@
 #landing-page nav {
-  padding: 10px 0 10px;
-  border-bottom: 1px solid red;
+  padding: 8px 0 ;
+  border-bottom: 2px solid red;
 }
 
 #landing-page nav h1 {
   float: left;
   font-size: 40px;
-  letter-spacing: .45em;
+  letter-spacing: .5em;
   text-shadow: 6px 0px 1px orange;
+
+  transform: rotate(.5deg);
 }

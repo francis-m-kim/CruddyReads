@@ -3,12 +3,6 @@ var UserActions = require("../actions/user_actions");
 var hashHistory = require('react-router').hashHistory;
 var CurrentUserState = require("../mixins/current_user_state");
 
-// var update = function(target) {
-//   var field = target.field
-//   debugger;
-//   this.setState({[field]: target.value});
-// };
-
 var SignUpForm = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
@@ -56,7 +50,7 @@ var SignUpForm = React.createClass({
           <input type="password" field="password" placeholder="Password"
             value={this.state.password}
             onChange={this.updatePassword}/>
-          <input type="submit" value="Sign Up"/>
+          <input type="submit" value="Sign up"/>
         </form>
       </div>
     );

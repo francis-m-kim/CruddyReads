@@ -32904,12 +32904,6 @@
 	var hashHistory = __webpack_require__(176).hashHistory;
 	var CurrentUserState = __webpack_require__(256);
 	
-	// var update = function(target) {
-	//   var field = target.field
-	//   debugger;
-	//   this.setState({[field]: target.value});
-	// };
-	
 	var SignUpForm = React.createClass({
 	  displayName: "SignUpForm",
 	
@@ -32961,7 +32955,7 @@
 	        React.createElement("input", { type: "password", field: "password", placeholder: "Password",
 	          value: this.state.password,
 	          onChange: this.updatePassword }),
-	        React.createElement("input", { type: "submit", value: "Sign Up" })
+	        React.createElement("input", { type: "submit", value: "Sign up" })
 	      )
 	    );
 	  }

@@ -1,32 +1,41 @@
 #signup-form {
   float: right;
-  margin: 20px 40px 20px;
-  font-size: 14px;
-}
-
-#signup-form input{
-  padding: 5px;
-  /*margin-bottom: 5px;*/
+  margin: 8px 15px;
+  font-size: 13px;
 }
 
 #signup-form * {
   margin-bottom: 5px;
 }
 
+#signup-form header {
+  font-size: 32px;
+  font-family: 'Amatic SC';
+}
+
+#signup-form input{
+  padding: 5px;
+}
+
 #signup-form input:not([type="submit"]) {
   width: calc(100%);
+  /*width: 100%;*/
 }
 
 #signup-form input[type="submit"] {
-  background: #fdd05f;
-  font-size: 18px;
+  font-size: 28px;
+  padding: 0px 5px;
+  margin-top: 6px;
+  background: #fcd05f;
   border: none;
+
+  font-family: 'Amatic SC';
 }
 #signup-form input[type="submit"]:hover {
   background: #FDD893;
 }
 
-#signup-form header {
-  font-size: 17px;
-
+#signup-form input[type="submit"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px #FDD893;
 }
