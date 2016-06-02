@@ -1,4 +1,3 @@
-var UserConstants = require('../constants/user_constants');
 var SessionApiUtil = require('../util/session_api_util');
 
 var UserActions = {

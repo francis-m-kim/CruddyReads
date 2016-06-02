@@ -32,7 +32,6 @@ var LoginForm = React.createClass({
 
 
   render: function() {
-    var divStyle = {background: "red"}
     return (
       <div id="login-form">
         <form onSubmit={this.handleSubmit}>

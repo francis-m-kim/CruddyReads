@@ -8,9 +8,14 @@
   margin-bottom: 5px;
 }
 
+#signup-form header, #signup-form input[type="submit"] {
+  font-family: 'Amatic SC';
+  letter-spacing: 0.4px;
+  font-weight: bold
+}
+
 #signup-form header {
   font-size: 32px;
-  font-family: 'Amatic SC';
 }
 
 #signup-form input{
@@ -19,7 +24,6 @@
 
 #signup-form input:not([type="submit"]) {
   width: calc(100%);
-  /*width: 100%;*/
 }
 
 #signup-form input[type="submit"] {
@@ -28,14 +32,13 @@
   margin-top: 6px;
   background: #fcd05f;
   border: none;
-
-  font-family: 'Amatic SC';
 }
+
 #signup-form input[type="submit"]:hover {
   background: #FDD893;
 }
 
 #signup-form input[type="submit"]:focus {
   outline: none;
-  box-shadow: 0 0 5px #FDD893;
+  box-shadow: 0 0 5px #fcd05f;
 }

@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300|Sigmar+One|Libre+Baskerville|Nunito|Bree+Serif|Passion+One|Lobster|Pacifico|Shadows+Into+Light|Amatic+SC:700|Dancing+Script' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300' rel='stylesheet' type='text/css'>
+
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+
+
+
 </head>
 <body>
 
 <%= yield %>
 
+<!--
+<script type="text/javascript">
+
+  var r = 0;
+  var g = 0;
+  var b = 0;
+
+  function changeBackground(color) {
+    document.body.style.background = color;
+  };
+
+  function increment() {
+
+    r = (r + Math.floor(Math.random() * 2)) % 255;
+    g = (g + Math.floor(Math.random() * 3)) % 255;
+    b = (b + Math.floor(Math.random() * 4)) % 255;
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    setInterval(function() {
+      var string = increment();
+      changeBackground(string);
+    },10)
+  });
+</script> -->
+
 </body>
+
 </html>

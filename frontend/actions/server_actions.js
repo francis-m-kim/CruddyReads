@@ -11,6 +11,7 @@ var ServerActions = {
   },
 
   handleError: function(error) {
+    debugger;
     AppDispatcher.dispatch({
       actionType: "ERROR",
       errors: error.responseJSON.errors
@@ -21,7 +22,15 @@ var ServerActions = {
 		AppDispatcher.dispatch({
 			actionType: "LOGOUT",
 		});
-	}
+	},
+
+  receiveBook: function(book) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_BOOK",
+      book: book
+    })
+  },
 
 };
 

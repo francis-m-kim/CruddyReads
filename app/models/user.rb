@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   validates :password, length: { minimum: 6, allow_nil: true}
 
+  has_many :readings
+  has_many :books, through: :readings
+
   attr_reader :password
 
   after_initialize :ensure_session_token

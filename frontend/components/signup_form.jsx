@@ -40,6 +40,7 @@ var SignUpForm = React.createClass({
 
       <div id="signup-form">
         <header>New here? Create a free account!</header>
+
         <form onSubmit={this.handleSubmit}>
           <input type="text" field="username" placeholder="Name"
             value={this.state.username}

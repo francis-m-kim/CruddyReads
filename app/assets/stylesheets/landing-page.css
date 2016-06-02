@@ -1,5 +1,5 @@
 #landing-page nav {
-  padding: 8px 0 ;
+  padding: 20px 0 8px;
   border-bottom: 2px solid red;
 }
 
@@ -9,5 +9,5 @@
   letter-spacing: .5em;
   text-shadow: 6px 0px 1px orange;
 
-  transform: rotate(.5deg);
+  transform: rotate(1deg);
 }

@@ -24,10 +24,10 @@
 }
 
 #login-form input[type="submit"]:hover {
-  background: rgb(80,65,40);
+  background: #573216;
 }
 
 #login-form input[type="submit"]:focus {
   outline: none;
-  box-shadow: 0 0 5px rgb(80,65,40);
+  box-shadow: 0 0 5px #382110;
 }
