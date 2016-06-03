@@ -14,7 +14,6 @@ module.exports = {
     })
   },
   getUserReadings: function(userId) {
-    debugger;
     $.ajax({
       method: 'GET',
       url: '/api/users/' + userId + "/readings",

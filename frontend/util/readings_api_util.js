@@ -8,9 +8,10 @@ module.exports = {
       type: "POST",
       data: {reading: reading},
       success: function(reading) {
-        console.log("READING CREATED", reading);
+        console.log("READING CREATED");
       },
       error: function(error) {
+        debugger;
         ServerActions.handleError(error)
       }
     })

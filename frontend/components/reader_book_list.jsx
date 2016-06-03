@@ -24,8 +24,8 @@ var ReaderBookList = React.createClass({
       <div>
         <ul>
           {
-            this.state.books.map(function(book){
-              <li>{book.title}</li>
+            this.state.books.map(function(book, i){
+              return( <li key={i}>{book.title}</li> )
             })
           }
         </ul>

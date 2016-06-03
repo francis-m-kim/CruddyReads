@@ -33112,7 +33112,6 @@
 	    });
 	  },
 	  getUserReadings: function (userId) {
-	    debugger;
 	    $.ajax({
 	      method: 'GET',
 	      url: '/api/users/' + userId + "/readings",
@@ -33391,9 +33390,10 @@
 	      type: "POST",
 	      data: { reading: reading },
 	      success: function (reading) {
-	        console.log("READING CREATED", reading);
+	        console.log("READING CREATED");
 	      },
 	      error: function (error) {
+	        debugger;
 	        ServerActions.handleError(error);
 	      }
 	    });
@@ -33559,10 +33559,10 @@
 	      React.createElement(
 	        'ul',
 	        null,
-	        this.state.books.map(function (book) {
-	          React.createElement(
+	        this.state.books.map(function (book, i) {
+	          return React.createElement(
 	            'li',
-	            null,
+	            { key: i },
 	            book.title
 	          );
 	        })
