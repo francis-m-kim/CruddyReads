@@ -1,5 +1,5 @@
 var React = require('react');
-var ReadingApiUtil = require('../util/reading_api_util');
+var ReadingsApiUtil = require('../util/readings_api_util');
 var CurrentUserState = require("../mixins/current_user_state");
 
 var ReadingStatusButton = React.createClass({
@@ -14,7 +14,7 @@ var ReadingStatusButton = React.createClass({
         status: "have-read"
 
       };
-      ReadingApiUtil.addReading(reading);
+      ReadingsApiUtil.addReading(reading);
     },
 
     readingNow: function(event) {
@@ -24,7 +24,7 @@ var ReadingStatusButton = React.createClass({
         book_id: this.props.book_id,
         status: "reading-now"
       };
-      ReadingApiUtil.addReading(reading);
+      ReadingsApiUtil.addReading(reading);
     },
 
     willRead: function(event) {
@@ -34,7 +34,7 @@ var ReadingStatusButton = React.createClass({
         book_id: this.props.book_id,
         status: "will-read"
       };
-      ReadingApiUtil.addReading(reading);
+      ReadingsApiUtil.addReading(reading);
     },
 
   render: function() {

@@ -12,5 +12,18 @@ module.exports = {
         ServerActions.handleError(error)
       }
     })
+  },
+  getUserReadings: function(userId) {
+    debugger;
+    $.ajax({
+      method: 'GET',
+      url: '/api/users/' + userId + "/readings",
+			success: function(readings) {
+        ServerActions.receiveBooks(readings)
+      },
+			error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
   }
 };

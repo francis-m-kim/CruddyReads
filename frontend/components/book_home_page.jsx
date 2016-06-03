@@ -1,6 +1,6 @@
 var React = require('react');
 var BookApiUtil = require('../util/book_api_util');
-var ReadingApiUtil = require('../util/reading_api_util');
+var ReadingsApiUtil = require('../util/readings_api_util');
 var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
 
@@ -11,7 +11,7 @@ var CurrentUserState = require("../mixins/current_user_state");
 var ReadingStatusButton = require('./reading_status_button.jsx');
 
 
-var BookMainPage = React.createClass({
+var BookHomePage = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
 
@@ -67,4 +67,4 @@ var BookMainPage = React.createClass({
 
 });
 
-module.exports = BookMainPage;
+module.exports = BookHomePage;

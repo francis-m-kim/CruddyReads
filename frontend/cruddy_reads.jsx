@@ -9,8 +9,9 @@ var SignUpForm = require("./components/signup_form");
 var LogInForm = require("./components/login_form");
 var LogOutButton = require("./components/logout_button");
 
-var BookMainPage = require("./components/book_main_page");
-
+var BookHomePage = require("./components/book_home_page");
+var ReaderHomePage = require("./components/reader_home_page");
+var LandingPage = require("./components/landing_page");
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
@@ -20,6 +21,15 @@ var hashHistory = ReactRouter.hashHistory;
 var Link = ReactRouter.Link
 
 
+var App = React.createClass({
+  render: function() {
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    );
+  }
+});
 
 var LandingPage = React.createClass({
 
@@ -37,13 +47,9 @@ var LandingPage = React.createClass({
           </nav>
 
           <SignUpForm/>
-
           {this.props.children}
-
           <LogOutButton/>
-
           <Link to="/books/1">Check out book 1!</Link>
-
         </div>
       </div>
     );
@@ -73,11 +79,14 @@ var LoggedInAs = React.createClass({
 
 var Router = (
   <Router history={hashHistory}>
-    <Route path="/" component={LandingPage}>
-      <Route path="nextpage" component={LoggedInAs}/>
-    </Route>
-    <Route path="books/:id" component={BookMainPage}/>
+    <Route path="/" component={App}>
+      <IndexRoute component={LandingPage}/>
 
+      <Route path="nextpage" component={LoggedInAs}/>
+      <Route path="users/:id" component={ReaderHomePage}/>
+
+      <Route path="books/:id" component={BookHomePage}/>
+    </Route>
   </Router>
 );
 
@@ -85,6 +94,3 @@ var Router = (
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(Router, document.getElementById("content"));
 })
-
-
-  // <Route path="nextpage" component={LoggedInAs}/>

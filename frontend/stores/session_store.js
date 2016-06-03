@@ -50,15 +50,17 @@ SessionStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "LOGIN":
       SessionStore.login(payload.user);
+      SessionStore.__emitChange();
       break;
     case "LOGOUT":
       SessionStore.logout();
+      SessionStore.__emitChange();
       break;
     case "ERROR":
       SessionStore.setErrors(payload.errors);
+      SessionStore.__emitChange();
       break;
   };
-  SessionStore.__emitChange();
 };
 
 module.exports = SessionStore;

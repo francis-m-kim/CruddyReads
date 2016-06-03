@@ -4,4 +4,4 @@
 # json.description @book.description
 # json.image_url @book.image_url
 
-json.partial! 'book', book: @book
+json.partial! 'api/partials/book', book: @book

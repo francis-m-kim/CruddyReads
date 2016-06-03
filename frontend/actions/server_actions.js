@@ -31,6 +31,21 @@ var ServerActions = {
       book: book
     })
   },
+  receiveBooks: function(books) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_BOOKS",
+      books: books
+    })
+  },
+
+  receiveReader: function(reader) {
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_READER",
+      reader: reader
+    })
+
+  }
 
 };
 

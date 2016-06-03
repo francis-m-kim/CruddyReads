@@ -3,6 +3,7 @@ var UserActions = require("../actions/user_actions");
 var hashHistory = require('react-router').hashHistory;
 var CurrentUserState = require("../mixins/current_user_state");
 
+
 var SignUpForm = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
