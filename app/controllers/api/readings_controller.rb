@@ -13,7 +13,7 @@ class Api::ReadingsController < ApplicationController
   def index
 
     if @user = User.find_by(id: params[:user_id])
-      @readings = @user.readings
+      @readings = @user.readings.includes(:book)
       render "api/readings/index"
     else
       @errors = ["SOMETHING WENT WRONG"]

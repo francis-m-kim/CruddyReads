@@ -16,14 +16,15 @@ module.exports = {
       }
     });
   },
-  login: function(user) {
+  login: function(user, redirect) {
     $.ajax({
       url: "/api/session",
       type: "POST",
       data: {user: user},
       success: function(user) {
         // debugger;
-        ServerActions.receiveCurrentUser(user)
+        ServerActions.receiveCurrentUser(user);
+        redirect();
       },
       error: function(error) {
         // debugger;
@@ -32,6 +33,7 @@ module.exports = {
     });
   },
   getCurrentUser: function() {
+
 		$.ajax({
 			url: '/api/session',
 			method: 'get',

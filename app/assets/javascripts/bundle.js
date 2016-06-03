@@ -47,6 +47,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(38);
 	
+	var SessionStore = __webpack_require__(169);
 	var CurrentUserState = __webpack_require__(168);
 	var UserActions = __webpack_require__(191);
 	
@@ -66,10 +67,9 @@
 	var LandingPage = React.createClass({
 	  displayName: "LandingPage",
 	
+	
 	  mixins: [CurrentUserState],
-	  componentDidMount: function () {
-	    UserActions.getCurrentUser();
-	  },
+	
 	  render: function () {
 	
 	    return React.createElement(
@@ -93,43 +93,39 @@
 	        React.createElement(LogOutButton, null),
 	        React.createElement(
 	          Link,
-	          { to: "books/1" },
-	          "LINK"
+	          { to: "/books/1" },
+	          "Check out book 1!"
 	        )
 	      )
 	    );
 	  }
 	});
 	
-	//
-	// LandingPage {
-	//   render: fhnction () {
-	//     return <Landing />
-	//
-	//    OR
-	//    return <UserLandingPage />
-	//   }
-	// }
-	
 	var LoggedInAs = React.createClass({
 	  displayName: "LoggedInAs",
 	
-	  mixins: [CurrentUserState],
+	  componentDidMount: function () {
+	    this.listener = SessionStore.addListener(this.handleChange);
+	  },
+	  handleChange: function () {
+	    this.setState({});
+	  },
 	  render: function () {
-	    if (this.state.currentUser) {
+	    if (SessionStore.isUserLoggedIn()) {
 	      return React.createElement(
 	        "p",
 	        null,
 	        "WELCOME ",
-	        this.state.currentUser.username,
+	        SessionStore.currentUser().username,
 	        " "
 	      );
-	    };
-	    return React.createElement(
-	      "div",
-	      null,
-	      "Nobody Logged In."
-	    );
+	    } else {
+	      return React.createElement(
+	        "div",
+	        null,
+	        "Nobody Logged In."
+	      );
+	    }
 	  }
 	
 	});
@@ -20436,6 +20432,7 @@
 		},
 		componentDidMount: function () {
 			this.sessionListener = SessionStore.addListener(this.updateUser);
+			UserActions.getCurrentUser();
 		},
 		componentWillUnmount: function () {
 			this.sessionListener.remove();
@@ -20460,22 +20457,31 @@
 	
 	var SessionStore = new Store(AppDispatcher);
 	
-	var _currentUser, _errors;
+	var _currentUser = {},
+	    _errors = {};
+	var _currentUserHasBeenFetched = false;
 	
 	SessionStore.login = function (user) {
 	  _currentUser = user;
+	  _currentUserHasBeenFetched = true;
 	  _errors = null;
 	};
 	
 	SessionStore.logout = function () {
-	  _currentUser = null;
+	  _currentUser = {};
 	  _errors = null;
+	  _currentUserHasBeenFetched = true;
 	};
 	
 	SessionStore.currentUser = function () {
+	
 	  if (_currentUser) {
 	    return $.extend({}, _currentUser);
 	  }
+	};
+	
+	SessionStore.isUserLoggedIn = function () {
+	  return !!_currentUser.id;
 	};
 	
 	SessionStore.setErrors = function (errors) {
@@ -27275,8 +27281,8 @@
 	  signup: function (user, redirect) {
 	    SessionApiUtil.signup(user, redirect);
 	  },
-	  login: function (user) {
-	    SessionApiUtil.login(user);
+	  login: function (user, redirect) {
+	    SessionApiUtil.login(user, redirect);
 	  },
 	  logout: function (user) {
 	    SessionApiUtil.logout(user);
@@ -27310,7 +27316,7 @@
 	      }
 	    });
 	  },
-	  login: function (user) {
+	  login: function (user, redirect) {
 	    $.ajax({
 	      url: "/api/session",
 	      type: "POST",
@@ -27318,6 +27324,7 @@
 	      success: function (user) {
 	        // debugger;
 	        ServerActions.receiveCurrentUser(user);
+	        redirect();
 	      },
 	      error: function (error) {
 	        // debugger;
@@ -27326,6 +27333,7 @@
 	    });
 	  },
 	  getCurrentUser: function () {
+	
 	    $.ajax({
 	      url: '/api/session',
 	      method: 'get',
@@ -33062,14 +33070,17 @@
 	var ReadingApiUtil = __webpack_require__(260);
 	var ReactRouter = __webpack_require__(195);
 	var hashHistory = ReactRouter.hashHistory;
+	
 	var BookStore = __webpack_require__(261);
+	var SessionStore = __webpack_require__(169);
 	var CurrentUserState = __webpack_require__(168);
 	
-	window.BookStore = BookStore;
+	var ReadingStatusButton = __webpack_require__(262);
 	
 	var BookMainPage = React.createClass({
 	  displayName: 'BookMainPage',
 	
+	  mixins: [CurrentUserState],
 	  getInitialState: function () {
 	
 	    return { book: BookStore.find(this.props.params.id) };
@@ -33091,24 +33102,9 @@
 	    BookApiUtil.getBook(newProps.params.id);
 	  },
 	
-	  haveRead: function (event) {
-	    event.preventDefault();
-	    debugger;
-	    var reading = {
-	      user_id: 54,
-	      book_id: this.props.params.id,
-	      status: "read",
-	      review: "IT SUCKED"
-	    };
-	    ReadingApiUtil.addReading(reading);
-	  },
-	
-	  readingNow: function () {},
-	  willRead: function () {},
-	
 	  render: function () {
 	    var book = this.state.book;
-	
+	    var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { book_id: this.props.params.id }) : "";
 	    if (book) {
 	      return React.createElement(
 	        'div',
@@ -33127,21 +33123,7 @@
 	        book.description,
 	        React.createElement('br', null),
 	        React.createElement('br', null),
-	        React.createElement(
-	          'button',
-	          { onClick: this.haveRead },
-	          'READ'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.bookReading },
-	          'CURRENTLY READING'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.bookWillRead },
-	          'WANT TO READ'
-	        )
+	        readingStatusButton
 	      );
 	    } else {
 	      return React.createElement(
@@ -33229,6 +33211,77 @@
 	};
 	
 	module.exports = BookStore;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReadingApiUtil = __webpack_require__(260);
+	var CurrentUserState = __webpack_require__(168);
+	
+	var ReadingStatusButton = React.createClass({
+	  displayName: 'ReadingStatusButton',
+	
+	
+	  mixins: [CurrentUserState],
+	
+	  haveRead: function (event) {
+	    event.preventDefault();
+	    var reading = {
+	      user_id: this.state.currentUser.user_id,
+	      book_id: this.props.book_id,
+	      status: "have-read"
+	
+	    };
+	    ReadingApiUtil.addReading(reading);
+	  },
+	
+	  readingNow: function (event) {
+	    event.preventDefault();
+	    var reading = {
+	      user_id: this.state.currentUser.user_id,
+	      book_id: this.props.book_id,
+	      status: "reading-now"
+	    };
+	    ReadingApiUtil.addReading(reading);
+	  },
+	
+	  willRead: function (event) {
+	    event.preventDefault();
+	    var reading = {
+	      user_id: this.state.currentUser.user_id,
+	      book_id: this.props.book_id,
+	      status: "will-read"
+	    };
+	    ReadingApiUtil.addReading(reading);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { onClick: this.haveRead },
+	        'HAVE READ'
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.readingNow },
+	        'READING NOW'
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.willRead },
+	        'WILL READ'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ReadingStatusButton;
 
 /***/ }
 /******/ ]);

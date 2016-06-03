@@ -1,7 +1,7 @@
 var React = require("react")
 var ReactDOM = require("react-dom")
 
-
+var SessionStore = require('./stores/session_store')
 var CurrentUserState = require('./mixins/current_user_state');
 var UserActions = require("./actions/user_actions");
 
@@ -20,11 +20,11 @@ var hashHistory = ReactRouter.hashHistory;
 var Link = ReactRouter.Link
 
 
+
 var LandingPage = React.createClass({
+
   mixins: [CurrentUserState],
-  componentDidMount: function() {
-    UserActions.getCurrentUser();
-  },
+
   render: function() {
 
     return(
@@ -42,7 +42,7 @@ var LandingPage = React.createClass({
 
           <LogOutButton/>
 
-          <Link to="books/1">LINK</Link>
+          <Link to="/books/1">Check out book 1!</Link>
 
         </div>
       </div>
@@ -50,25 +50,23 @@ var LandingPage = React.createClass({
   }
 });
 
-//
-// LandingPage {
-//   render: fhnction () {
-//     return <Landing />
-//
-//    OR
-//    return <UserLandingPage />
-//   }
-// }
 
 var LoggedInAs = React.createClass({
-  mixins: [CurrentUserState],
+  componentDidMount: function() {
+    this.listener = SessionStore.addListener(this.handleChange)
+
+  },
+  handleChange: function() {
+    this.setState({});
+  },
   render: function() {
-    if (this.state.currentUser) {
-      return(<p>WELCOME {this.state.currentUser.username} </p>)
-    };
-    return (
-      <div>Nobody Logged In.</div>
-    );
+    if (SessionStore.isUserLoggedIn()) {
+      return(<p>WELCOME {SessionStore.currentUser().username} </p>)
+    } else {
+      return (
+        <div>Nobody Logged In.</div>
+      );
+    }
   }
 
 });

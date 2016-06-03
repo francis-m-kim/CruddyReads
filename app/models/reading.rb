@@ -1,6 +1,6 @@
 class Reading < ActiveRecord::Base
   validates :user_id, :book_id, :status, presence: true
-  validates :status, inclusion: { in: ["read", "currently-reading", "to-read"]}
+  validates :status, inclusion: { in: ["have-read", "reading-now", "will-read"]}
 
   belongs_to(
     :reader,

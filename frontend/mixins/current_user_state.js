@@ -11,6 +11,7 @@ var CurrentUserState = {
 	},
 	componentDidMount: function(){
 		this.sessionListener = SessionStore.addListener(this.updateUser);
+		UserActions.getCurrentUser();
 	},
 	componentWillUnmount: function() {
 		this.sessionListener.remove();

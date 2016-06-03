@@ -5,8 +5,8 @@ var UserActions = {
   signup: function(user, redirect) {
     SessionApiUtil.signup(user, redirect);
   },
-  login: function(user) {
-    SessionApiUtil.login(user)
+  login: function(user, redirect) {
+    SessionApiUtil.login(user, redirect)
   },
   logout: function(user) {
     SessionApiUtil.logout(user)

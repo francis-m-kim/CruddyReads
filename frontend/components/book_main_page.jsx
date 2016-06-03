@@ -3,14 +3,16 @@ var BookApiUtil = require('../util/book_api_util');
 var ReadingApiUtil = require('../util/reading_api_util');
 var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
+
 var BookStore = require('../stores/book_store');
+var SessionStore = require("../stores/session_store")
 var CurrentUserState = require("../mixins/current_user_state");
 
+var ReadingStatusButton = require('./reading_status_button.jsx');
 
-
-window.BookStore = BookStore;
 
 var BookMainPage = React.createClass({
+  mixins: [CurrentUserState],
   getInitialState: function() {
 
     return { book: BookStore.find(this.props.params.id) }
@@ -32,28 +34,13 @@ var BookMainPage = React.createClass({
     BookApiUtil.getBook(newProps.params.id);
   },
 
-  haveRead: function(event) {
-    event.preventDefault();
-    debugger;
-    var reading = {
-      user_id: 54,
-      book_id: this.props.params.id,
-      status: "read",
-      review: "IT SUCKED"
-    };
-    ReadingApiUtil.addReading(reading);
-  },
 
-  readingNow: function() {
-
-  },
-  willRead: function() {
-
-  },
 
   render: function() {
     var book = this.state.book;
-
+    var readingStatusButton = SessionStore.isUserLoggedIn() ?
+        <ReadingStatusButton book_id={this.props.params.id}/> :
+        ""
     if (book) {
       return (
         <div className="book-main-page">
@@ -66,9 +53,8 @@ var BookMainPage = React.createClass({
           {book.description}
           <br/>
           <br/>
-          <button onClick={this.haveRead}>READ</button>
-          <button onClick={this.bookReading}>CURRENTLY READING</button>
-          <button onClick={this.bookWillRead}>WANT TO READ</button>
+
+          {readingStatusButton}
 
         </div>
       );
