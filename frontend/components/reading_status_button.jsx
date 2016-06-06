@@ -20,6 +20,7 @@ var ReadingStatusButton = React.createClass({
 
   handleChange: function() {
     var status = BookStore.find(this.props.book_id).status
+
     if (status) {
       this.setState( {readingStatus: status} )
     }
@@ -27,6 +28,11 @@ var ReadingStatusButton = React.createClass({
 
   componentWillUnmount: function() {
     this.listener.remove();
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    BookApiUtil.getUserReadings(this.props.user.id);
+
   },
 
 
@@ -64,17 +70,10 @@ var ReadingStatusButton = React.createClass({
   },
 
   render: function() {
-    var user = this.state.currentUser;
-    if (this.state.currentUser) {
-      var blah = this.state.currentUser.id
-    } else {
-      var blah = ""
-    }
     return (
 
       <div>
         <button className="reading-status">{this.state.readingStatus}</button>
-        {blah}
         <button onClick={this.haveRead}>HAVE READ</button>
         <button onClick={this.readingNow}>READING NOW</button>
         <button onClick={this.willRead}>WILL READ</button>
@@ -85,3 +84,12 @@ var ReadingStatusButton = React.createClass({
 });
 
 module.exports = ReadingStatusButton;
+
+
+
+// <div>
+//   <button className="reading-status">{this.state.readingStatus}</button>
+//   <button onClick={this.haveRead}>HAVE READ</button>
+//   <button onClick={this.readingNow}>READING NOW</button>
+//   <button onClick={this.willRead}>WILL READ</button>
+// </div>

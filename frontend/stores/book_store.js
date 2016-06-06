@@ -19,7 +19,9 @@ BookStore.receiveBooks = function(books) {
     _books[book.id] = book;
   })
 };
+
 BookStore.receiveReadings = function(readings) {
+  reset();
   readings.forEach(function(reading){
     _books[reading.id] = reading;
   })

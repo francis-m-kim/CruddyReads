@@ -64,7 +64,6 @@
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
 	var hashHistory = ReactRouter.hashHistory;
-	var Link = ReactRouter.Link;
 	
 	var App = React.createClass({
 	  displayName: "App",
@@ -78,70 +77,50 @@
 	  }
 	});
 	
-	var LandingPage = React.createClass({
-	  displayName: "LandingPage",
+	// var LandingPage = React.createClass({
+	//
+	//   mixins: [CurrentUserState],
+	//
+	//   render: function() {
+	//
+	//     return(
+	//       <div id="landing-page">
+	//         <div className="container">
+	//
+	//           <nav className="group">
+	//             <h1 id="crud">CRUDDYREADS</h1>
+	//             <LogInForm/>
+	//           </nav>
+	//
+	//           <SignUpForm/>
+	//           <LogOutButton/>
+	//           <Link to="/books/1">Check out book 1!</Link>
+	//         </div>
+	//       </div>
+	//     );
+	//   }
+	// });
 	
-	
-	  mixins: [CurrentUserState],
-	
-	  render: function () {
-	
-	    return React.createElement(
-	      "div",
-	      { id: "landing-page" },
-	      React.createElement(
-	        "div",
-	        { className: "container" },
-	        React.createElement(
-	          "nav",
-	          { className: "group" },
-	          React.createElement(
-	            "h1",
-	            { id: "crud" },
-	            "CRUDDYREADS"
-	          ),
-	          React.createElement(LogInForm, null)
-	        ),
-	        React.createElement(SignUpForm, null),
-	        React.createElement(LogOutButton, null),
-	        React.createElement(
-	          Link,
-	          { to: "/books/1" },
-	          "Check out book 1!"
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	var LoggedInAs = React.createClass({
-	  displayName: "LoggedInAs",
-	
-	  componentDidMount: function () {
-	    this.listener = SessionStore.addListener(this.handleChange);
-	  },
-	  handleChange: function () {
-	    this.setState({});
-	  },
-	  render: function () {
-	    if (SessionStore.isUserLoggedIn()) {
-	      return React.createElement(
-	        "p",
-	        null,
-	        "WELCOME ",
-	        SessionStore.currentUser().username,
-	        " "
-	      );
-	    } else {
-	      return React.createElement(
-	        "div",
-	        null,
-	        "Nobody Logged In."
-	      );
-	    }
-	  }
-	
-	});
+	//
+	// var LoggedInAs = React.createClass({
+	//   componentDidMount: function() {
+	//     this.listener = SessionStore.addListener(this.handleChange)
+	//
+	//   },
+	//   handleChange: function() {
+	//     this.setState({});
+	//   },
+	//   render: function() {
+	//     if (SessionStore.isUserLoggedIn()) {
+	//       return(<p>WELCOME {SessionStore.currentUser().username} </p>)
+	//     } else {
+	//       return (
+	//         <div>Nobody Logged In.</div>
+	//       );
+	//     }
+	//   }
+	//
+	// });
 	
 	var Router = React.createElement(
 	  Router,
@@ -150,7 +129,6 @@
 	    Route,
 	    { path: "/", component: App },
 	    React.createElement(IndexRoute, { component: LandingPage }),
-	    React.createElement(Route, { path: "nextpage", component: LoggedInAs }),
 	    React.createElement(Route, { path: "users/:id", component: ReaderHomePage }),
 	    React.createElement(Route, { path: "books/:id", component: BookHomePage })
 	  )
@@ -27467,8 +27445,8 @@
 	      password: this.state.password
 	    };
 	    UserActions.signup(user, function () {
-	      hashHistory.push("nextpage");
-	    });
+	      hashHistory.push("users/" + this.state.currentUser.id);
+	    }.bind(this));
 	    this.setState({ username: "", email: "", password: "" });
 	  },
 	
@@ -33042,9 +33020,8 @@
 	      password: this.state.password
 	    };
 	    UserActions.login(user, function () {
-	
-	      hashHistory.push("nextpage");
-	    });
+	      hashHistory.push("users/" + this.state.currentUser.id);
+	    }.bind(this));
 	    this.setState({ email: "", password: "" });
 	  },
 	
@@ -33076,18 +33053,20 @@
 
 	var React = __webpack_require__(1);
 	var UserActions = __webpack_require__(191);
+	var hashHistory = __webpack_require__(195).hashHistory;
 	
 	var LogOutButton = React.createClass({
 	  displayName: 'LogOutButton',
 	
 	  logout: function () {
 	    UserActions.logout();
+	    hashHistory.push("/");
 	  },
 	  render: function () {
 	    return React.createElement(
 	      'button',
 	      { id: 'log-out', onClick: this.logout },
-	      'Log Out'
+	      'Log out'
 	    );
 	  }
 	
@@ -33151,7 +33130,9 @@
 	    _books[book.id] = book;
 	  });
 	};
+	
 	BookStore.receiveReadings = function (readings) {
+	  reset();
 	  readings.forEach(function (reading) {
 	    _books[reading.id] = reading;
 	  });
@@ -33217,6 +33198,7 @@
 	
 	  handleChange: function () {
 	    var status = BookStore.find(this.props.book_id).status;
+	
 	    if (status) {
 	      this.setState({ readingStatus: status });
 	    }
@@ -33224,6 +33206,10 @@
 	
 	  componentWillUnmount: function () {
 	    this.listener.remove();
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    BookApiUtil.getUserReadings(this.props.user.id);
 	  },
 	
 	  haveRead: function (event) {
@@ -33258,12 +33244,6 @@
 	  },
 	
 	  render: function () {
-	    var user = this.state.currentUser;
-	    if (this.state.currentUser) {
-	      var blah = this.state.currentUser.id;
-	    } else {
-	      var blah = "";
-	    }
 	    return React.createElement(
 	      'div',
 	      null,
@@ -33272,7 +33252,6 @@
 	        { className: 'reading-status' },
 	        this.state.readingStatus
 	      ),
-	      blah,
 	      React.createElement(
 	        'button',
 	        { onClick: this.haveRead },
@@ -33294,6 +33273,13 @@
 	});
 	
 	module.exports = ReadingStatusButton;
+	
+	// <div>
+	//   <button className="reading-status">{this.state.readingStatus}</button>
+	//   <button onClick={this.haveRead}>HAVE READ</button>
+	//   <button onClick={this.readingNow}>READING NOW</button>
+	//   <button onClick={this.willRead}>WILL READ</button>
+	// </div>
 
 /***/ },
 /* 263 */
@@ -33301,7 +33287,6 @@
 
 	var React = __webpack_require__(1);
 	var BookApiUtil = __webpack_require__(259);
-	var ReadingsApiUtil = __webpack_require__(266);
 	var ReactRouter = __webpack_require__(195);
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33339,8 +33324,9 @@
 	
 	  render: function () {
 	    var book = this.state.book;
-	    var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { user: SessionStore.currentUser(), book_id: this.props.params.id }) : "";
+	
 	    if (book) {
+	      var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { user: SessionStore.currentUser(), book_id: this.state.book.id }) : "";
 	      return React.createElement(
 	        'div',
 	        null,
@@ -33429,7 +33415,6 @@
 	          React.createElement(LogInForm, null)
 	        ),
 	        React.createElement(SignUpForm, null),
-	        React.createElement(LogOutButton, null),
 	        React.createElement(
 	          Link,
 	          { to: '/books/1' },
@@ -33518,39 +33503,53 @@
 	    this.listener.remove();
 	  },
 	  componentWillReceiveProps: function (newProps) {
+	    // debugger;
 	    ReaderApiUtil.getReader(newProps.params.id);
 	  },
 	
 	  render: function () {
-	    var user = this.state.user;
-	    // debugger;
-	    if (user) {
 	
+	    var user = this.state.user;
+	    if (user) {
+	      // debugger;
+	
+	      user = Object.assign({}, user);
 	      var username = user.username;
 	      var userId = user.id;
+	      var imageUrl = user.image_url;
 	      delete user.username;
 	      delete user.id;
+	      delete user.image_url;
 	      return React.createElement(
 	        'div',
 	        null,
 	        React.createElement(NavBar, null),
 	        React.createElement(
-	          'h1',
-	          null,
-	          username
-	        ),
-	        React.createElement(
-	          'ul',
-	          null,
-	          Object.keys(user).map(function (attr, i) {
-	            return React.createElement(
-	              'li',
-	              { key: i },
-	              attr,
-	              ': ',
-	              user[attr]
-	            );
-	          })
+	          'div',
+	          { className: 'reader-info group' },
+	          React.createElement('img', { src: imageUrl }),
+	          React.createElement(
+	            'div',
+	            { className: 'reader-details' },
+	            React.createElement(
+	              'h1',
+	              null,
+	              username
+	            ),
+	            React.createElement(
+	              'ul',
+	              null,
+	              Object.keys(user).map(function (attr, i) {
+	                return React.createElement(
+	                  'li',
+	                  { key: i },
+	                  attr,
+	                  ': ',
+	                  user[attr]
+	                );
+	              })
+	            )
+	          )
 	        ),
 	        React.createElement(ReaderBookList, { userId: userId })
 	      );
@@ -33600,6 +33599,7 @@
 	var React = __webpack_require__(1);
 	var BookStore = __webpack_require__(261);
 	var BookApiUtil = __webpack_require__(259);
+	var BookListItem = __webpack_require__(273);
 	
 	var ReaderBookList = React.createClass({
 	  displayName: 'ReaderBookList',
@@ -33620,19 +33620,21 @@
 	    this.listener.remove();
 	  },
 	
+	  componentWillReceiveProps: function (newProps) {
+	
+	    BookApiUtil.getUserReadings(newProps.userId);
+	  },
+	
 	  render: function () {
+	    // debugger;
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'book-list' },
 	      React.createElement(
 	        'ul',
 	        null,
 	        this.state.books.map(function (book, i) {
-	          return React.createElement(
-	            'li',
-	            { key: i },
-	            book.title
-	          );
+	          return React.createElement(BookListItem, { key: i, book: book });
 	        })
 	      )
 	    );
@@ -33647,63 +33649,120 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PropTypes = React.PropTypes;
+	var LogOutButton = __webpack_require__(257);
+	var ReactRouter = __webpack_require__(195);
+	var hashHistory = __webpack_require__(195).hashHistory;
+	var Link = ReactRouter.Link;
+	var CurrentUserState = __webpack_require__(168);
 	
 	var NavBar = React.createClass({
-	  displayName: "NavBar",
+	  displayName: 'NavBar',
+	
+	  mixins: [CurrentUserState],
+	  goToHome: function (event) {
+	    event.preventDefault;
+	    hashHistory.push("users/" + this.state.currentUser.id);
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'nav',
+	      { className: 'main-nav group' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'CRUDDYREADS'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'links' },
+	        React.createElement(
+	          'li',
+	          { onClick: this.goToHome },
+	          'My CRUD'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'Browse'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'Community'
+	        )
+	      ),
+	      React.createElement('input', { className: 'search', type: 'text', placeholder: 'Find CRUD' }),
+	      React.createElement(
+	        'ul',
+	        { className: 'buttons' },
+	        React.createElement(
+	          'li',
+	          null,
+	          'messages'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'friends'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'me'
+	        )
+	      ),
+	      React.createElement(LogOutButton, null)
+	    );
+	  }
+	
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(195);
+	var hashHistory = __webpack_require__(195).hashHistory;
+	var Link = ReactRouter.Link;
+	
+	var ReaderBookListItem = React.createClass({
+	  displayName: 'ReaderBookListItem',
 	
 	
 	  render: function () {
+	    var book = this.props.book;
 	    return React.createElement(
-	      "nav",
-	      { className: "main-nav group" },
+	      'div',
+	      { className: 'book-list-item group' },
 	      React.createElement(
-	        "h1",
+	        'li',
 	        null,
-	        "CRUDDYREADS"
-	      ),
-	      React.createElement(
-	        "ul",
-	        { className: "links" },
 	        React.createElement(
-	          "li",
-	          null,
-	          "My CRUD"
+	          Link,
+	          { to: "books/" + book.id },
+	          React.createElement('img', { src: book.image_url, width: '100px' })
 	        ),
 	        React.createElement(
-	          "li",
-	          null,
-	          "Browse"
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          "Community"
-	        )
-	      ),
-	      React.createElement("input", { className: "search", type: "text", placeholder: "Find CRUD" }),
-	      React.createElement(
-	        "ul",
-	        { className: "buttons" },
-	        React.createElement(
-	          "li",
-	          null,
-	          "alerts"
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          "messages"
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          "friends"
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          "me"
+	          'div',
+	          { className: 'book-list-item-details' },
+	          React.createElement(
+	            'div',
+	            { className: 'title' },
+	            book.title
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'author' },
+	            book.author
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'review' },
+	            book.review
+	          )
 	        )
 	      )
 	    );
@@ -33711,7 +33770,7 @@
 	
 	});
 	
-	module.exports = NavBar;
+	module.exports = ReaderBookListItem;
 
 /***/ }
 /******/ ]);

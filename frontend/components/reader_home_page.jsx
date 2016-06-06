@@ -22,29 +22,39 @@ var ReaderHomePage = React.createClass({
     this.listener.remove();
   },
   componentWillReceiveProps: function(newProps) {
+    // debugger;
     ReaderApiUtil.getReader(newProps.params.id);
   },
 
   render: function() {
-    var user = this.state.user;
-    // debugger;
-    if (user) {
 
+    var user = this.state.user;
+    if (user) {
+      // debugger;
+
+      user = Object.assign({}, user);
       var username = user.username
       var userId = user.id
+      var imageUrl = user.image_url
       delete user.username
       delete user.id
+      delete user.image_url
       return (
         <div>
           <NavBar/>
-          <h1>{username}</h1>
-          <ul>
-            {
-              Object.keys(user).map(function(attr, i) {
-                return <li key={i}>{attr}: {user[attr]}</li>
-              })
-            }
-          </ul>
+          <div className="reader-info group">
+            <img src={imageUrl}/>
+            <div className="reader-details">
+              <h1>{username}</h1>
+              <ul>
+                {
+                  Object.keys(user).map(function(attr, i) {
+                    return <li key={i}>{attr}: {user[attr]}</li>
+                  })
+                }
+              </ul>
+            </div>
+          </div>
           <ReaderBookList userId={userId}/>
         </div>
       );

@@ -27,9 +27,9 @@ var SignUpForm = React.createClass({
       password: this.state.password
     }
     UserActions.signup(user, function() {
-      hashHistory.push("nextpage");
+      hashHistory.push("users/" + this.state.currentUser.id);
 
-    });
+    }.bind(this));
     this.setState({username:"", email:"", password: ""});
 
   },

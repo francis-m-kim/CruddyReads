@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602184335) do
+ActiveRecord::Schema.define(version: 20160606154637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,12 +55,13 @@ ActiveRecord::Schema.define(version: 20160602184335) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",           null: false
-    t.string   "password_digest", null: false
-    t.string   "session_token",   null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "email",                                                                                    null: false
+    t.string   "password_digest",                                                                          null: false
+    t.string   "session_token",                                                                            null: false
+    t.datetime "created_at",                                                                               null: false
+    t.datetime "updated_at",                                                                               null: false
     t.string   "username"
+    t.string   "image_url",       default: "http://www.jadepixeldoll.com/images/ref_head/hdd04_blank.jpg"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

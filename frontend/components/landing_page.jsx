@@ -24,7 +24,6 @@ var LandingPage = React.createClass({
           </nav>
 
           <SignUpForm/>
-          <LogOutButton/>
           <Link to="/books/1">Check out book 1!</Link>
         </div>
       </div>

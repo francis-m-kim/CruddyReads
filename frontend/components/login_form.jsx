@@ -21,10 +21,9 @@ var LoginForm = React.createClass({
       password: this.state.password
     }
     UserActions.login(user, function() {
+      hashHistory.push("users/" + this.state.currentUser.id);
 
-      hashHistory.push("nextpage");
-
-    });
+    }.bind(this));
     this.setState({email:"", password: ""});
 
   },

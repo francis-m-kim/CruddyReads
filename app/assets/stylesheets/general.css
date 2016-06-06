@@ -12,16 +12,9 @@ script {
   display: none;
 }
 
-#crud {
-  float: left;
-  font-size: 40px;
-  letter-spacing: .5em;
-  text-shadow: 6px 0px 1px orange;
-  transform: rotate(1deg);
-}
 
 body {
-  font-family: 'Noto Sans', times;
+  font-family: 'Noto Sans', sans-serif;
   font-size: 12px;
 
 }

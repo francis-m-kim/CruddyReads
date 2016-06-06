@@ -1,0 +1,26 @@
+.reader-info {
+  margin: 15px 0px;;
+  /*background: rgb(255, 191, 68);*/
+}
+
+.reader-info img {
+  float:left;
+  width: 200px;
+  /*border: dotted 2px orange;
+  border-radius: 75px;*/
+}
+
+.reader-details h1, li {
+    margin-bottom: 3px;
+}
+
+.reader-details h1 {
+  font-size: 23px;
+}
+
+.reader-details {
+  float: left;
+  margin-left: 30px;
+  width: 450px;
+  text-align: justify;
+}

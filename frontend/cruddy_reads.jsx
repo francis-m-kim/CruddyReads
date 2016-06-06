@@ -18,7 +18,6 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var hashHistory = ReactRouter.hashHistory;
-var Link = ReactRouter.Link
 
 
 var App = React.createClass({
@@ -31,58 +30,55 @@ var App = React.createClass({
   }
 });
 
-var LandingPage = React.createClass({
+// var LandingPage = React.createClass({
+//
+//   mixins: [CurrentUserState],
+//
+//   render: function() {
+//
+//     return(
+//       <div id="landing-page">
+//         <div className="container">
+//
+//           <nav className="group">
+//             <h1 id="crud">CRUDDYREADS</h1>
+//             <LogInForm/>
+//           </nav>
+//
+//           <SignUpForm/>
+//           <LogOutButton/>
+//           <Link to="/books/1">Check out book 1!</Link>
+//         </div>
+//       </div>
+//     );
+//   }
+// });
 
-  mixins: [CurrentUserState],
-
-  render: function() {
-
-    return(
-      <div id="landing-page">
-        <div className="container">
-
-          <nav className="group">
-            <h1 id="crud">CRUDDYREADS</h1>
-            <LogInForm/>
-          </nav>
-
-          <SignUpForm/>
-          <LogOutButton/>
-          <Link to="/books/1">Check out book 1!</Link>
-        </div>
-      </div>
-    );
-  }
-});
-
-
-var LoggedInAs = React.createClass({
-  componentDidMount: function() {
-    this.listener = SessionStore.addListener(this.handleChange)
-
-  },
-  handleChange: function() {
-    this.setState({});
-  },
-  render: function() {
-    if (SessionStore.isUserLoggedIn()) {
-      return(<p>WELCOME {SessionStore.currentUser().username} </p>)
-    } else {
-      return (
-        <div>Nobody Logged In.</div>
-      );
-    }
-  }
-
-});
+//
+// var LoggedInAs = React.createClass({
+//   componentDidMount: function() {
+//     this.listener = SessionStore.addListener(this.handleChange)
+//
+//   },
+//   handleChange: function() {
+//     this.setState({});
+//   },
+//   render: function() {
+//     if (SessionStore.isUserLoggedIn()) {
+//       return(<p>WELCOME {SessionStore.currentUser().username} </p>)
+//     } else {
+//       return (
+//         <div>Nobody Logged In.</div>
+//       );
+//     }
+//   }
+//
+// });
 
 var Router = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={LandingPage}/>
-
-
-      <Route path="nextpage" component={LoggedInAs}/>
       <Route path="users/:id" component={ReaderHomePage}/>
       <Route path="books/:id" component={BookHomePage}/>
 

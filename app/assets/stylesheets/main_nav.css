@@ -8,9 +8,13 @@
   border-radius: 2px;
 }
 
-.main-nav ul *:hover {
+.main-nav ul li:hover {
   outline: none;
   box-shadow: 0px 0px 10px orange;
+}
+
+.main-nav ul li:focus {
+ background: green;
 }
 
 .main-nav h1 {
@@ -37,5 +41,25 @@
 }
 
 .buttons {
+  float: left;
+}
+
+#log-out {
   float: right;
+  border: none;
+  border-radius: 2px;
+  padding: 3px 5px;
+  margin-top: -2px;
+  color: white;
+  background: #382110;
+}
+
+
+#log-out:hover {
+  background: #573216;
+}
+
+#log-out:focus {
+  outline: none;
+  box-shadow: 0 0 5px #382110;
 }

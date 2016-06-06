@@ -1,6 +1,5 @@
 var React = require('react');
 var BookApiUtil = require('../util/book_api_util');
-var ReadingsApiUtil = require('../util/readings_api_util');
 var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
 
@@ -39,10 +38,11 @@ var BookHomePage = React.createClass({
 
   render: function() {
     var book = this.state.book;
-    var readingStatusButton = SessionStore.isUserLoggedIn() ?
-        <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.props.params.id}/> :
-        ""
+
     if (book) {
+      var readingStatusButton = SessionStore.isUserLoggedIn() ?
+      <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.state.book.id}/> :
+        ""
       return (
         <div>
           <NavBar/>

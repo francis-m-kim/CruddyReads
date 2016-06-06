@@ -1,6 +1,7 @@
 var React = require('react');
 var BookStore = require('../stores/book_store');
 var BookApiUtil = require('../util/book_api_util');
+var BookListItem = require('./reader_book_list_item');
 
 var ReaderBookList = React.createClass({
   getInitialState: function() {
@@ -19,13 +20,20 @@ var ReaderBookList = React.createClass({
     this.listener.remove();
   },
 
+  componentWillReceiveProps: function(newProps) {
+
+    BookApiUtil.getUserReadings(newProps.userId);
+
+  },
+
   render: function() {
+    // debugger;
     return (
-      <div>
+      <div className="book-list">
         <ul>
           {
             this.state.books.map(function(book, i){
-              return( <li key={i}>{book.title}</li> )
+              return( <BookListItem key={i} book={book}/> )
             })
           }
         </ul>

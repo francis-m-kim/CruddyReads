@@ -11,6 +11,7 @@ json.array! @readings do |reading|
   json.reading_id reading.id
   json.partial! 'api/partials/book', book: reading.book
   json.status reading.status
+  json.review reading.review
 end
 
 # flattening the JSON output allows readings and books to be treated the same on the other end
