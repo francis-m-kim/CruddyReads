@@ -2,7 +2,7 @@ var React = require('react')
 var ReaderApiUtil = require('../util/reader_api_util');
 var ReaderStore = require('../stores/reader_store');
 var ReaderBookList = require('./reader_book_list');
-
+var NavBar = require('./nav_bar');
 
 var ReaderHomePage = React.createClass({
   getInitialState: function() {
@@ -36,6 +36,7 @@ var ReaderHomePage = React.createClass({
       delete user.id
       return (
         <div>
+          <NavBar/>
           <h1>{username}</h1>
           <ul>
             {

@@ -12,13 +12,21 @@ script {
   display: none;
 }
 
+#crud {
+  float: left;
+  font-size: 40px;
+  letter-spacing: .5em;
+  text-shadow: 6px 0px 1px orange;
+  transform: rotate(1deg);
+}
+
 body {
   font-family: 'Noto Sans', times;
-  font-size: 11px;
+  font-size: 12px;
 
 }
 
-.container {
+body {
   width: 965px;
   margin: auto;
 }
@@ -30,19 +38,14 @@ body {
 }
 
 
-form > input {
+input {
   border: 1px solid lightgrey;
   border-radius: 2.5px;
   letter-spacing: .3px;
 }
 
-form > input:not([type="submit"]):focus {
+input:not([type="submit"]):focus {
   outline: none;
   border:1px solid #F4A460;
   box-shadow: 0 0 25px orange;
-}
-
-strong {
-  display: inline-block;
-  transform: rotate(90deg);
 }

@@ -18,7 +18,7 @@ module.exports = {
       method: 'GET',
       url: '/api/users/' + userId + "/readings",
 			success: function(readings) {
-        ServerActions.receiveBooks(readings)
+        ServerActions.receiveReadings(readings)
       },
 			error: function(error) {
         ServerActions.handleError(error)

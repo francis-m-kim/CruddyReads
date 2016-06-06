@@ -3,7 +3,6 @@ var AppDispatcher = require('../dispatcher/dispatcher');
 var ServerActions = {
 
   receiveCurrentUser: function(user) {
-    // debugger;
     AppDispatcher.dispatch({
       actionType: "LOGIN",
       user: user
@@ -11,7 +10,6 @@ var ServerActions = {
   },
 
   handleError: function(error) {
-    debugger;
     AppDispatcher.dispatch({
       actionType: "ERROR",
       errors: error.responseJSON.errors
@@ -25,7 +23,6 @@ var ServerActions = {
 	},
 
   receiveBook: function(book) {
-
     AppDispatcher.dispatch({
       actionType: "RECEIVE_BOOK",
       book: book
@@ -36,6 +33,14 @@ var ServerActions = {
     AppDispatcher.dispatch({
       actionType: "RECEIVE_BOOKS",
       books: books
+    })
+  },
+
+  receiveReadings: function(readings) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_READINGS",
+      readings: readings
     })
   },
 

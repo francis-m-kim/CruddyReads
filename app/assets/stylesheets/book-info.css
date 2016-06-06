@@ -1,0 +1,36 @@
+.book-info {
+  margin-top: 15px;
+}
+
+.image-column {
+  float: left;
+}
+
+.image-column img {
+  width: 200px;
+}
+
+.book-details {
+  float:left;
+  margin-left: 30px;
+  width: 450px;
+  text-align: justify;
+}
+
+.book-details h1 {
+  font-size: 23px;
+  margin-top: -3px;
+  margin-bottom: 3px;
+}
+
+.book-details .author {
+  font-weight: bold;
+}
+
+.book-details .author:before {
+  content: "by"
+}
+
+.book-details *:not(h1){
+  margin-bottom: 8px;
+}

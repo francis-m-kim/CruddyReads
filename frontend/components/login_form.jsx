@@ -35,10 +35,10 @@ var LoginForm = React.createClass({
     return (
       <div id="login-form">
         <form onSubmit={this.handleSubmit}>
-          <input type="text" field="email" placeholder="Email Address"
+          <input type="text" placeholder="Email Address"
             value={this.state.email}
             onChange={this.updateEmail}/>
-          <input type="password" field="password" placeholder="Password"
+          <input type="password" placeholder="Password"
             value={this.state.password}
             onChange={this.updatePassword}/>
           <input type="submit" value="Sign in"/>

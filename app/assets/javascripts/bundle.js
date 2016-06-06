@@ -49,7 +49,7 @@
 	
 	var SessionStore = __webpack_require__(169);
 	var CurrentUserState = __webpack_require__(168);
-	var UserActions = __webpack_require__(191);
+	// var UserActions = require("./actions/user_actions");
 	
 	var SignUpForm = __webpack_require__(194);
 	var LogInForm = __webpack_require__(256);
@@ -97,13 +97,12 @@
 	          { className: "group" },
 	          React.createElement(
 	            "h1",
-	            null,
+	            { id: "crud" },
 	            "CRUDDYREADS"
 	          ),
 	          React.createElement(LogInForm, null)
 	        ),
 	        React.createElement(SignUpForm, null),
-	        this.props.children,
 	        React.createElement(LogOutButton, null),
 	        React.createElement(
 	          Link,
@@ -27382,7 +27381,6 @@
 	var ServerActions = {
 	
 	  receiveCurrentUser: function (user) {
-	    // debugger;
 	    AppDispatcher.dispatch({
 	      actionType: "LOGIN",
 	      user: user
@@ -27390,7 +27388,6 @@
 	  },
 	
 	  handleError: function (error) {
-	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: "ERROR",
 	      errors: error.responseJSON.errors
@@ -27404,7 +27401,6 @@
 	  },
 	
 	  receiveBook: function (book) {
-	
 	    AppDispatcher.dispatch({
 	      actionType: "RECEIVE_BOOK",
 	      book: book
@@ -27415,6 +27411,14 @@
 	    AppDispatcher.dispatch({
 	      actionType: "RECEIVE_BOOKS",
 	      books: books
+	    });
+	  },
+	
+	  receiveReadings: function (readings) {
+	
+	    AppDispatcher.dispatch({
+	      actionType: "RECEIVE_READINGS",
+	      readings: readings
 	    });
 	  },
 	
@@ -33051,10 +33055,10 @@
 	      React.createElement(
 	        "form",
 	        { onSubmit: this.handleSubmit },
-	        React.createElement("input", { type: "text", field: "email", placeholder: "Email Address",
+	        React.createElement("input", { type: "text", placeholder: "Email Address",
 	          value: this.state.email,
 	          onChange: this.updateEmail }),
-	        React.createElement("input", { type: "password", field: "password", placeholder: "Password",
+	        React.createElement("input", { type: "password", placeholder: "Password",
 	          value: this.state.password,
 	          onChange: this.updatePassword }),
 	        React.createElement("input", { type: "submit", value: "Sign in" })
@@ -33116,7 +33120,7 @@
 	      method: 'GET',
 	      url: '/api/users/' + userId + "/readings",
 	      success: function (readings) {
-	        ServerActions.receiveBooks(readings);
+	        ServerActions.receiveReadings(readings);
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -33147,6 +33151,11 @@
 	    _books[book.id] = book;
 	  });
 	};
+	BookStore.receiveReadings = function (readings) {
+	  readings.forEach(function (reading) {
+	    _books[reading.id] = reading;
+	  });
+	};
 	
 	BookStore.all = function () {
 	  return Object.keys(_books).map(function (bookId) {
@@ -33172,6 +33181,10 @@
 	      BookStore.receiveBooks(payload.books);
 	      BookStore.__emitChange();
 	      break;
+	    case "RECEIVE_READINGS":
+	      BookStore.receiveReadings(payload.readings);
+	      BookStore.__emitChange();
+	      break;
 	  };
 	};
 	
@@ -33183,7 +33196,9 @@
 
 	var React = __webpack_require__(1);
 	var ReadingsApiUtil = __webpack_require__(266);
+	var BookApiUtil = __webpack_require__(259);
 	var CurrentUserState = __webpack_require__(168);
+	var BookStore = __webpack_require__(261);
 	
 	var ReadingStatusButton = React.createClass({
 	  displayName: 'ReadingStatusButton',
@@ -33191,10 +33206,30 @@
 	
 	  mixins: [CurrentUserState],
 	
+	  getInitialState: function () {
+	    return { readingStatus: "Want to Read" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = BookStore.addListener(this.handleChange);
+	    BookApiUtil.getUserReadings(this.props.user.id);
+	  },
+	
+	  handleChange: function () {
+	    var status = BookStore.find(this.props.book_id).status;
+	    if (status) {
+	      this.setState({ readingStatus: status });
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
 	  haveRead: function (event) {
 	    event.preventDefault();
 	    var reading = {
-	      user_id: this.state.currentUser.user_id,
+	      user_id: this.state.currentUser.id,
 	      book_id: this.props.book_id,
 	      status: "have-read"
 	
@@ -33205,7 +33240,7 @@
 	  readingNow: function (event) {
 	    event.preventDefault();
 	    var reading = {
-	      user_id: this.state.currentUser.user_id,
+	      user_id: this.state.currentUser.id,
 	      book_id: this.props.book_id,
 	      status: "reading-now"
 	    };
@@ -33215,7 +33250,7 @@
 	  willRead: function (event) {
 	    event.preventDefault();
 	    var reading = {
-	      user_id: this.state.currentUser.user_id,
+	      user_id: this.state.currentUser.id,
 	      book_id: this.props.book_id,
 	      status: "will-read"
 	    };
@@ -33223,9 +33258,21 @@
 	  },
 	
 	  render: function () {
+	    var user = this.state.currentUser;
+	    if (this.state.currentUser) {
+	      var blah = this.state.currentUser.id;
+	    } else {
+	      var blah = "";
+	    }
 	    return React.createElement(
 	      'div',
 	      null,
+	      React.createElement(
+	        'button',
+	        { className: 'reading-status' },
+	        this.state.readingStatus
+	      ),
+	      blah,
 	      React.createElement(
 	        'button',
 	        { onClick: this.haveRead },
@@ -33262,6 +33309,7 @@
 	var SessionStore = __webpack_require__(169);
 	var CurrentUserState = __webpack_require__(168);
 	
+	var NavBar = __webpack_require__(272);
 	var ReadingStatusButton = __webpack_require__(262);
 	
 	var BookHomePage = React.createClass({
@@ -33291,26 +33339,44 @@
 	
 	  render: function () {
 	    var book = this.state.book;
-	    var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { book_id: this.props.params.id }) : "";
+	    var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { user: SessionStore.currentUser(), book_id: this.props.params.id }) : "";
 	    if (book) {
 	      return React.createElement(
 	        'div',
-	        { className: 'book-main-page' },
-	        React.createElement('img', { src: book.image_url, width: '200px', height: '300px' }),
+	        null,
+	        React.createElement(NavBar, null),
 	        React.createElement(
-	          'h1',
-	          null,
-	          book.title
-	        ),
-	        React.createElement('br', null),
-	        'by ',
-	        book.author,
-	        React.createElement('br', null),
-	        React.createElement('br', null),
-	        book.description,
-	        React.createElement('br', null),
-	        React.createElement('br', null),
-	        readingStatusButton
+	          'div',
+	          { className: 'group book-info' },
+	          React.createElement(
+	            'div',
+	            { className: 'image-column' },
+	            React.createElement('img', { src: book.image_url }),
+	            readingStatusButton
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'book-details' },
+	            React.createElement(
+	              'h1',
+	              null,
+	              book.title
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'author' },
+	              ' ',
+	              book.author,
+	              ' '
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'description' },
+	              ' ',
+	              book.description
+	            )
+	          )
+	        )
 	      );
 	    } else {
 	      return React.createElement(
@@ -33357,13 +33423,12 @@
 	          { className: 'group' },
 	          React.createElement(
 	            'h1',
-	            null,
+	            { id: 'crud' },
 	            'CRUDDYREADS'
 	          ),
 	          React.createElement(LogInForm, null)
 	        ),
 	        React.createElement(SignUpForm, null),
-	        this.props.children,
 	        React.createElement(LogOutButton, null),
 	        React.createElement(
 	          Link,
@@ -33374,6 +33439,8 @@
 	    );
 	  }
 	});
+	
+	module.exports = LandingPage;
 
 /***/ },
 /* 265 */,
@@ -33384,20 +33451,19 @@
 	
 	module.exports = {
 	  addReading: function (reading) {
-	    // debugger;
 	    $.ajax({
 	      url: "/api/readings",
 	      type: "POST",
 	      data: { reading: reading },
 	      success: function (reading) {
-	        console.log("READING CREATED");
+	        ServerActions.receiveBook(reading);
 	      },
 	      error: function (error) {
-	        debugger;
 	        ServerActions.handleError(error);
 	      }
 	    });
 	  }
+	
 	};
 
 /***/ },
@@ -33430,6 +33496,7 @@
 	var ReaderApiUtil = __webpack_require__(268);
 	var ReaderStore = __webpack_require__(270);
 	var ReaderBookList = __webpack_require__(271);
+	var NavBar = __webpack_require__(272);
 	
 	var ReaderHomePage = React.createClass({
 	  displayName: 'ReaderHomePage',
@@ -33466,6 +33533,7 @@
 	      return React.createElement(
 	        'div',
 	        null,
+	        React.createElement(NavBar, null),
 	        React.createElement(
 	          'h1',
 	          null,
@@ -33573,6 +33641,77 @@
 	});
 	
 	module.exports = ReaderBookList;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	
+	var NavBar = React.createClass({
+	  displayName: "NavBar",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "nav",
+	      { className: "main-nav group" },
+	      React.createElement(
+	        "h1",
+	        null,
+	        "CRUDDYREADS"
+	      ),
+	      React.createElement(
+	        "ul",
+	        { className: "links" },
+	        React.createElement(
+	          "li",
+	          null,
+	          "My CRUD"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "Browse"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "Community"
+	        )
+	      ),
+	      React.createElement("input", { className: "search", type: "text", placeholder: "Find CRUD" }),
+	      React.createElement(
+	        "ul",
+	        { className: "buttons" },
+	        React.createElement(
+	          "li",
+	          null,
+	          "alerts"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "messages"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "friends"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "me"
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = NavBar;
 
 /***/ }
 /******/ ]);

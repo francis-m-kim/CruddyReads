@@ -8,6 +8,7 @@ var BookStore = require('../stores/book_store');
 var SessionStore = require("../stores/session_store")
 var CurrentUserState = require("../mixins/current_user_state");
 
+var NavBar = require('./nav_bar');
 var ReadingStatusButton = require('./reading_status_button.jsx');
 
 
@@ -39,22 +40,23 @@ var BookHomePage = React.createClass({
   render: function() {
     var book = this.state.book;
     var readingStatusButton = SessionStore.isUserLoggedIn() ?
-        <ReadingStatusButton book_id={this.props.params.id}/> :
+        <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.props.params.id}/> :
         ""
     if (book) {
       return (
-        <div className="book-main-page">
-          <img src={book.image_url} width="200px" height="300px"/>
-          <h1>{book.title}</h1>
-          <br/>
-          by {book.author}
-          <br/>
-          <br/>
-          {book.description}
-          <br/>
-          <br/>
-
-          {readingStatusButton}
+        <div>
+          <NavBar/>
+          <div className="group book-info">
+            <div className="image-column">
+              <img src={book.image_url}/>
+              {readingStatusButton}
+            </div>
+            <div className="book-details">
+              <h1>{book.title}</h1>
+              <div className="author"> {book.author} </div>
+              <div className="description"> {book.description}</div>
+            </div>
+          </div>
 
         </div>
       );

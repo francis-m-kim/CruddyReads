@@ -19,6 +19,13 @@ BookStore.receiveBooks = function(books) {
     _books[book.id] = book;
   })
 };
+BookStore.receiveReadings = function(readings) {
+  readings.forEach(function(reading){
+    _books[reading.id] = reading;
+  })
+};
+
+
 
 BookStore.all = function() {
   return Object.keys(_books).map(function(bookId) {
@@ -44,6 +51,10 @@ BookStore.__onDispatch = function(payload) {
       break;
     case "RECEIVE_BOOKS":
       BookStore.receiveBooks(payload.books);
+      BookStore.__emitChange();
+      break;
+    case "RECEIVE_READINGS":
+      BookStore.receiveReadings(payload.readings);
       BookStore.__emitChange();
       break;
   };

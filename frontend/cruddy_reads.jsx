@@ -3,7 +3,7 @@ var ReactDOM = require("react-dom")
 
 var SessionStore = require('./stores/session_store')
 var CurrentUserState = require('./mixins/current_user_state');
-var UserActions = require("./actions/user_actions");
+// var UserActions = require("./actions/user_actions");
 
 var SignUpForm = require("./components/signup_form");
 var LogInForm = require("./components/login_form");
@@ -42,12 +42,11 @@ var LandingPage = React.createClass({
         <div className="container">
 
           <nav className="group">
-            <h1>CRUDDYREADS</h1>
+            <h1 id="crud">CRUDDYREADS</h1>
             <LogInForm/>
           </nav>
 
           <SignUpForm/>
-          {this.props.children}
           <LogOutButton/>
           <Link to="/books/1">Check out book 1!</Link>
         </div>
@@ -82,10 +81,12 @@ var Router = (
     <Route path="/" component={App}>
       <IndexRoute component={LandingPage}/>
 
+
       <Route path="nextpage" component={LoggedInAs}/>
       <Route path="users/:id" component={ReaderHomePage}/>
-
       <Route path="books/:id" component={BookHomePage}/>
+
+
     </Route>
   </Router>
 );

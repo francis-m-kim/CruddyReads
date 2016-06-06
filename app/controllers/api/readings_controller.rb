@@ -23,7 +23,8 @@ class Api::ReadingsController < ApplicationController
   end
 
   def show
-
+    @reading = Reading.find(params[:id])
+    render "api/readings/show"
   end
 
   def destroy
