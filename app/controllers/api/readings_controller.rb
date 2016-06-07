@@ -6,7 +6,7 @@ class Api::ReadingsController < ApplicationController
       render "api/readings/show"
     else
       @errors = @reading.errors.full_messages
-      render json: @errors
+      render json: @errors, status: 422
     end
   end
 
@@ -17,7 +17,7 @@ class Api::ReadingsController < ApplicationController
       render "api/readings/index"
     else
       @errors = ["SOMETHING WENT WRONG"]
-      render json: @errors
+      render json: @errors, status: 422
     end
 
   end
@@ -28,8 +28,8 @@ class Api::ReadingsController < ApplicationController
   end
 
   def readings_by_status
-    debugger
-    @readings = Reading.where(status: "")
+    @readings = Reading.where(status: params[:status])
+    render "api/readings/index"
   end
 
   def destroy

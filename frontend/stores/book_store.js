@@ -47,6 +47,7 @@ BookStore.allReadings = function() {
 BookStore.find = function(id) {
   return _books[id]
 };
+
 BookStore.findReading = function(id) {
   return _readings[id]
 };

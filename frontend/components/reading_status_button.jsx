@@ -31,7 +31,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-    BookApiUtil.getUserReadings(this.props.user.id);
+    // BookApiUtil.getUserReadings(this.props.user.id);
 
   },
 
@@ -50,6 +50,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   readingNow: function(event) {
+
     event.preventDefault();
     var reading = {
       user_id: this.state.currentUser.id,
@@ -60,6 +61,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   willRead: function(event) {
+
     event.preventDefault();
     var reading = {
       user_id: this.state.currentUser.id,

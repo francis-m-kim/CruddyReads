@@ -33195,6 +33195,7 @@
 	BookStore.find = function (id) {
 	  return _books[id];
 	};
+	
 	BookStore.findReading = function (id) {
 	  return _readings[id];
 	};
@@ -33263,7 +33264,8 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    BookApiUtil.getUserReadings(this.props.user.id);
+	    // BookApiUtil.getUserReadings(this.props.user.id);
+	
 	  },
 	
 	  haveRead: function (event) {
@@ -33278,6 +33280,7 @@
 	  },
 	
 	  readingNow: function (event) {
+	
 	    event.preventDefault();
 	    var reading = {
 	      user_id: this.state.currentUser.id,
@@ -33288,6 +33291,7 @@
 	  },
 	
 	  willRead: function (event) {
+	
 	    event.preventDefault();
 	    var reading = {
 	      user_id: this.state.currentUser.id,
@@ -33487,6 +33491,7 @@
 	      type: "POST",
 	      data: { reading: reading },
 	      success: function (reading) {
+	
 	        ServerActions.receiveBook(reading);
 	      },
 	      error: function (error) {
@@ -33501,7 +33506,7 @@
 	      type: "GET",
 	      data: { status: status },
 	      success: function (readings) {
-	        debugger;
+	
 	        ServerActions.receiveReadings(readings);
 	      },
 	      error: function (error) {
@@ -33856,7 +33861,7 @@
 	  displayName: 'UserShelvesPage',
 	
 	  getInitialState: function () {
-	    return { shelves: [], shelfToAdd: "", readings: [] };
+	    return { shelfToShow: "", shelves: [], shelfToAdd: "", readings: [] };
 	  },
 	
 	  componentDidMount: function () {
@@ -33870,11 +33875,9 @@
 	
 	  handleShelfChange: function () {
 	    this.setState({ shelves: ShelfStore.all() });
-	    console.log("shelfchange");
 	  },
 	  handleBookChange: function () {
 	    this.setState({ readings: BookStore.allReadings() });
-	    console.log("bookchange");
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33897,7 +33900,11 @@
 	  },
 	
 	  getReadingsByStatus: function (status) {
-	    BookApiUtil.getUserReadings(status);
+	    if (status === "all") {
+	      BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+	    } else {
+	      ReadingsApiUtil.getReadingsByStatus(status);
+	    }
 	  },
 	
 	  render: function () {
@@ -33916,26 +33923,34 @@
 	        ),
 	        React.createElement(
 	          'ul',
-	          { className: 'shelf-labels' },
+	          null,
 	          React.createElement(
-	            'li',
-	            { onClick: this.getReadingsByStatus.bind(this, "all") },
-	            'All books'
-	          ),
-	          React.createElement(
-	            'li',
-	            { onClick: this.getReadingsByStatus.bind(this, "have-read") },
-	            'Have read'
-	          ),
-	          React.createElement(
-	            'li',
-	            { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
-	            'Reading now'
-	          ),
-	          React.createElement(
-	            'li',
-	            { onClick: this.getReadingsByStatus.bind(this, "will-read") },
-	            'Will read'
+	            'div',
+	            { className: 'status-labels' },
+	            React.createElement(
+	              'li',
+	              { onClick: this.getReadingsByStatus.bind(this, "all") },
+	              React.createElement(
+	                'em',
+	                null,
+	                'All books'
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this.getReadingsByStatus.bind(this, "have-read") },
+	              'Have read'
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
+	              'Reading now'
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this.getReadingsByStatus.bind(this, "will-read") },
+	              'Will read'
+	            )
 	          ),
 	          shelves.map(function (shelf, i) {
 	            shelf.name.length >= 27 ? shelfname = shelf.name.substring(0, 27) + "…" : shelfname = shelf.name;
@@ -33945,11 +33960,11 @@
 	              shelfname
 	            );
 	          })
-	        )
+	        ),
+	        'Add a shelf:',
+	        React.createElement('input', { type: 'text', value: this.state.shelfToAdd, onChange: this.newShelfChange }),
+	        React.createElement('input', { type: 'submit', onClick: this.handleSubmit })
 	      ),
-	      'Add a shelf:',
-	      React.createElement('input', { type: 'text', value: this.state.shelfToAdd, onChange: this.newShelfChange }),
-	      React.createElement('input', { type: 'submit', onClick: this.handleSubmit }),
 	      React.createElement('br', null),
 	      ' ',
 	      React.createElement(Shelf, { readings: this.state.readings })
@@ -34050,7 +34065,8 @@
 	    if (readings) {
 	      return React.createElement(
 	        'div',
-	        null,
+	        { 'shelf-info': true },
+	        React.createElement('h1', null),
 	        React.createElement(
 	          'ul',
 	          null,

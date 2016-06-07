@@ -6,7 +6,8 @@ var Shelf = React.createClass({
     var readings = this.props.readings;
     if (readings) {
       return (
-        <div>
+        <div shelf-info>
+          <h1></h1>
           <ul>
             {
               readings.map(function(reading, i) {

@@ -13,7 +13,7 @@ var BookStore = require('../stores/book_store');
 
 var UserShelvesPage = React.createClass({
   getInitialState: function() {
-    return {shelves: [], shelfToAdd: "", readings:[]}
+    return {shelfToShow: "", shelves: [], shelfToAdd: "", readings:[]}
   },
 
   componentDidMount: function() {
@@ -27,11 +27,10 @@ var UserShelvesPage = React.createClass({
 
   handleShelfChange: function() {
     this.setState({shelves: ShelfStore.all()})
-    console.log("shelfchange");
   },
   handleBookChange: function() {
     this.setState({readings: BookStore.allReadings()})
-    console.log("bookchange");
+
   },
 
   componentWillUnmount: function () {
@@ -54,7 +53,11 @@ var UserShelvesPage = React.createClass({
   },
 
   getReadingsByStatus: function(status) {
-    BookApiUtil.getUserReadings(status);
+    if (status==="all") {
+      BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+    } else {
+      ReadingsApiUtil.getReadingsByStatus(status);
+    }
   },
 
   render: function() {
@@ -64,11 +67,14 @@ var UserShelvesPage = React.createClass({
         <NavBar/>
         <div className="shelves-label-column">
           <h1>My CRUD</h1>
-          <ul className="shelf-labels">
-            <li onClick={this.getReadingsByStatus.bind(this, "all")}>All books</li>
-            <li onClick={this.getReadingsByStatus.bind(this, "have-read")}>Have read</li>
-            <li onClick={this.getReadingsByStatus.bind(this, "reading-now")}>Reading now</li>
-            <li onClick={this.getReadingsByStatus.bind(this, "will-read")}>Will read</li>
+
+          <ul>
+            <div className="status-labels">
+              <li onClick={this.getReadingsByStatus.bind(this, "all")}><em>All books</em></li>
+              <li onClick={this.getReadingsByStatus.bind(this, "have-read")}>Have read</li>
+              <li onClick={this.getReadingsByStatus.bind(this, "reading-now")}>Reading now</li>
+              <li onClick={this.getReadingsByStatus.bind(this, "will-read")}>Will read</li>
+            </div>
             {
               shelves.map(function(shelf, i){
                 shelf.name.length >= 27 ?
@@ -78,11 +84,11 @@ var UserShelvesPage = React.createClass({
               })
             }
           </ul>
-        </div>
 
-        Add a shelf:
-        <input type="text" value={this.state.shelfToAdd} onChange={this.newShelfChange}/>
-        <input type="submit" onClick={this.handleSubmit}/>
+          Add a shelf:
+          <input type="text" value={this.state.shelfToAdd} onChange={this.newShelfChange}/>
+          <input type="submit" onClick={this.handleSubmit}/>
+        </div>
 
         <br/> <Shelf readings={this.state.readings}/>
       </div>
