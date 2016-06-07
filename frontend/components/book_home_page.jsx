@@ -14,7 +14,7 @@ var ReadingStatusButton = require('./reading_status_button.jsx');
 var BookHomePage = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
-
+    // debugger;
     return { book: BookStore.find(this.props.params.id) }
   },
   componentDidMount: function() {
@@ -38,7 +38,6 @@ var BookHomePage = React.createClass({
 
   render: function() {
     var book = this.state.book;
-
     if (book) {
       var readingStatusButton = SessionStore.isUserLoggedIn() ?
       <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.state.book.id}/> :

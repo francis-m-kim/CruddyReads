@@ -8,8 +8,10 @@ var BookStore = new Store(AppDispatcher);
 
 
 var _books = {};
+var _readings = {};
 
 BookStore.receiveBook = function(book) {
+  // debugger;
   _books[book.id] = book;
 };
 
@@ -21,9 +23,11 @@ BookStore.receiveBooks = function(books) {
 };
 
 BookStore.receiveReadings = function(readings) {
-  reset();
+  resetReadings();
+  // debugger;
   readings.forEach(function(reading){
-    _books[reading.id] = reading;
+    _readings[reading.id] = reading;
+    // _books[reading.id] = reading;
   })
 };
 
@@ -34,13 +38,24 @@ BookStore.all = function() {
     return _books[bookId];
   });
 };
+BookStore.allReadings = function() {
+  return Object.keys(_readings).map(function(bookId) {
+    return _readings[bookId];
+  });
+};
 
 BookStore.find = function(id) {
   return _books[id]
 };
+BookStore.findReading = function(id) {
+  return _readings[id]
+};
 
 var reset = function() {
   _books = {};
+};
+var resetReadings = function() {
+  _readings = {};
 };
 
 

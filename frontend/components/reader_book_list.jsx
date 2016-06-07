@@ -13,7 +13,7 @@ var ReaderBookList = React.createClass({
   },
 
   handleChange: function() {
-    this.setState( {books: BookStore.all()} )
+    this.setState( {books: BookStore.allReadings()} )
   },
 
   componentWillUnmount: function () {

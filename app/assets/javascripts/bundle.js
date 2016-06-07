@@ -49,6 +49,7 @@
 	
 	var SessionStore = __webpack_require__(169);
 	var CurrentUserState = __webpack_require__(168);
+	var SessionApiUtil = __webpack_require__(192);
 	// var UserActions = require("./actions/user_actions");
 	
 	var SignUpForm = __webpack_require__(194);
@@ -58,6 +59,7 @@
 	var BookHomePage = __webpack_require__(263);
 	var ReaderHomePage = __webpack_require__(269);
 	var LandingPage = __webpack_require__(264);
+	var UserShelvesPage = __webpack_require__(274);
 	
 	var ReactRouter = __webpack_require__(195);
 	var Router = ReactRouter.Router;
@@ -122,6 +124,21 @@
 	//
 	// });
 	
+	function _ensureLoggedIn(nextState, replace, callback) {
+	  var redirectIfNotLoggedIn = function () {
+	    if (!SessionStore.isUserLoggedIn()) {
+	      replace("/");
+	    }
+	    callback();
+	  };
+	
+	  if (SessionStore.currentUserHasBeenFetched()) {
+	    redirectIfNotLoggedIn();
+	  } else {
+	    SessionApiUtil.getCurrentUser(redirectIfNotLoggedIn);
+	  }
+	}
+	
 	var Router = React.createElement(
 	  Router,
 	  { history: hashHistory },
@@ -130,7 +147,8 @@
 	    { path: "/", component: App },
 	    React.createElement(IndexRoute, { component: LandingPage }),
 	    React.createElement(Route, { path: "users/:id", component: ReaderHomePage }),
-	    React.createElement(Route, { path: "books/:id", component: BookHomePage })
+	    React.createElement(Route, { path: "books/:id", component: BookHomePage }),
+	    React.createElement(Route, { path: "mycrud", component: UserShelvesPage, onEnter: _ensureLoggedIn })
 	  )
 	);
 	
@@ -20464,6 +20482,10 @@
 	  _currentUserHasBeenFetched = true;
 	};
 	
+	SessionStore.currentUserHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+	
 	SessionStore.currentUser = function () {
 	
 	  if (_currentUser) {
@@ -27325,13 +27347,14 @@
 	      }
 	    });
 	  },
-	  getCurrentUser: function () {
+	  getCurrentUser: function (cb) {
 	
 	    $.ajax({
 	      url: '/api/session',
 	      method: 'get',
 	      success: function (user) {
 	        ServerActions.receiveCurrentUser(user);
+	        cb && cb();
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -27404,6 +27427,22 @@
 	    AppDispatcher.dispatch({
 	      actionType: "RECEIVE_READER",
 	      reader: reader
+	    });
+	  },
+	
+	  receiveShelf: function (shelf) {
+	
+	    AppDispatcher.dispatch({
+	      actionType: "RECEIVE_SHELF",
+	      shelf: shelf
+	    });
+	  },
+	
+	  receiveShelves: function (shelves) {
+	
+	    AppDispatcher.dispatch({
+	      actionType: "RECEIVE_SHELVES",
+	      shelves: shelves
 	    });
 	  }
 	
@@ -33020,7 +33059,7 @@
 	      password: this.state.password
 	    };
 	    UserActions.login(user, function () {
-	      hashHistory.push("users/" + this.state.currentUser.id);
+	      hashHistory.push("mycrud");
 	    }.bind(this));
 	    this.setState({ email: "", password: "" });
 	  },
@@ -33119,8 +33158,10 @@
 	var BookStore = new Store(AppDispatcher);
 	
 	var _books = {};
+	var _readings = {};
 	
 	BookStore.receiveBook = function (book) {
+	  // debugger;
 	  _books[book.id] = book;
 	};
 	
@@ -33132,9 +33173,11 @@
 	};
 	
 	BookStore.receiveReadings = function (readings) {
-	  reset();
+	  resetReadings();
+	  // debugger;
 	  readings.forEach(function (reading) {
-	    _books[reading.id] = reading;
+	    _readings[reading.id] = reading;
+	    // _books[reading.id] = reading;
 	  });
 	};
 	
@@ -33143,13 +33186,24 @@
 	    return _books[bookId];
 	  });
 	};
+	BookStore.allReadings = function () {
+	  return Object.keys(_readings).map(function (bookId) {
+	    return _readings[bookId];
+	  });
+	};
 	
 	BookStore.find = function (id) {
 	  return _books[id];
 	};
+	BookStore.findReading = function (id) {
+	  return _readings[id];
+	};
 	
 	var reset = function () {
 	  _books = {};
+	};
+	var resetReadings = function () {
+	  _readings = {};
 	};
 	
 	BookStore.__onDispatch = function (payload) {
@@ -33188,7 +33242,7 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    return { readingStatus: "Want to Read" };
+	    return { readingStatus: "Will read" };
 	  },
 	
 	  componentDidMount: function () {
@@ -33197,7 +33251,7 @@
 	  },
 	
 	  handleChange: function () {
-	    var status = BookStore.find(this.props.book_id).status;
+	    var status = BookStore.findReading(this.props.book_id).status;
 	
 	    if (status) {
 	      this.setState({ readingStatus: status });
@@ -33273,13 +33327,6 @@
 	});
 	
 	module.exports = ReadingStatusButton;
-	
-	// <div>
-	//   <button className="reading-status">{this.state.readingStatus}</button>
-	//   <button onClick={this.haveRead}>HAVE READ</button>
-	//   <button onClick={this.readingNow}>READING NOW</button>
-	//   <button onClick={this.willRead}>WILL READ</button>
-	// </div>
 
 /***/ },
 /* 263 */
@@ -33302,7 +33349,7 @@
 	
 	  mixins: [CurrentUserState],
 	  getInitialState: function () {
-	
+	    // debugger;
 	    return { book: BookStore.find(this.props.params.id) };
 	  },
 	  componentDidMount: function () {
@@ -33324,7 +33371,6 @@
 	
 	  render: function () {
 	    var book = this.state.book;
-	
 	    if (book) {
 	      var readingStatusButton = SessionStore.isUserLoggedIn() ? React.createElement(ReadingStatusButton, { user: SessionStore.currentUser(), book_id: this.state.book.id }) : "";
 	      return React.createElement(
@@ -33447,6 +33493,21 @@
 	        ServerActions.handleError(error);
 	      }
 	    });
+	  },
+	
+	  getReadingsByStatus: function (status) {
+	    $.ajax({
+	      url: "/api/readings_by_status",
+	      type: "GET",
+	      data: { status: status },
+	      success: function (readings) {
+	        debugger;
+	        ServerActions.receiveReadings(readings);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
 	  }
 	
 	};
@@ -33511,7 +33572,6 @@
 	
 	    var user = this.state.user;
 	    if (user) {
-	      // debugger;
 	
 	      user = Object.assign({}, user);
 	      var username = user.username;
@@ -33613,7 +33673,7 @@
 	  },
 	
 	  handleChange: function () {
-	    this.setState({ books: BookStore.all() });
+	    this.setState({ books: BookStore.allReadings() });
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33661,7 +33721,7 @@
 	  mixins: [CurrentUserState],
 	  goToHome: function (event) {
 	    event.preventDefault;
-	    hashHistory.push("users/" + this.state.currentUser.id);
+	    hashHistory.push("mycrud");
 	  },
 	  render: function () {
 	    return React.createElement(
@@ -33708,7 +33768,11 @@
 	        React.createElement(
 	          'li',
 	          null,
-	          'me'
+	          React.createElement(
+	            Link,
+	            { to: "users/" + this.state.currentUser.id },
+	            'me'
+	          )
 	        )
 	      ),
 	      React.createElement(LogOutButton, null)
@@ -33771,6 +33835,242 @@
 	});
 	
 	module.exports = ReaderBookListItem;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NavBar = __webpack_require__(272);
+	var Shelf = __webpack_require__(277);
+	var ShelfStore = __webpack_require__(275);
+	var CurrentUserState = __webpack_require__(168);
+	var ShelfApiUtil = __webpack_require__(276);
+	var BookApiUtil = __webpack_require__(259);
+	var ReadingsApiUtil = __webpack_require__(266);
+	
+	var SessionStore = __webpack_require__(169);
+	var BookStore = __webpack_require__(261);
+	
+	var UserShelvesPage = React.createClass({
+	  displayName: 'UserShelvesPage',
+	
+	  getInitialState: function () {
+	    return { shelves: [], shelfToAdd: "", readings: [] };
+	  },
+	
+	  componentDidMount: function () {
+	    this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
+	    ShelfApiUtil.getShelves(SessionStore.currentUser().id);
+	    // debugger;
+	
+	    this.bookListener = BookStore.addListener(this.handleBookChange);
+	    BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+	  },
+	
+	  handleShelfChange: function () {
+	    this.setState({ shelves: ShelfStore.all() });
+	    console.log("shelfchange");
+	  },
+	  handleBookChange: function () {
+	    this.setState({ readings: BookStore.allReadings() });
+	    console.log("bookchange");
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.shelfListener.remove();
+	    this.bookListener.remove();
+	  },
+	
+	  newShelfChange: function (event) {
+	    this.setState({ shelfToAdd: event.target.value });
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    var shelf = {
+	      user_id: SessionStore.currentUser().id,
+	      name: this.state.shelfToAdd
+	    };
+	    this.setState({ shelfToAdd: "" });
+	    ShelfApiUtil.addShelf(shelf);
+	  },
+	
+	  getReadingsByStatus: function (status) {
+	    BookApiUtil.getUserReadings(status);
+	  },
+	
+	  render: function () {
+	    var shelves = this.state.shelves;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(NavBar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'shelves-label-column' },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'My CRUD'
+	        ),
+	        React.createElement(
+	          'ul',
+	          { className: 'shelf-labels' },
+	          React.createElement(
+	            'li',
+	            { onClick: this.getReadingsByStatus.bind(this, "all") },
+	            'All books'
+	          ),
+	          React.createElement(
+	            'li',
+	            { onClick: this.getReadingsByStatus.bind(this, "have-read") },
+	            'Have read'
+	          ),
+	          React.createElement(
+	            'li',
+	            { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
+	            'Reading now'
+	          ),
+	          React.createElement(
+	            'li',
+	            { onClick: this.getReadingsByStatus.bind(this, "will-read") },
+	            'Will read'
+	          ),
+	          shelves.map(function (shelf, i) {
+	            shelf.name.length >= 27 ? shelfname = shelf.name.substring(0, 27) + "…" : shelfname = shelf.name;
+	            return React.createElement(
+	              'li',
+	              { key: i },
+	              shelfname
+	            );
+	          })
+	        )
+	      ),
+	      'Add a shelf:',
+	      React.createElement('input', { type: 'text', value: this.state.shelfToAdd, onChange: this.newShelfChange }),
+	      React.createElement('input', { type: 'submit', onClick: this.handleSubmit }),
+	      React.createElement('br', null),
+	      ' ',
+	      React.createElement(Shelf, { readings: this.state.readings })
+	    );
+	  }
+	
+	});
+	
+	module.exports = UserShelvesPage;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(170);
+	var Store = __webpack_require__(174).Store;
+	
+	var _shelves = {};
+	var ShelfStore = new Store(AppDispatcher);
+	
+	ShelfStore.receiveShelves = function (shelves) {
+	  _shelves = {};
+	  shelves.forEach(function (shelf) {
+	    _shelves[shelf.name] = shelf;
+	  });
+	};
+	ShelfStore.receiveShelf = function (shelf) {
+	  _shelves[shelf.name] = shelf;
+	};
+	
+	ShelfStore.all = function () {
+	  return Object.keys(_shelves).map(function (shelfName) {
+	    return _shelves[shelfName];
+	  });
+	};
+	
+	ShelfStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case "RECEIVE_SHELVES":
+	      ShelfStore.receiveShelves(payload.shelves);
+	      ShelfStore.__emitChange();
+	      break;
+	    case "RECEIVE_SHELF":
+	      ShelfStore.receiveShelf(payload.shelf);
+	      ShelfStore.__emitChange();
+	      break;
+	  };
+	};
+	
+	module.exports = ShelfStore;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(193);
+	
+	module.exports = {
+	  getShelves: function (userId) {
+	    $.ajax({
+	      url: "/api/users/" + userId + "/shelves",
+	      type: "GET",
+	      success: function (shelves) {
+	        ServerActions.receiveShelves(shelves);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
+	  },
+	  addShelf: function (shelf) {
+	    $.ajax({
+	      url: "/api/shelves",
+	      type: "POST",
+	      data: { shelf: shelf },
+	      success: function (shelf) {
+	        ServerActions.receiveShelf(shelf);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
+	  }
+	};
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var Shelf = React.createClass({
+	  displayName: 'Shelf',
+	
+	
+	  render: function () {
+	    var readings = this.props.readings;
+	    if (readings) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'ul',
+	          null,
+	          readings.map(function (reading, i) {
+	            return React.createElement(
+	              'li',
+	              { key: i },
+	              reading.title
+	            );
+	          })
+	        )
+	      );
+	    } else {
+	      return React.createElement('div', null);
+	    }
+	  }
+	
+	});
+	
+	module.exports = Shelf;
 
 /***/ }
 /******/ ]);

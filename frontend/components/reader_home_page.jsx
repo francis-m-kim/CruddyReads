@@ -30,7 +30,6 @@ var ReaderHomePage = React.createClass({
 
     var user = this.state.user;
     if (user) {
-      // debugger;
 
       user = Object.assign({}, user);
       var username = user.username

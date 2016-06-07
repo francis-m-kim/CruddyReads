@@ -10,7 +10,7 @@ var NavBar = React.createClass({
   mixins: [CurrentUserState],
   goToHome: function(event) {
     event.preventDefault;
-    hashHistory.push("users/" + this.state.currentUser.id);
+    hashHistory.push("mycrud");
   },
   render: function() {
     return (
@@ -21,11 +21,13 @@ var NavBar = React.createClass({
           <li>Browse</li>
           <li>Community</li>
         </ul>
+        
         <input className="search" type="text" placeholder="Find CRUD"/>
+
         <ul className="buttons">
           <li>messages</li>
           <li>friends</li>
-          <li>me</li>
+          <li><Link to={"users/" + this.state.currentUser.id}>me</Link></li>
         </ul>
         <LogOutButton/>
       </nav>

@@ -10,4 +10,7 @@ class Reading < ActiveRecord::Base
 
   belongs_to :book
 
+  has_many :shelf_assignments
+  has_many :shelves, through: :shelf_assignment
+
 end

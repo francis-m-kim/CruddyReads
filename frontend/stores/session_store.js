@@ -21,6 +21,10 @@ SessionStore.logout = function(){
   _currentUserHasBeenFetched = true;
 };
 
+SessionStore.currentUserHasBeenFetched = function() {
+  return _currentUserHasBeenFetched
+}
+
 
 
 

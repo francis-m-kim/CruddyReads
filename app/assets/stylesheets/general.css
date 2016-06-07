@@ -6,6 +6,9 @@
   font-family: inherit;
   font-size: inherit;
   display: block;
+  border-radius: 2px;
+  text-decoration: none;
+  color: black;
 }
 
 script {

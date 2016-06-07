@@ -3,8 +3,14 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   validates :password, length: { minimum: 6, allow_nil: true}
 
+  has_attached_file :avatar, default_url: "blank.jpeg"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+
   has_many :readings
   has_many :books, through: :readings
+
+  has_many :shelves
+
 
   attr_reader :password
 

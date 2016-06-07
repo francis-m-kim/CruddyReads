@@ -13,6 +13,21 @@ module.exports = {
         ServerActions.handleError(error)
       }
     })
+  },
+
+  getReadingsByStatus: function(status) {
+    $.ajax({
+      url: "/api/readings_by_status",
+      type: "GET",
+      data: {status: status},
+      success: function(readings) {
+        debugger;
+        ServerActions.receiveReadings(readings)
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
   }
 
 }

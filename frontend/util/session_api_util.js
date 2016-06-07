@@ -32,13 +32,14 @@ module.exports = {
       }
     });
   },
-  getCurrentUser: function() {
+  getCurrentUser: function(cb) {
 
 		$.ajax({
 			url: '/api/session',
 			method: 'get',
 			success: function(user) {
         ServerActions.receiveCurrentUser(user)
+        cb && cb();
       },
 			error: function(error) {
         ServerActions.handleError(error)

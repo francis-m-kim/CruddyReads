@@ -50,6 +50,22 @@ var ServerActions = {
       reader: reader
     })
 
+  },
+
+  receiveShelf: function(shelf) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_SHELF",
+      shelf: shelf
+    })
+  },
+
+  receiveShelves: function(shelves) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_SHELVES",
+      shelves: shelves
+    })
   }
 
 };

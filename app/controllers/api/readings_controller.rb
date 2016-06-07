@@ -27,6 +27,11 @@ class Api::ReadingsController < ApplicationController
     render "api/readings/show"
   end
 
+  def readings_by_status
+    debugger
+    @readings = Reading.where(status: "")
+  end
+
   def destroy
 
   end

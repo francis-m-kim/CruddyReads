@@ -3,6 +3,7 @@ var ReactDOM = require("react-dom")
 
 var SessionStore = require('./stores/session_store')
 var CurrentUserState = require('./mixins/current_user_state');
+var SessionApiUtil = require('./util/session_api_util');
 // var UserActions = require("./actions/user_actions");
 
 var SignUpForm = require("./components/signup_form");
@@ -12,6 +13,7 @@ var LogOutButton = require("./components/logout_button");
 var BookHomePage = require("./components/book_home_page");
 var ReaderHomePage = require("./components/reader_home_page");
 var LandingPage = require("./components/landing_page");
+var UserShelvesPage = require("./components/user_shelves_page");
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
@@ -75,12 +77,29 @@ var App = React.createClass({
 //
 // });
 
+function _ensureLoggedIn(nextState, replace, callback) {
+  var redirectIfNotLoggedIn = function() {
+    if (! SessionStore.isUserLoggedIn()) {
+      replace("/");
+    }
+    callback();
+  }
+
+  if(SessionStore.currentUserHasBeenFetched()) {
+    redirectIfNotLoggedIn();
+  } else {
+    SessionApiUtil.getCurrentUser(redirectIfNotLoggedIn);
+  }
+}
+
+
 var Router = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={LandingPage}/>
       <Route path="users/:id" component={ReaderHomePage}/>
       <Route path="books/:id" component={BookHomePage}/>
+      <Route path="mycrud" component={UserShelvesPage} onEnter={_ensureLoggedIn}/>
 
 
     </Route>

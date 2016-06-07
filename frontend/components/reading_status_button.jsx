@@ -10,7 +10,7 @@ var ReadingStatusButton = React.createClass({
   mixins: [CurrentUserState],
 
   getInitialState: function() {
-    return {readingStatus: "Want to Read"}
+    return {readingStatus: "Will read"}
   },
 
   componentDidMount: function() {
@@ -19,7 +19,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   handleChange: function() {
-    var status = BookStore.find(this.props.book_id).status
+    var status = BookStore.findReading(this.props.book_id).status
 
     if (status) {
       this.setState( {readingStatus: status} )
@@ -84,12 +84,3 @@ var ReadingStatusButton = React.createClass({
 });
 
 module.exports = ReadingStatusButton;
-
-
-
-// <div>
-//   <button className="reading-status">{this.state.readingStatus}</button>
-//   <button onClick={this.haveRead}>HAVE READ</button>
-//   <button onClick={this.readingNow}>READING NOW</button>
-//   <button onClick={this.willRead}>WILL READ</button>
-// </div>
