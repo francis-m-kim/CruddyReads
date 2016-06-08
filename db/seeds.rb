@@ -34,8 +34,8 @@ ShelfAssignment.create(reading_id: r2.id, shelf_id: s.id)
 
 
 
-
-
-ShelfAssignment(id: integer, reading_id: integer, shelf_id: integer, created_at: datetime, updated_at: datetime)
-Reading(id: integer, user_id: integer, book_id: integer, review: text, status: string, created_at: datetime, updated_at: datetime)
- Shelf(id: integer, user_id: integer, created_at: datetime, updated_at: datetime, name: string)
+# 
+#
+# ShelfAssignment(id: integer, reading_id: integer, shelf_id: integer, created_at: datetime, updated_at: datetime)
+# Reading(id: integer, user_id: integer, book_id: integer, review: text, status: string, created_at: datetime, updated_at: datetime)
+#  Shelf(id: integer, user_id: integer, created_at: datetime, updated_at: datetime, name: string)
