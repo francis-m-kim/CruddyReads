@@ -1,7 +1,14 @@
-.shelves-label-column {
-  /*background: orange;*/
-
+.all-shelf-info {
   margin-top: 10px;
+}
+
+.shelves-label-column li:hover{
+  color: orange;
+}
+
+
+.shelves-label-column {
+  float: left;
   width: 200px;
   font-size: 13px;
 }
@@ -9,13 +16,47 @@
 .shelves-label-column h1{
   font-size: 21px;
   font-weight: bold;
+  margin-bottom: 2.5px;
+}
+
+
+.labels {
+  border-bottom: 1px solid lightgrey;
+  padding-bottom: 5px;
   margin-bottom: 5px;
 }
 
+
 .status-labels {
   font-weight: bold;
-  padding-bottom: 5px;
   border-bottom: 1px solid lightgrey;
+
   margin-bottom: 5px;
-  letter-spacing: .2em;
+  letter-spacing: .1em;
+}
+
+.status-labels li {
+  padding-bottom: 3px;
+}
+
+.shelf-label {
+  margin-bottom: 4px;
+}
+
+.shelf-info {
+  float: left;
+  margin-left: 30px;
+}
+
+.shelf-info h1 {
+  font-size: 23px;
+}
+
+.shelves-label-column input{
+  width: 200px;
+  margin: 3px 0 8px;
+}
+
+.shelves-label-column em {
+  margin: 3px 0;
 }

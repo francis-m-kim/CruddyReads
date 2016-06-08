@@ -47,8 +47,27 @@ input:not([type="submit"]):focus {
 }
 
 em {
-  padding: 2px;
-  display:inline;
+  display:inline-block;
+  padding: 3px 5px;
   font-style: normal;
-  background: rgb(255, 216, 158);
+  font-weight: bold;
+  background: #FDD893;
+}
+
+
+input[type="submit"] {
+  border: none;
+
+  padding: 6px 10px 6px;
+  color: white;
+  background: #382110;
+}
+
+input[type="submit"]:hover {
+  background: #573216;
+}
+
+input[type="submit"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px #382110;
 }

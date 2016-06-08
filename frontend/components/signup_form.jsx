@@ -3,7 +3,6 @@ var UserActions = require("../actions/user_actions");
 var hashHistory = require('react-router').hashHistory;
 var CurrentUserState = require("../mixins/current_user_state");
 
-
 var SignUpForm = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
@@ -34,7 +33,18 @@ var SignUpForm = React.createClass({
 
   },
 
+  loginAsGuest: function(event) {
+    event.preventDefault();
+    var user = {
+      email: "Guest",
+      password: "password"
+    }
+    UserActions.login(user, function() {
+      hashHistory.push("mycrud");
 
+    }.bind(this));
+
+  },
 
   render: function() {
     return (
@@ -54,6 +64,7 @@ var SignUpForm = React.createClass({
             onChange={this.updatePassword}/>
           <input type="submit" value="Sign up"/>
         </form>
+        <div onClick={this.loginAsGuest} className="guest">No time? Sign in as a guest!</div>
       </div>
     );
   }

@@ -27489,6 +27489,17 @@
 	    this.setState({ username: "", email: "", password: "" });
 	  },
 	
+	  loginAsGuest: function (event) {
+	    event.preventDefault();
+	    var user = {
+	      email: "Guest",
+	      password: "password"
+	    };
+	    UserActions.login(user, function () {
+	      hashHistory.push("mycrud");
+	    }.bind(this));
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -27511,6 +27522,11 @@
 	          value: this.state.password,
 	          onChange: this.updatePassword }),
 	        React.createElement("input", { type: "submit", value: "Sign up" })
+	      ),
+	      React.createElement(
+	        "div",
+	        { onClick: this.loginAsGuest, className: "guest" },
+	        "No time? Sign in as a guest!"
 	      )
 	    );
 	  }
@@ -33848,6 +33864,8 @@
 	var React = __webpack_require__(1);
 	var NavBar = __webpack_require__(272);
 	var Shelf = __webpack_require__(277);
+	var ShelfLabel = __webpack_require__(278);
+	
 	var ShelfStore = __webpack_require__(275);
 	var CurrentUserState = __webpack_require__(168);
 	var ShelfApiUtil = __webpack_require__(276);
@@ -33861,7 +33879,7 @@
 	  displayName: 'UserShelvesPage',
 	
 	  getInitialState: function () {
-	    return { shelfToShow: "", shelves: [], shelfToAdd: "", readings: [] };
+	    return { shelfName: "All Books", shelves: [], shelfToAdd: "", readings: [] };
 	  },
 	
 	  componentDidMount: function () {
@@ -33902,8 +33920,14 @@
 	  getReadingsByStatus: function (status) {
 	    if (status === "all") {
 	      BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+	      this.setState({ shelfName: "All Books" });
 	    } else {
 	      ReadingsApiUtil.getReadingsByStatus(status);
+	
+	      var shelfName = status.split("-").map(function (word) {
+	        return word[0].toUpperCase() + word.substr(1);
+	      }).join(" ");
+	      this.setState({ shelfName: shelfName });
 	    }
 	  },
 	
@@ -33915,59 +33939,57 @@
 	      React.createElement(NavBar, null),
 	      React.createElement(
 	        'div',
-	        { className: 'shelves-label-column' },
+	        { className: 'all-shelf-info group' },
 	        React.createElement(
-	          'h1',
-	          null,
-	          'My CRUD'
-	        ),
-	        React.createElement(
-	          'ul',
-	          null,
+	          'div',
+	          { className: 'shelves-label-column' },
 	          React.createElement(
-	            'div',
-	            { className: 'status-labels' },
+	            'h1',
+	            null,
+	            'My CRUD'
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'labels' },
 	            React.createElement(
-	              'li',
-	              { onClick: this.getReadingsByStatus.bind(this, "all") },
+	              'div',
+	              { className: 'status-labels' },
 	              React.createElement(
-	                'em',
-	                null,
-	                'All books'
+	                'li',
+	                { onClick: this.getReadingsByStatus.bind(this, "all") },
+	                'All Books'
+	              ),
+	              React.createElement(
+	                'li',
+	                { onClick: this.getReadingsByStatus.bind(this, "have-read") },
+	                'Have Read'
+	              ),
+	              React.createElement(
+	                'li',
+	                { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
+	                'Reading Now'
+	              ),
+	              React.createElement(
+	                'li',
+	                { onClick: this.getReadingsByStatus.bind(this, "will-read") },
+	                'Will Read'
 	              )
 	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this.getReadingsByStatus.bind(this, "have-read") },
-	              'Have read'
-	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
-	              'Reading now'
-	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this.getReadingsByStatus.bind(this, "will-read") },
-	              'Will read'
-	            )
+	            shelves.map(function (shelf, i) {
+	              shelf.name.length >= 27 ? shelfname = shelf.name.substring(0, 27) + "…" : shelfname = shelf.name;
+	              return React.createElement(ShelfLabel, { key: i, name: shelfname });
+	            })
 	          ),
-	          shelves.map(function (shelf, i) {
-	            shelf.name.length >= 27 ? shelfname = shelf.name.substring(0, 27) + "…" : shelfname = shelf.name;
-	            return React.createElement(
-	              'li',
-	              { key: i },
-	              shelfname
-	            );
-	          })
+	          React.createElement(
+	            'em',
+	            null,
+	            'Add a shelf:'
+	          ),
+	          React.createElement('input', { type: 'text', value: this.state.shelfToAdd, onChange: this.newShelfChange }),
+	          React.createElement('input', { type: 'submit', onClick: this.handleSubmit })
 	        ),
-	        'Add a shelf:',
-	        React.createElement('input', { type: 'text', value: this.state.shelfToAdd, onChange: this.newShelfChange }),
-	        React.createElement('input', { type: 'submit', onClick: this.handleSubmit })
-	      ),
-	      React.createElement('br', null),
-	      ' ',
-	      React.createElement(Shelf, { readings: this.state.readings })
+	        React.createElement(Shelf, { shelfname: this.state.shelfName, readings: this.state.readings })
+	      )
 	    );
 	  }
 	
@@ -34057,22 +34079,26 @@
 	var React = __webpack_require__(1);
 	
 	var Shelf = React.createClass({
-	  displayName: 'Shelf',
+	  displayName: "Shelf",
 	
 	
 	  render: function () {
 	    var readings = this.props.readings;
 	    if (readings) {
 	      return React.createElement(
-	        'div',
-	        { 'shelf-info': true },
-	        React.createElement('h1', null),
+	        "div",
+	        { className: "shelf-info" },
 	        React.createElement(
-	          'ul',
+	          "h1",
+	          null,
+	          this.props.shelfname
+	        ),
+	        React.createElement(
+	          "ul",
 	          null,
 	          readings.map(function (reading, i) {
 	            return React.createElement(
-	              'li',
+	              "li",
 	              { key: i },
 	              reading.title
 	            );
@@ -34080,13 +34106,35 @@
 	        )
 	      );
 	    } else {
-	      return React.createElement('div', null);
+	      return React.createElement("div", null);
 	    }
 	  }
 	
 	});
 	
 	module.exports = Shelf;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var ShelfLabel = React.createClass({
+	  displayName: "ShelfLabel",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "li",
+	      { className: "shelf-label" },
+	      this.props.name
+	    );
+	  }
+	
+	});
+	
+	module.exports = ShelfLabel;
 
 /***/ }
 /******/ ]);

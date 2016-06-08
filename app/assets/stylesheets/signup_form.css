@@ -30,6 +30,7 @@
   font-size: 28px;
   padding: 0px 5px;
   margin-top: 6px;
+  color: black;
   background: #fcd05f;
   border: none;
 }
@@ -41,4 +42,8 @@
 #signup-form input[type="submit"]:focus {
   outline: none;
   box-shadow: 0 0 5px #fcd05f;
+}
+
+#signup-form form{
+  /*float: left;*/
 }

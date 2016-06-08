@@ -16,18 +16,5 @@
 }
 
 #login-form input[type="submit"] {
-  border: none;
   margin-left: 3px;
-  padding: 6px 10px 6px;
-  color: white;
-  background: #382110;
-}
-
-#login-form input[type="submit"]:hover {
-  background: #573216;
-}
-
-#login-form input[type="submit"]:focus {
-  outline: none;
-  box-shadow: 0 0 5px #382110;
 }

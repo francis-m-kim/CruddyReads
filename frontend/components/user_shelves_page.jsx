@@ -1,6 +1,8 @@
 var React = require('react');
 var NavBar = require('./nav_bar');
 var Shelf = require('./shelf');
+var ShelfLabel = require('./shelf_label');
+
 var ShelfStore = require('../stores/shelf_store');
 var CurrentUserState = require("../mixins/current_user_state");
 var ShelfApiUtil = require('../util/shelf_api_util');
@@ -13,7 +15,7 @@ var BookStore = require('../stores/book_store');
 
 var UserShelvesPage = React.createClass({
   getInitialState: function() {
-    return {shelfToShow: "", shelves: [], shelfToAdd: "", readings:[]}
+    return {shelfName: "All Books", shelves: [], shelfToAdd: "", readings:[]}
   },
 
   componentDidMount: function() {
@@ -55,8 +57,14 @@ var UserShelvesPage = React.createClass({
   getReadingsByStatus: function(status) {
     if (status==="all") {
       BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+      this.setState({shelfName: "All Books"})
     } else {
       ReadingsApiUtil.getReadingsByStatus(status);
+
+      var shelfName = status.split("-").map(function(word) {
+        return (word[0].toUpperCase() + word.substr(1))
+      }).join(" ");
+      this.setState({shelfName: shelfName})
     }
   },
 
@@ -65,32 +73,39 @@ var UserShelvesPage = React.createClass({
     return (
       <div>
         <NavBar/>
-        <div className="shelves-label-column">
-          <h1>My CRUD</h1>
+        <div className="all-shelf-info group">
+          <div className="shelves-label-column">
+            <h1>My CRUD</h1>
 
-          <ul>
-            <div className="status-labels">
-              <li onClick={this.getReadingsByStatus.bind(this, "all")}><em>All books</em></li>
-              <li onClick={this.getReadingsByStatus.bind(this, "have-read")}>Have read</li>
-              <li onClick={this.getReadingsByStatus.bind(this, "reading-now")}>Reading now</li>
-              <li onClick={this.getReadingsByStatus.bind(this, "will-read")}>Will read</li>
-            </div>
-            {
-              shelves.map(function(shelf, i){
-                shelf.name.length >= 27 ?
-                  shelfname = shelf.name.substring(0, 27) + "…":
-                  shelfname = shelf.name
-                return <li key={i}>{shelfname}</li>
-              })
-            }
-          </ul>
+            <ul className="labels">
+              <div className="status-labels">
 
-          Add a shelf:
-          <input type="text" value={this.state.shelfToAdd} onChange={this.newShelfChange}/>
-          <input type="submit" onClick={this.handleSubmit}/>
+                  <li onClick={this.getReadingsByStatus.bind(this, "all")}>All Books</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "have-read")}>Have Read</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "reading-now")}>Reading Now</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "will-read")}>Will Read</li>
+
+              </div>
+
+                {
+                  shelves.map(function(shelf, i){
+                    shelf.name.length >= 27 ?
+                      shelfname = shelf.name.substring(0, 27) + "…":
+                      shelfname = shelf.name
+                    return <ShelfLabel key={i} name={shelfname}/>
+                  })
+                }
+            </ul>
+
+
+            <em>Add a shelf:</em>
+            <input type="text" value={this.state.shelfToAdd} onChange={this.newShelfChange}/>
+            <input type="submit" onClick={this.handleSubmit}/>
+
+          </div>
+          <Shelf shelfname={this.state.shelfName} readings={this.state.readings}/>
         </div>
 
-        <br/> <Shelf readings={this.state.readings}/>
       </div>
     );
   }
