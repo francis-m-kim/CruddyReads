@@ -55,16 +55,16 @@ var UserShelvesPage = React.createClass({
   },
 
   getReadingsByStatus: function(status) {
-    if (status==="all") {
+    if (status==="All") {
       BookApiUtil.getUserReadings(SessionStore.currentUser().id);
       this.setState({shelfName: "All Books"})
     } else {
       ReadingsApiUtil.getReadingsByStatus(status);
 
-      var shelfName = status.split("-").map(function(word) {
-        return (word[0].toUpperCase() + word.substr(1))
-      }).join(" ");
-      this.setState({shelfName: shelfName})
+      // var shelfName = status.split("-").map(function(word) {
+      //   return (word[0].toUpperCase() + word.substr(1))
+      // }).join(" ");
+      this.setState({shelfName: status})
     }
   },
 
@@ -80,10 +80,10 @@ var UserShelvesPage = React.createClass({
             <ul className="labels">
               <div className="status-labels">
 
-                  <li onClick={this.getReadingsByStatus.bind(this, "all")}>All Books</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "have-read")}>Have Read</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "reading-now")}>Reading Now</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "will-read")}>Will Read</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "All")}>All Books</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "Have Read")}>Have Read</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "Reading Now")}>Reading Now</li>
+                  <li onClick={this.getReadingsByStatus.bind(this, "Will Read")}>Will Read</li>
 
               </div>
 

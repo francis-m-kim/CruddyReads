@@ -10,7 +10,7 @@ var ReadingStatusButton = React.createClass({
   mixins: [CurrentUserState],
 
   getInitialState: function() {
-    return {readingStatus: "Will read"}
+    return {readingStatus: "Will Read"}
   },
 
   componentDidMount: function() {
@@ -30,55 +30,34 @@ var ReadingStatusButton = React.createClass({
     this.listener.remove();
   },
 
-  componentWillReceiveProps: function(newProps) {
-    // BookApiUtil.getUserReadings(this.props.user.id);
-
-  },
-
-
-
-
-  haveRead: function(event) {
+  updateStatus: function(newStatus) {
     event.preventDefault();
     var reading = {
-      user_id: this.state.currentUser.id,
       book_id: this.props.book_id,
-      status: "have-read"
+      status: newStatus
 
     };
+
     ReadingsApiUtil.addReading(reading);
   },
 
-  readingNow: function(event) {
-
-    event.preventDefault();
-    var reading = {
-      user_id: this.state.currentUser.id,
-      book_id: this.props.book_id,
-      status: "reading-now"
-    };
-    ReadingsApiUtil.addReading(reading);
-  },
-
-  willRead: function(event) {
-
-    event.preventDefault();
-    var reading = {
-      user_id: this.state.currentUser.id,
-      book_id: this.props.book_id,
-      status: "will-read"
-    };
-    ReadingsApiUtil.addReading(reading);
+  otherStatusButtons: function() {
+    var statuses = ["Have Read", "Reading Now", "Will Read"];
+    var removeIdx = statuses.indexOf(this.state.readingStatus)
+    if (removeIdx > -1) {
+      statuses.splice(removeIdx, 1);
+    }
+    return statuses.map(function(status, i){
+      return <button key={i} onClick={this.updateStatus.bind(this, status)}>{status}</button>
+    }.bind(this))
   },
 
   render: function() {
     return (
 
       <div>
-        <button className="reading-status">{this.state.readingStatus}</button>
-        <button onClick={this.haveRead}>HAVE READ</button>
-        <button onClick={this.readingNow}>READING NOW</button>
-        <button onClick={this.willRead}>WILL READ</button>
+        <button className="reading-status"><em>{this.state.readingStatus}</em></button>
+        {this.otherStatusButtons()}
       </div>
     );
   }
@@ -86,3 +65,9 @@ var ReadingStatusButton = React.createClass({
 });
 
 module.exports = ReadingStatusButton;
+
+
+
+// <button onClick={this.updateStatus.bind(this, "Have Read")}>Have Read</button>
+// <button onClick={this.updateStatus.bind(this, "Reading Now")}>Reading Now</button>
+// <button onClick={this.updateStatus.bind(this, "will-read")}>Will Read</button>

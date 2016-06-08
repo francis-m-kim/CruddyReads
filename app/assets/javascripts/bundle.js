@@ -60,6 +60,8 @@
 	var ReaderHomePage = __webpack_require__(269);
 	var LandingPage = __webpack_require__(264);
 	var UserShelvesPage = __webpack_require__(274);
+	var BrowsePage = __webpack_require__(280);
+	var CommunityPage = __webpack_require__(282);
 	
 	var ReactRouter = __webpack_require__(195);
 	var Router = ReactRouter.Router;
@@ -78,51 +80,6 @@
 	    );
 	  }
 	});
-	
-	// var LandingPage = React.createClass({
-	//
-	//   mixins: [CurrentUserState],
-	//
-	//   render: function() {
-	//
-	//     return(
-	//       <div id="landing-page">
-	//         <div className="container">
-	//
-	//           <nav className="group">
-	//             <h1 id="crud">CRUDDYREADS</h1>
-	//             <LogInForm/>
-	//           </nav>
-	//
-	//           <SignUpForm/>
-	//           <LogOutButton/>
-	//           <Link to="/books/1">Check out book 1!</Link>
-	//         </div>
-	//       </div>
-	//     );
-	//   }
-	// });
-	
-	//
-	// var LoggedInAs = React.createClass({
-	//   componentDidMount: function() {
-	//     this.listener = SessionStore.addListener(this.handleChange)
-	//
-	//   },
-	//   handleChange: function() {
-	//     this.setState({});
-	//   },
-	//   render: function() {
-	//     if (SessionStore.isUserLoggedIn()) {
-	//       return(<p>WELCOME {SessionStore.currentUser().username} </p>)
-	//     } else {
-	//       return (
-	//         <div>Nobody Logged In.</div>
-	//       );
-	//     }
-	//   }
-	//
-	// });
 	
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  var redirectIfNotLoggedIn = function () {
@@ -147,6 +104,8 @@
 	    { path: "/", component: App },
 	    React.createElement(IndexRoute, { component: LandingPage }),
 	    React.createElement(Route, { path: "users/:id", component: ReaderHomePage }),
+	    React.createElement(Route, { path: "browse", component: BrowsePage }),
+	    React.createElement(Route, { path: "community", component: CommunityPage }),
 	    React.createElement(Route, { path: "books/:id", component: BookHomePage }),
 	    React.createElement(Route, { path: "mycrud", component: UserShelvesPage, onEnter: _ensureLoggedIn })
 	  )
@@ -27422,11 +27381,24 @@
 	      readings: readings
 	    });
 	  },
+	  receiveReading: function (reading) {
+	
+	    AppDispatcher.dispatch({
+	      actionType: "RECEIVE_READING",
+	      reading: reading
+	    });
+	  },
 	
 	  receiveReader: function (reader) {
 	    AppDispatcher.dispatch({
 	      actionType: "RECEIVE_READER",
 	      reader: reader
+	    });
+	  },
+	  receiveReaders: function (readers) {
+	    AppDispatcher.dispatch({
+	      actionType: "RECEIVE_READERS",
+	      readers: readers
 	    });
 	  },
 	
@@ -33149,6 +33121,18 @@
 	      }
 	    });
 	  },
+	  getAllBooks: function () {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/api/books/',
+	      success: function (book) {
+	        ServerActions.receiveBooks(book);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
+	  },
 	  getUserReadings: function (userId) {
 	    $.ajax({
 	      method: 'GET',
@@ -33190,11 +33174,13 @@
 	
 	BookStore.receiveReadings = function (readings) {
 	  resetReadings();
-	  // debugger;
 	  readings.forEach(function (reading) {
 	    _readings[reading.id] = reading;
-	    // _books[reading.id] = reading;
 	  });
+	};
+	
+	BookStore.receiveReading = function (reading) {
+	  _readings[reading.id] = reading;
 	};
 	
 	BookStore.all = function () {
@@ -33237,6 +33223,10 @@
 	      BookStore.receiveReadings(payload.readings);
 	      BookStore.__emitChange();
 	      break;
+	    case "RECEIVE_READING":
+	      BookStore.receiveReading(payload.reading);
+	      BookStore.__emitChange();
+	      break;
 	  };
 	};
 	
@@ -33259,7 +33249,7 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    return { readingStatus: "Will read" };
+	    return { readingStatus: "Will Read" };
 	  },
 	
 	  componentDidMount: function () {
@@ -33279,42 +33269,30 @@
 	    this.listener.remove();
 	  },
 	
-	  componentWillReceiveProps: function (newProps) {
-	    // BookApiUtil.getUserReadings(this.props.user.id);
-	
-	  },
-	
-	  haveRead: function (event) {
+	  updateStatus: function (newStatus) {
 	    event.preventDefault();
 	    var reading = {
-	      user_id: this.state.currentUser.id,
 	      book_id: this.props.book_id,
-	      status: "have-read"
+	      status: newStatus
 	
 	    };
+	
 	    ReadingsApiUtil.addReading(reading);
 	  },
 	
-	  readingNow: function (event) {
-	
-	    event.preventDefault();
-	    var reading = {
-	      user_id: this.state.currentUser.id,
-	      book_id: this.props.book_id,
-	      status: "reading-now"
-	    };
-	    ReadingsApiUtil.addReading(reading);
-	  },
-	
-	  willRead: function (event) {
-	
-	    event.preventDefault();
-	    var reading = {
-	      user_id: this.state.currentUser.id,
-	      book_id: this.props.book_id,
-	      status: "will-read"
-	    };
-	    ReadingsApiUtil.addReading(reading);
+	  otherStatusButtons: function () {
+	    var statuses = ["Have Read", "Reading Now", "Will Read"];
+	    var removeIdx = statuses.indexOf(this.state.readingStatus);
+	    if (removeIdx > -1) {
+	      statuses.splice(removeIdx, 1);
+	    }
+	    return statuses.map(function (status, i) {
+	      return React.createElement(
+	        'button',
+	        { key: i, onClick: this.updateStatus.bind(this, status) },
+	        status
+	      );
+	    }.bind(this));
 	  },
 	
 	  render: function () {
@@ -33324,29 +33302,23 @@
 	      React.createElement(
 	        'button',
 	        { className: 'reading-status' },
-	        this.state.readingStatus
+	        React.createElement(
+	          'em',
+	          null,
+	          this.state.readingStatus
+	        )
 	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.haveRead },
-	        'HAVE READ'
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.readingNow },
-	        'READING NOW'
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.willRead },
-	        'WILL READ'
-	      )
+	      this.otherStatusButtons()
 	    );
 	  }
 	
 	});
 	
 	module.exports = ReadingStatusButton;
+	
+	// <button onClick={this.updateStatus.bind(this, "Have Read")}>Have Read</button>
+	// <button onClick={this.updateStatus.bind(this, "Reading Now")}>Reading Now</button>
+	// <button onClick={this.updateStatus.bind(this, "will-read")}>Will Read</button>
 
 /***/ },
 /* 263 */
@@ -33507,8 +33479,7 @@
 	      type: "POST",
 	      data: { reading: reading },
 	      success: function (reading) {
-	
-	        ServerActions.receiveBook(reading);
+	        ServerActions.receiveReading(reading);
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -33547,6 +33518,18 @@
 	      url: '/api/users/' + id,
 	      success: function (reader) {
 	        ServerActions.receiveReader(reader);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError(error);
+	      }
+	    });
+	  },
+	  getAllReaders: function () {
+	    $.ajax({
+	      method: 'GET',
+	      url: '/api/users/',
+	      success: function (readers) {
+	        ServerActions.receiveReaders(readers);
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -33658,14 +33641,31 @@
 	  _readers[reader.id] = reader;
 	};
 	
+	ReaderStore.receiveReaders = function (readers) {
+	  _readers = {};
+	  readers.forEach(function (reader) {
+	    _readers[reader.id] = reader;
+	  });
+	};
+	
 	ReaderStore.find = function (id) {
 	  return _readers[id];
+	};
+	
+	ReaderStore.all = function () {
+	  return Object.keys(_readers).map(function (readerId) {
+	    return _readers[readerId];
+	  });
 	};
 	
 	ReaderStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "RECEIVE_READER":
 	      ReaderStore.receiveReader(payload.reader);
+	      ReaderStore.__emitChange();
+	      break;
+	    case "RECEIVE_READERS":
+	      ReaderStore.receiveReaders(payload.readers);
 	      ReaderStore.__emitChange();
 	      break;
 	  };
@@ -33740,10 +33740,11 @@
 	  displayName: 'NavBar',
 	
 	  mixins: [CurrentUserState],
-	  goToHome: function (event) {
-	    event.preventDefault;
-	    hashHistory.push("mycrud");
+	
+	  goTo: function (pathString) {
+	    hashHistory.push(pathString);
 	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'nav',
@@ -33758,17 +33759,17 @@
 	        { className: 'links' },
 	        React.createElement(
 	          'li',
-	          { onClick: this.goToHome },
+	          { onClick: this.goTo.bind(this, "mycrud") },
 	          'My CRUD'
 	        ),
 	        React.createElement(
 	          'li',
-	          null,
+	          { onClick: this.goTo.bind(this, "browse") },
 	          'Browse'
 	        ),
 	        React.createElement(
 	          'li',
-	          null,
+	          { onClick: this.goTo.bind(this, "community") },
 	          'Community'
 	        )
 	      ),
@@ -33918,16 +33919,16 @@
 	  },
 	
 	  getReadingsByStatus: function (status) {
-	    if (status === "all") {
+	    if (status === "All") {
 	      BookApiUtil.getUserReadings(SessionStore.currentUser().id);
 	      this.setState({ shelfName: "All Books" });
 	    } else {
 	      ReadingsApiUtil.getReadingsByStatus(status);
 	
-	      var shelfName = status.split("-").map(function (word) {
-	        return word[0].toUpperCase() + word.substr(1);
-	      }).join(" ");
-	      this.setState({ shelfName: shelfName });
+	      // var shelfName = status.split("-").map(function(word) {
+	      //   return (word[0].toUpperCase() + word.substr(1))
+	      // }).join(" ");
+	      this.setState({ shelfName: status });
 	    }
 	  },
 	
@@ -33956,22 +33957,22 @@
 	              { className: 'status-labels' },
 	              React.createElement(
 	                'li',
-	                { onClick: this.getReadingsByStatus.bind(this, "all") },
+	                { onClick: this.getReadingsByStatus.bind(this, "All") },
 	                'All Books'
 	              ),
 	              React.createElement(
 	                'li',
-	                { onClick: this.getReadingsByStatus.bind(this, "have-read") },
+	                { onClick: this.getReadingsByStatus.bind(this, "Have Read") },
 	                'Have Read'
 	              ),
 	              React.createElement(
 	                'li',
-	                { onClick: this.getReadingsByStatus.bind(this, "reading-now") },
+	                { onClick: this.getReadingsByStatus.bind(this, "Reading Now") },
 	                'Reading Now'
 	              ),
 	              React.createElement(
 	                'li',
-	                { onClick: this.getReadingsByStatus.bind(this, "will-read") },
+	                { onClick: this.getReadingsByStatus.bind(this, "Will Read") },
 	                'Will Read'
 	              )
 	            ),
@@ -34077,42 +34078,48 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ShelfItem = __webpack_require__(279);
+	
+	var SessionStore = __webpack_require__(169);
+	var BookApiUtil = __webpack_require__(259);
 	
 	var Shelf = React.createClass({
-	  displayName: "Shelf",
+	  displayName: 'Shelf',
 	
+	
+	  // componentWillReceiveProps: function(newProps) {
+	  //   BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+	  // },
 	
 	  render: function () {
 	    var readings = this.props.readings;
 	    if (readings) {
 	      return React.createElement(
-	        "div",
-	        { className: "shelf-info" },
+	        'div',
+	        { className: 'shelf-info' },
 	        React.createElement(
-	          "h1",
+	          'h1',
 	          null,
 	          this.props.shelfname
 	        ),
 	        React.createElement(
-	          "ul",
+	          'ul',
 	          null,
 	          readings.map(function (reading, i) {
-	            return React.createElement(
-	              "li",
-	              { key: i },
-	              reading.title
-	            );
+	            return React.createElement(ShelfItem, { key: i, reading: reading });
 	          })
 	        )
 	      );
 	    } else {
-	      return React.createElement("div", null);
+	      return React.createElement('div', null);
 	    }
 	  }
 	
 	});
 	
 	module.exports = Shelf;
+	
+	// return <li key={i}>{reading.title}</li>
 
 /***/ },
 /* 278 */
@@ -34135,6 +34142,227 @@
 	});
 	
 	module.exports = ShelfLabel;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(195);
+	var Link = ReactRouter.Link;
+	
+	var ShelfItem = React.createClass({
+	  displayName: 'ShelfItem',
+	
+	  componentWillReceiveProps: function (newProps) {},
+	
+	  render: function () {
+	    var reading = this.props.reading;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        Link,
+	        { to: "books/" + reading.id },
+	        React.createElement('img', { src: reading.image_url, width: '100' })
+	      ),
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'em',
+	          null,
+	          reading.title
+	        )
+	      ),
+	      React.createElement(
+	        'li',
+	        null,
+	        reading.author
+	      ),
+	      React.createElement(
+	        'li',
+	        null,
+	        reading.review
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ShelfItem;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var BookStore = __webpack_require__(261);
+	var BookApiUtil = __webpack_require__(259);
+	
+	var NavBar = __webpack_require__(272);
+	var BrowseItem = __webpack_require__(281);
+	
+	var BrowsePage = React.createClass({
+	  displayName: 'BrowsePage',
+	
+	  getInitialState: function () {
+	    return { books: [] };
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = BookStore.addListener(this.handleChange);
+	    BookApiUtil.getAllBooks();
+	  },
+	
+	  handleChange: function () {
+	    this.setState({ books: BookStore.all() });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	  render: function () {
+	    var books = this.state.books;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(NavBar, null),
+	      React.createElement(
+	        'ul',
+	        null,
+	        books.map(function (book, i) {
+	          return React.createElement(BrowseItem, { key: i, book: book });
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = BrowsePage;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(195);
+	var hashHistory = __webpack_require__(195).hashHistory;
+	var Link = ReactRouter.Link;
+	
+	var BrowseItem = React.createClass({
+	  displayName: 'BrowseItem',
+	
+	
+	  render: function () {
+	    var book = this.props.book;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          Link,
+	          { to: "books/" + book.id },
+	          React.createElement('img', { width: '100px', src: book.image_url })
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          book.title
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = BrowseItem;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var ReaderStore = __webpack_require__(270);
+	var ReaderApiUtil = __webpack_require__(268);
+	
+	var NavBar = __webpack_require__(272);
+	var CommunityItem = __webpack_require__(283);
+	
+	var CommunityPage = React.createClass({
+	  displayName: 'CommunityPage',
+	
+	  getInitialState: function () {
+	    return { readers: [] };
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = ReaderStore.addListener(this.handleChange);
+	    ReaderApiUtil.getAllReaders();
+	  },
+	
+	  handleChange: function () {
+	    this.setState({ readers: ReaderStore.all() });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	  render: function () {
+	    var readers = this.state.readers;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(NavBar, null),
+	      React.createElement(
+	        'ul',
+	        null,
+	        readers.map(function (reader, i) {
+	          return React.createElement(CommunityItem, { key: i, reader: reader });
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = CommunityPage;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(195);
+	var hashHistory = __webpack_require__(195).hashHistory;
+	var Link = ReactRouter.Link;
+	
+	var CommunityItem = React.createClass({
+	  displayName: 'CommunityItem',
+	
+	
+	  render: function () {
+	    var reader = this.props.reader;
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        Link,
+	        { to: "users/" + reader.id },
+	        React.createElement('img', { width: '50px', src: reader.image_url })
+	      ),
+	      reader.username
+	    );
+	  }
+	
+	});
+	
+	module.exports = CommunityItem;
 
 /***/ }
 /******/ ]);

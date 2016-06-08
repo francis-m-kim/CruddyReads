@@ -14,6 +14,8 @@ var BookHomePage = require("./components/book_home_page");
 var ReaderHomePage = require("./components/reader_home_page");
 var LandingPage = require("./components/landing_page");
 var UserShelvesPage = require("./components/user_shelves_page");
+var BrowsePage = require("./components/browse_page");
+var CommunityPage = require("./components/community_page");
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
@@ -32,50 +34,6 @@ var App = React.createClass({
   }
 });
 
-// var LandingPage = React.createClass({
-//
-//   mixins: [CurrentUserState],
-//
-//   render: function() {
-//
-//     return(
-//       <div id="landing-page">
-//         <div className="container">
-//
-//           <nav className="group">
-//             <h1 id="crud">CRUDDYREADS</h1>
-//             <LogInForm/>
-//           </nav>
-//
-//           <SignUpForm/>
-//           <LogOutButton/>
-//           <Link to="/books/1">Check out book 1!</Link>
-//         </div>
-//       </div>
-//     );
-//   }
-// });
-
-//
-// var LoggedInAs = React.createClass({
-//   componentDidMount: function() {
-//     this.listener = SessionStore.addListener(this.handleChange)
-//
-//   },
-//   handleChange: function() {
-//     this.setState({});
-//   },
-//   render: function() {
-//     if (SessionStore.isUserLoggedIn()) {
-//       return(<p>WELCOME {SessionStore.currentUser().username} </p>)
-//     } else {
-//       return (
-//         <div>Nobody Logged In.</div>
-//       );
-//     }
-//   }
-//
-// });
 
 function _ensureLoggedIn(nextState, replace, callback) {
   var redirectIfNotLoggedIn = function() {
@@ -98,6 +56,8 @@ var Router = (
     <Route path="/" component={App}>
       <IndexRoute component={LandingPage}/>
       <Route path="users/:id" component={ReaderHomePage}/>
+      <Route path="browse" component={BrowsePage}/>
+      <Route path="community" component={CommunityPage}/>
       <Route path="books/:id" component={BookHomePage}/>
       <Route path="mycrud" component={UserShelvesPage} onEnter={_ensureLoggedIn}/>
 

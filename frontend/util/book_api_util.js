@@ -13,6 +13,18 @@ module.exports = {
       }
     })
   },
+  getAllBooks: function() {
+    $.ajax({
+      method: 'GET',
+      url: '/api/books/',
+			success: function(book) {
+        ServerActions.receiveBooks(book)
+      },
+			error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
+  },
   getUserReadings: function(userId) {
     $.ajax({
       method: 'GET',

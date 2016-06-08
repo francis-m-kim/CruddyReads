@@ -12,5 +12,17 @@ module.exports = {
         ServerActions.handleError(error);
       }
     })
+  },
+  getAllReaders: function() {
+    $.ajax({
+      method: 'GET',
+      url: '/api/users/',
+			success: function(readers) {
+        ServerActions.receiveReaders(readers);
+      },
+			error: function(error) {
+        ServerActions.handleError(error);
+      }
+    })
   }
 };

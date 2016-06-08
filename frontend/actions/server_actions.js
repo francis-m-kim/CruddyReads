@@ -43,11 +43,25 @@ var ServerActions = {
       readings: readings
     })
   },
+  receiveReading: function(reading) {
+
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_READING",
+      reading: reading
+    })
+  },
 
   receiveReader: function(reader) {
     AppDispatcher.dispatch({
       actionType: "RECEIVE_READER",
       reader: reader
+    })
+
+  },
+  receiveReaders: function(readers) {
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_READERS",
+      readers: readers
     })
 
   },

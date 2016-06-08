@@ -24,11 +24,13 @@ BookStore.receiveBooks = function(books) {
 
 BookStore.receiveReadings = function(readings) {
   resetReadings();
-  // debugger;
   readings.forEach(function(reading){
     _readings[reading.id] = reading;
-    // _books[reading.id] = reading;
   })
+};
+
+BookStore.receiveReading = function(reading) {
+  _readings[reading.id] = reading;
 };
 
 
@@ -73,6 +75,10 @@ BookStore.__onDispatch = function(payload) {
       break;
     case "RECEIVE_READINGS":
       BookStore.receiveReadings(payload.readings);
+      BookStore.__emitChange();
+      break;
+    case "RECEIVE_READING":
+      BookStore.receiveReading(payload.reading);
       BookStore.__emitChange();
       break;
   };

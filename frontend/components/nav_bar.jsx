@@ -8,20 +8,21 @@ var CurrentUserState = require("../mixins/current_user_state");
 
 var NavBar = React.createClass({
   mixins: [CurrentUserState],
-  goToHome: function(event) {
-    event.preventDefault;
-    hashHistory.push("mycrud");
+
+  goTo: function(pathString) {
+    hashHistory.push(pathString)
   },
+
   render: function() {
     return (
       <nav className="main-nav group">
         <h1>CRUDDYREADS</h1>
         <ul className="links">
-          <li onClick = {this.goToHome}>My CRUD</li>
-          <li>Browse</li>
-          <li>Community</li>
+          <li onClick = {this.goTo.bind(this, "mycrud")}>My CRUD</li>
+          <li onClick = {this.goTo.bind(this, "browse")}>Browse</li>
+          <li onClick = {this.goTo.bind(this, "community")}>Community</li>
         </ul>
-        
+
         <input className="search" type="text" placeholder="Find CRUD"/>
 
         <ul className="buttons">

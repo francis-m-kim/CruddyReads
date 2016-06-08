@@ -7,8 +7,7 @@ module.exports = {
       type: "POST",
       data: {reading: reading},
       success: function(reading) {
-        
-        ServerActions.receiveBook(reading)
+        ServerActions.receiveReading(reading)
       },
       error: function(error) {
         ServerActions.handleError(error)
@@ -22,7 +21,7 @@ module.exports = {
       type: "GET",
       data: {status: status},
       success: function(readings) {
-        
+
         ServerActions.receiveReadings(readings)
       },
       error: function(error) {

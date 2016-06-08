@@ -1,6 +1,14 @@
 var React = require('react');
+var ShelfItem = require('./shelf_item');
+
+var SessionStore = require('../stores/session_store');
+var BookApiUtil = require('../util/book_api_util');
 
 var Shelf = React.createClass({
+
+  // componentWillReceiveProps: function(newProps) {
+  //   BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+  // },
 
   render: function() {
     var readings = this.props.readings;
@@ -11,7 +19,7 @@ var Shelf = React.createClass({
           <ul>
             {
               readings.map(function(reading, i) {
-                return <li key={i}>{reading.title}</li>
+                return <ShelfItem key={i} reading={reading}/>
               })
             }
           </ul>
@@ -25,3 +33,6 @@ var Shelf = React.createClass({
 });
 
 module.exports = Shelf;
+
+
+// return <li key={i}>{reading.title}</li>
