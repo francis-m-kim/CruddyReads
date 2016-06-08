@@ -10,7 +10,7 @@
   width: 200px;
 }
 
-.status-buttons {
+/*.status-buttons {
   margin-top:10px;
   margin-left:45px;
 }
@@ -24,7 +24,7 @@
 .reading-status{
   float: left;
   border-right: 1px solid white;
-}
+}*/
 
 .drop-down-arrow {
   float: left;

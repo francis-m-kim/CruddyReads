@@ -1,0 +1,21 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.reading-status{
+  float: left;
+}
+
+.drop-content {
+  display: none;
+  position: absolute;
+  min-width: 100px;
+}
+.drop-content {
+  color: black;
+}
+
+.dropdown:hover .drop-content {
+  display: block;
+}

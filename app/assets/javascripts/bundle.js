@@ -33237,10 +33237,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var SessionStore = __webpack_require__(169);
 	var ReadingsApiUtil = __webpack_require__(266);
 	var BookApiUtil = __webpack_require__(259);
+	var ShelfApiUtil = __webpack_require__(276);
 	var CurrentUserState = __webpack_require__(168);
 	var BookStore = __webpack_require__(261);
+	var ShelfStore = __webpack_require__(275);
+	var AddToShelfButton = __webpack_require__(284);
 	
 	var ReadingStatusButton = React.createClass({
 	  displayName: 'ReadingStatusButton',
@@ -33249,24 +33253,35 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    return { readingStatus: "Will Read" };
+	    return { reading: {}, readingStatus: "Will Read", shelves: [] };
 	  },
 	
 	  componentDidMount: function () {
-	    this.listener = BookStore.addListener(this.handleChange);
+	    this.bookListener = BookStore.addListener(this.handleChange);
 	    BookApiUtil.getUserReadings(this.props.user.id);
+	
+	    this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
+	    ShelfApiUtil.getShelves(SessionStore.currentUser().id);
 	  },
 	
 	  handleChange: function () {
+	    var reading = BookStore.findReading(this.props.book_id);
+	    if (reading) {
+	      this.setState({ reading: reading });
+	    }
 	    var status = BookStore.findReading(this.props.book_id).status;
-	
 	    if (status) {
 	      this.setState({ readingStatus: status });
 	    }
 	  },
 	
+	  handleShelfChange: function () {
+	    this.setState({ shelves: ShelfStore.all() });
+	  },
+	
 	  componentWillUnmount: function () {
-	    this.listener.remove();
+	    this.bookListener.remove();
+	    this.shelfListener.remove();
 	  },
 	
 	  updateStatus: function (newStatus) {
@@ -33280,25 +33295,49 @@
 	    ReadingsApiUtil.addReading(reading);
 	  },
 	
-	  otherStatusButtons: function () {
+	  toggleShelf: function (shelfName) {
+	    event.preventDefault();
+	    console.log("TOGGLE", shelfName);
+	  },
+	
+	  checkClick: function () {},
+	
+	  otherButtons: function () {
+	
 	    var statuses = ["Have Read", "Reading Now", "Will Read"];
 	    var removeIdx = statuses.indexOf(this.state.readingStatus);
 	    if (removeIdx > -1) {
 	      statuses.splice(removeIdx, 1);
 	    }
-	    return statuses.map(function (status, i) {
-	      return React.createElement(
-	        'button',
-	        { key: i, onClick: this.updateStatus.bind(this, status) },
-	        status
-	      );
-	    }.bind(this));
+	    var shelves = this.state.shelves;
+	    var reading = this.state.reading;
+	
+	    // var shelveIdsWithReading = ShelfStore.dsfadsfajsd;klja ser(reading.id)
+	    return React.createElement(
+	      'div',
+	      null,
+	      statuses.map(function (status, i) {
+	        return React.createElement(
+	          'button',
+	          { key: i, onClick: this.updateStatus.bind(this, status) },
+	          status
+	        );
+	      }.bind(this)),
+	      React.createElement(
+	        'ul',
+	        null,
+	        shelves.map(function (shelf, i) {
+	
+	          return React.createElement(AddToShelfButton, { key: i, shelf: shelf, reading: reading });
+	        }.bind(this))
+	      )
+	    );
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'group' },
 	      React.createElement(
 	        'button',
 	        { className: 'reading-status' },
@@ -33308,7 +33347,20 @@
 	          this.state.readingStatus
 	        )
 	      ),
-	      this.otherStatusButtons()
+	      React.createElement(
+	        'div',
+	        { className: 'dropdown' },
+	        React.createElement(
+	          'button',
+	          { className: 'drop-button' },
+	          '↓'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'drop-content' },
+	          this.otherButtons()
+	        )
+	      )
 	    );
 	  }
 	
@@ -34363,6 +34415,98 @@
 	});
 	
 	module.exports = CommunityItem;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ShelfAssignmentApiUtil = __webpack_require__(285);
+	
+	var AddToShelfButton = React.createClass({
+	  displayName: 'AddToShelfButton',
+	
+	  getInitialState: function () {
+	    return { included: false };
+	  },
+	  createDestroy: function (event) {
+	    var create = !this.state.included;
+	    this.setState({ included: create });
+	    var assignment = {
+	      reading_id: this.props.reading.reading_id,
+	      shelf_id: this.props.shelf.id
+	    };
+	    if (create) {
+	      ShelfAssignmentApiUtil.addShelfAssignment(assignment);
+	    } else {
+	      ShelfAssignmentApiUtil.destroyShelfAssignment(assignment);
+	    }
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    newProps.shelf.books.forEach(function (book) {
+	      if (book.reading_id === newProps.reading.reading_id) {
+	        this.setState({ included: true });
+	      }
+	    }.bind(this));
+	  },
+	
+	  render: function () {
+	    var shelfName = this.props.shelf.name;
+	
+	    return React.createElement(
+	      'li',
+	      null,
+	      React.createElement(
+	        'label',
+	        null,
+	        React.createElement('input', { type: 'checkbox', checked: this.state.included, onChange: this.createDestroy }),
+	        shelfName
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AddToShelfButton;
+	
+	// var included = false;
+	// shelf.books.forEach(function(book){
+	//   if(book.reading_id === reading.reading_id) {
+	//     included = true;
+	//   }
+	// })
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(193);
+	
+	module.exports = {
+	  addShelfAssignment: function (shelfAssignment) {
+	    $.ajax({
+	      method: 'POST',
+	      url: '/api/shelf_assignments/',
+	      data: { shelf_assignment: shelfAssignment },
+	      success: function (shelf) {
+	        console.log(shelf);
+	      }
+	    });
+	  },
+	
+	  destroyShelfAssignment: function (shelfAssignment) {
+	    $.ajax({
+	      method: 'DELETE',
+	      url: '/api/find_and_destroy/',
+	      data: { shelf_assignment: shelfAssignment },
+	      success: function (shelf) {
+	        console.log(shelf);
+	      }
+	    });
+	  }
+	
+	};
 
 /***/ }
 /******/ ]);
