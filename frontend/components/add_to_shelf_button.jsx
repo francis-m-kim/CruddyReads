@@ -48,10 +48,3 @@ var AddToShelfButton = React.createClass({
 });
 
 module.exports = AddToShelfButton;
-
-// var included = false;
-// shelf.books.forEach(function(book){
-//   if(book.reading_id === reading.reading_id) {
-//     included = true;
-//   }
-// })

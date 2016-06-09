@@ -32,7 +32,7 @@ module.exports = {
       url: "/api/shelves/" + shelfId,
       type: "DELETE",
       success: function(shelf) {
-        ServerActions.receiveShelf(shelf)
+        ServerActions.removeShelf(shelf)
       },
       error: function(error) {
         ServerActions.handleError(error)

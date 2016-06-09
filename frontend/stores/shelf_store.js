@@ -8,12 +8,15 @@ var ShelfStore = new Store(AppDispatcher);
 ShelfStore.receiveShelves = function(shelves) {
   _shelves = {};
   shelves.forEach(function(shelf) {
-    _shelves[shelf.name] = shelf;
+    _shelves[shelf.id] = shelf;
   });
 };
 
 ShelfStore.receiveShelf = function(shelf) {
-  _shelves[shelf.name] = shelf;
+  _shelves[shelf.id] = shelf;
+};
+ShelfStore.removeShelf = function(shelf) {
+  delete _shelves[shelf.id];
 };
 
 ShelfStore.receiveShelfTitle = function(shelfTitle) {
@@ -46,6 +49,10 @@ ShelfStore.__onDispatch = function(payload) {
       break;
     case "RECEIVE_SHELF_TITLE":
       ShelfStore.receiveShelfTitle(payload.shelfTitle);
+      ShelfStore.__emitChange();
+      break;
+    case "REMOVE_SHELF":
+      ShelfStore.removeShelf(payload.shelf);
       ShelfStore.__emitChange();
       break;
   }

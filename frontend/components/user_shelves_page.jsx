@@ -33,6 +33,7 @@ var UserShelvesPage = React.createClass({
     this.setState({shelves: ShelfStore.all()})
     if (!ShelfStore.shelfTitle() == "") {
       this.setState({shelfName: ShelfStore.shelfTitle()})
+      ShelfStore.flushTitle();
     }
   },
 

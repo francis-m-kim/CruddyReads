@@ -4,10 +4,11 @@ var ShelfItem = require('./shelf_item');
 var SessionStore = require('../stores/session_store');
 var BookApiUtil = require('../util/book_api_util');
 
+
+
 var Shelf = React.createClass({
-  componentWillReceiveProps: function(newProps) {
-    // debugger;
-    // ReaderApiUtil.getReader(newProps.params.id);
+  componentWillReceiveProps: function(newProps){
+    
   },
 
   render: function() {

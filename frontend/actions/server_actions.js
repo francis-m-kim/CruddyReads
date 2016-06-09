@@ -73,6 +73,13 @@ var ServerActions = {
       shelf: shelf
     })
   },
+  removeShelf: function(shelf) {
+
+    AppDispatcher.dispatch({
+      actionType: "REMOVE_SHELF",
+      shelf: shelf
+    })
+  },
 
   receiveShelves: function(shelves) {
 

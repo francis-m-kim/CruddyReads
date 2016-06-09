@@ -42,6 +42,9 @@ class Api::ShelvesController < ApplicationController
 
   def destroy
     @shelf = Shelf.find(params[:id])
+    @shelf.shelf_assignments.destroy_all
+    @shelf.destroy
+    render json: @shelf
   end
 
 
