@@ -23,6 +23,7 @@ class Api::ShelvesController < ApplicationController
 
   end
 
+
   def shelf_readings
     @shelf = Shelf.find(params[:id])
     @readings = @shelf.readings
@@ -40,9 +41,8 @@ class Api::ShelvesController < ApplicationController
   end
 
   def destroy
-
+    @shelf = Shelf.find(params[:id])
   end
-
 
 
   private

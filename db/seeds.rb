@@ -1,13 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# Author.create(first_name: , last_name: )
 Author.create(first_name: "Leo", last_name: "Tolstoy")
 Author.create(first_name: "Charles", last_name: "Dickens")
+Author.create(first_name: "Leszek", last_name: "Kołakowski" )
+
+
 
 Book.create(title: "War and Peace", author_id: 1, isbn: "0140447938", description: "Tolstoy's epic masterpiece intertwines the lives of private and public individuals during the time of the Napoleonic wars and the French invasion of Russia. The fortunes of the Rostovs and the Bolkonskys, of Pierre, Natasha, and Andrei, are intimately connected with the national history that is played out in parallel with their lives. Balls and soirees alternate with councils of war and the machinations of statesmen and generals, scenes of violent battles with everyday human passions in a work whose extraordinary imaginative power has never been surpassed. \n\nThe prodigious cast of characters, seem to act and move as if connected by threads of destiny as the novel relentlessly questions ideas of free will, fate, and providence. Yet Tolstoy's portrayal of marital relations and scenes of domesticity is as truthful and poignant as the grand themes that underlie them.")
 b1 = Book.find_by(title: "War and Peace")
@@ -16,12 +13,19 @@ b2 = Book.find_by(title: "Anna Karenina")
 Book.create(title: "A Tale of Two Cities", author_id: 2, isbn: "0486406512", description: "After eighteen years as a political prisoner in the Bastille, the ageing Doctor Manette is finally released and reunited with his daughter in England. There the lives of two very different men, Charles Darnay, an exiled French aristocrat, and Sydney Carton, a disreputable but brilliant English lawyer, become enmeshed through their love for Lucie Manette. From the tranquil roads of London, they are drawn against their will to the vengeful, bloodstained streets of Paris at the height of the Reign of Terror, and they soon fall under the lethal shadow of La Guillotine.")
 b3 = Book.find_by(title: "A Tale of Two Cities")
 
+#b_ = Book.create(title: , author_id: , description: )
+#file = File.open(assetsomething)
+#b_.image = file; b_.save
+
+
+
+
 User.create(username: "Guest", email: "Guest", password: "password")
 u = User.find_by(email: "Guest")
 
-Reading.create(user_id: u.id, book_id: b1.id, review: "It was amazing.", status: "have-read")
+Reading.create(user_id: u.id, book_id: b1.id, review: "It was amazing.", status: "Have Read")
 r1 = Reading.find_by(book_id: b1.id)
-Reading.create(user_id: u.id, book_id: b2.id, status: "will-read")
+Reading.create(user_id: u.id, book_id: b2.id, status: "Will Read")
 r2 = Reading.find_by(book_id: b2.id)
 
 
@@ -34,7 +38,7 @@ ShelfAssignment.create(reading_id: r2.id, shelf_id: s.id)
 
 
 
-# 
+#
 #
 # ShelfAssignment(id: integer, reading_id: integer, shelf_id: integer, created_at: datetime, updated_at: datetime)
 # Reading(id: integer, user_id: integer, book_id: integer, review: text, status: string, created_at: datetime, updated_at: datetime)
