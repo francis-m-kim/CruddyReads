@@ -51,12 +51,9 @@ em {
   padding: 3px 5px;
   font-style: normal;
   font-weight: bold;
-  background: #FDD893;
+  background: rgb(252, 215, 146);
 }
 
-.fuck{
-  background: red;
-}
 input[type="submit"] {
   border: none;
 

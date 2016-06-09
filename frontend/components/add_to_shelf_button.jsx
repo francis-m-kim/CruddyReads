@@ -1,10 +1,13 @@
 var React = require('react');
 var ShelfAssignmentApiUtil = require('../util/shelf_assignment_api_util');
 
+
+
 var AddToShelfButton = React.createClass({
   getInitialState: function() {
     return {included: false}
   },
+
   createDestroy: function(event) {
     var create = !this.state.included;
     this.setState({included: create})
@@ -27,10 +30,9 @@ var AddToShelfButton = React.createClass({
     }.bind(this))
   },
 
-
   render: function() {
     var shelfName = this.props.shelf.name
-
+    var reading = this.props.reading
     return (
       <li>
         <label >
@@ -38,6 +40,7 @@ var AddToShelfButton = React.createClass({
           <input type="checkbox" checked={this.state.included} onChange={this.createDestroy}/>
           {shelfName}
         </label>
+
       </li>
     );
   }

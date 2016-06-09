@@ -49,8 +49,16 @@ class Api::ReadingsController < ApplicationController
     render "api/readings/index"
   end
 
-  def destroy
-
+  def update
+    @reading = Reading.find_by(id: params[:id])
+    @reading.review = params[:review]
+    
+    if @reading.save
+      render "api/readings/show"
+    else
+      @errors = ["SOMETHING WENT WRONG"]
+      render json: @errors, status: 422
+    end
   end
 
   private

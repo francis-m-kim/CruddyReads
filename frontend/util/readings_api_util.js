@@ -15,6 +15,20 @@ module.exports = {
     })
   },
 
+  addReviewToReading: function(readingId, review) {
+    $.ajax({
+      url: "/api/readings/" + readingId,
+      type: "PATCH",
+      data: {review: review},
+      success: function(reading) {
+        ServerActions.receiveReading(reading)
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
+  },
+
   getReadingsByStatus: function(status) {
     $.ajax({
       url: "/api/readings_by_status",

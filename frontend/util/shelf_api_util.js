@@ -13,6 +13,7 @@ module.exports = {
       }
     })
   },
+
   addShelf: function(shelf) {
     $.ajax({
       url: "/api/shelves",
@@ -20,6 +21,32 @@ module.exports = {
       data: {shelf: shelf},
       success: function(shelf) {
         ServerActions.receiveShelf(shelf)
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
+  },
+  getShelfReadings: function(shelfId) {
+    $.ajax({
+      url: "/api/shelf_readings",
+      type: "GET",
+      data: {id: shelfId},
+      success: function(readings) {
+        ServerActions.receiveReadings(readings)
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
+  },
+  getShelfTitle: function(shelfId) {
+    $.ajax({
+      url: "/api/shelf_title",
+      type: "GET",
+      data: {id: shelfId},
+      success: function(shelfTitle) {
+        ServerActions.receiveShelfTitle(shelfTitle)
       },
       error: function(error) {
         ServerActions.handleError(error)

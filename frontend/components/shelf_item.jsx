@@ -1,12 +1,10 @@
 var React = require('react');
 var ReactRouter = require('react-router');
+var ShelfApiUtil = require('../util/shelf_api_util');
 var Link = ReactRouter.Link;
 
 
 var ShelfItem = React.createClass({
-  componentWillReceiveProps: function(newProps){
-
-  },
 
   render: function() {
     var reading = this.props.reading;

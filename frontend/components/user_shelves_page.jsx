@@ -9,9 +9,12 @@ var ShelfApiUtil = require('../util/shelf_api_util');
 var BookApiUtil = require('../util/book_api_util');
 var ReadingsApiUtil = require('../util/readings_api_util');
 
-
 var SessionStore = require('../stores/session_store');
 var BookStore = require('../stores/book_store');
+
+var Lifecycle = require('react-router').Lifecycle;
+
+
 
 var UserShelvesPage = React.createClass({
   getInitialState: function() {
@@ -21,7 +24,6 @@ var UserShelvesPage = React.createClass({
   componentDidMount: function() {
     this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
     ShelfApiUtil.getShelves(SessionStore.currentUser().id);
-    // debugger;
 
     this.bookListener = BookStore.addListener(this.handleBookChange);
     BookApiUtil.getUserReadings(SessionStore.currentUser().id);
@@ -29,10 +31,19 @@ var UserShelvesPage = React.createClass({
 
   handleShelfChange: function() {
     this.setState({shelves: ShelfStore.all()})
+    if (!ShelfStore.shelfTitle() == "") {
+      this.setState({shelfName: ShelfStore.shelfTitle()})
+    }
   },
+
+  mixins: [ Lifecycle ],
+  routerWillLeave(nextLocation) {
+    console.log("Flushing?");
+    ShelfStore.flushTitle();
+  },
+
   handleBookChange: function() {
     this.setState({readings: BookStore.allReadings()})
-
   },
 
   componentWillUnmount: function () {
@@ -60,16 +71,13 @@ var UserShelvesPage = React.createClass({
       this.setState({shelfName: "All Books"})
     } else {
       ReadingsApiUtil.getReadingsByStatus(status);
-
-      // var shelfName = status.split("-").map(function(word) {
-      //   return (word[0].toUpperCase() + word.substr(1))
-      // }).join(" ");
       this.setState({shelfName: status})
     }
   },
 
   render: function() {
     var shelves = this.state.shelves
+    var shelfName = this.state.shelfName
     return (
       <div>
         <NavBar/>
@@ -88,11 +96,11 @@ var UserShelvesPage = React.createClass({
               </div>
 
                 {
-                  shelves.map(function(shelf, i){
+                  shelves.map(function(shelf, i) {
                     shelf.name.length >= 27 ?
                       shelfname = shelf.name.substring(0, 27) + "…":
                       shelfname = shelf.name
-                    return <ShelfLabel key={i} name={shelfname}/>
+                    return <ShelfLabel key={i} shelfId={shelf.id} name={shelfname}/>
                   })
                 }
             </ul>

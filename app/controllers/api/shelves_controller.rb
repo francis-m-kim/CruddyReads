@@ -23,6 +23,17 @@ class Api::ShelvesController < ApplicationController
 
   end
 
+  def shelf_readings
+    @shelf = Shelf.find(params[:id])
+    @readings = @shelf.readings
+    render "api/readings/index"
+  end
+
+  def shelf_title
+    @shelf_title = Shelf.find(params[:id]).name
+    render json: [@shelf_title]
+  end
+
   def show
     @shelf = Shelf.find(params[:id])
     render "api/shelves/show"

@@ -80,6 +80,12 @@ var ServerActions = {
       actionType: "RECEIVE_SHELVES",
       shelves: shelves
     })
+  },
+  receiveShelfTitle: function(shelfTitle) {
+    AppDispatcher.dispatch({
+      actionType: "RECEIVE_SHELF_TITLE",
+      shelfTitle: shelfTitle
+    })
   }
 
 };

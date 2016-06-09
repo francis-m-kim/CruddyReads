@@ -5,10 +5,10 @@ var SessionStore = require('../stores/session_store');
 var BookApiUtil = require('../util/book_api_util');
 
 var Shelf = React.createClass({
-
-  // componentWillReceiveProps: function(newProps) {
-  //   BookApiUtil.getUserReadings(SessionStore.currentUser().id);
-  // },
+  componentWillReceiveProps: function(newProps) {
+    // debugger;
+    // ReaderApiUtil.getReader(newProps.params.id);
+  },
 
   render: function() {
     var readings = this.props.readings;
