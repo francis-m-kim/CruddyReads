@@ -30,7 +30,6 @@ var customStyles = {
  }
 };
 
-// <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.state.book.id}/> :
 
 var ReadingStatusButton = React.createClass({
 
@@ -59,7 +58,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-    debugger;
+    // debugger;
   },
 
   handleChange: function() {

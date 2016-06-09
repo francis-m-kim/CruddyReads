@@ -22,12 +22,26 @@ module.exports = {
       type: "POST",
       data: {user: user},
       success: function(user) {
-        // debugger;
+        debugger;
         ServerActions.receiveCurrentUser(user);
         redirect();
       },
       error: function(error) {
-        // debugger;
+        debugger;
+        ServerActions.handleError(error)
+      }
+    });
+  },
+  loginWithTwitter: function(redirect) {
+    $.ajax({
+      url: "/auth/twitter",
+      type: "GET",
+      success: function(user) {
+        ServerActions.receiveCurrentUser(user);
+        debugger;
+        redirect();
+      },
+      error: function(error) {
         ServerActions.handleError(error)
       }
     });
