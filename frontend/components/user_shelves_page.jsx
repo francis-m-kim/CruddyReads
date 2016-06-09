@@ -38,7 +38,6 @@ var UserShelvesPage = React.createClass({
 
   mixins: [ Lifecycle ],
   routerWillLeave(nextLocation) {
-    console.log("Flushing?");
     ShelfStore.flushTitle();
   },
 

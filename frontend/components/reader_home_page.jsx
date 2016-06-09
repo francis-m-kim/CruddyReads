@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 var ReaderApiUtil = require('../util/reader_api_util');
 var ReaderStore = require('../stores/reader_store');
 var ReaderBookList = require('./reader_book_list');

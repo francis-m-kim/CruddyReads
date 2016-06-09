@@ -4,7 +4,7 @@ var ReaderStore = require('../stores/reader_store');
 var ReaderApiUtil = require('../util/reader_api_util');
 
 var NavBar = require('./nav_bar');
-var CommunityItem = require('./community_item')
+var CommunityItem = require('./community_item');
 
 var CommunityPage = React.createClass({
   getInitialState: function() {

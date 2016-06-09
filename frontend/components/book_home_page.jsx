@@ -4,7 +4,7 @@ var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
 
 var BookStore = require('../stores/book_store');
-var SessionStore = require("../stores/session_store")
+var SessionStore = require("../stores/session_store");
 var CurrentUserState = require("../mixins/current_user_state");
 
 var NavBar = require('./nav_bar');

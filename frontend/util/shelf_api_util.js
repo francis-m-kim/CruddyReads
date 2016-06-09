@@ -1,4 +1,4 @@
-var ServerActions = require('../actions/server_actions')
+var ServerActions = require('../actions/server_actions');
 
 module.exports = {
   getShelves: function(userId) {
@@ -19,6 +19,18 @@ module.exports = {
       url: "/api/shelves",
       type: "POST",
       data: {shelf: shelf},
+      success: function(shelf) {
+        ServerActions.receiveShelf(shelf)
+      },
+      error: function(error) {
+        ServerActions.handleError(error)
+      }
+    })
+  },
+  removeShelf: function(shelfId) {
+    $.ajax({
+      url: "/api/shelves/" + shelfId,
+      type: "DELETE",
       success: function(shelf) {
         ServerActions.receiveShelf(shelf)
       },

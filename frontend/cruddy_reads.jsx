@@ -1,7 +1,7 @@
-var React = require("react")
-var ReactDOM = require("react-dom")
+var React = require("react");
+var ReactDOM = require("react-dom");
 
-var SessionStore = require('./stores/session_store')
+var SessionStore = require('./stores/session_store');
 var CurrentUserState = require('./mixins/current_user_state');
 var SessionApiUtil = require('./util/session_api_util');
 // var UserActions = require("./actions/user_actions");

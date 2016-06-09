@@ -10,7 +10,7 @@ var _currentUserHasBeenFetched = false;
 
 SessionStore.login = function(user) {
   _currentUser = user;
-  _currentUserHasBeenFetched = true
+  _currentUserHasBeenFetched = true;
   _errors = null;
 };
 
@@ -22,8 +22,8 @@ SessionStore.logout = function(){
 };
 
 SessionStore.currentUserHasBeenFetched = function() {
-  return _currentUserHasBeenFetched
-}
+  return _currentUserHasBeenFetched;
+};
 
 
 
@@ -64,7 +64,7 @@ SessionStore.__onDispatch = function(payload) {
       SessionStore.setErrors(payload.errors);
       SessionStore.__emitChange();
       break;
-  };
+  }
 };
 
 module.exports = SessionStore;

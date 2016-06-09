@@ -10,7 +10,7 @@ var AddToShelfButton = require('./add_to_shelf_button');
 
 var Modal = require('react-modal');
 
-const customStyles = {
+var customStyles = {
   overlay : {
    position        : 'fixed',
    top             : 0,

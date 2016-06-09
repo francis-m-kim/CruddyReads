@@ -9,30 +9,30 @@ ShelfStore.receiveShelves = function(shelves) {
   _shelves = {};
   shelves.forEach(function(shelf) {
     _shelves[shelf.name] = shelf;
-  })
-}
+  });
+};
 
 ShelfStore.receiveShelf = function(shelf) {
   _shelves[shelf.name] = shelf;
-}
+};
 
 ShelfStore.receiveShelfTitle = function(shelfTitle) {
   _shelfTitle = shelfTitle;
-}
+};
 
 ShelfStore.all = function() {
   return Object.keys(_shelves).map(function(shelfName) {
     return _shelves[shelfName];
-  })
-}
+  });
+};
 
 ShelfStore.shelfTitle = function() {
   return _shelfTitle;
-}
+};
 
 ShelfStore.flushTitle = function() {
   _shelfTitle = "";
-}
+};
 
 ShelfStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
@@ -48,7 +48,7 @@ ShelfStore.__onDispatch = function(payload) {
       ShelfStore.receiveShelfTitle(payload.shelfTitle);
       ShelfStore.__emitChange();
       break;
-  };
+  }
 };
 
 

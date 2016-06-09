@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/dispatcher');
-var ServerActions = require('../actions/server_actions')
+var ServerActions = require('../actions/server_actions');
 
 module.exports = {
   signup: function(user, redirect) {
