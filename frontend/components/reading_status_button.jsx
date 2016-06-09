@@ -30,7 +30,7 @@ var customStyles = {
  }
 };
 
-
+// <ReadingStatusButton user={SessionStore.currentUser()} book_id={this.state.book.id}/> :
 
 var ReadingStatusButton = React.createClass({
 
@@ -38,8 +38,11 @@ var ReadingStatusButton = React.createClass({
 
   getInitialState: function() {
     // readingState = BookStore.findReading(this.props.book_id).status || "Will Read"
-    readingStatus = BookStore.findReading(this.props.book_id).status
-
+    // readingStatus = BookStore.findReading(this.props.book_id).status
+    var readingStatus = "Will Read"
+    if (BookStore.findReading(this.props.book_id) && BookStore.findReading(this.props.book_id).status) {
+      readingStatus = BookStore.findReading(this.props.book_id).status
+    }
     return {reading: {}, readingStatus: readingStatus, shelves: [], review: "", reviewModalIsOpen: false}
   },
 
@@ -65,7 +68,9 @@ var ReadingStatusButton = React.createClass({
       this.setState( {reading: reading} )
       this.reviewAlreadyExists();
     }
-    var status = BookStore.findReading(this.props.book_id).status
+
+    // var status = BookStore.findReading(this.props.book_id).status
+    var status = (BookStore.findReading(this.props.book_id)) ? BookStore.findReading(this.props.book_id).status : undefined
 
     if (status) {
       this.setState( {readingStatus: status} )
