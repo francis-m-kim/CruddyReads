@@ -47,7 +47,7 @@ var ReadingStatusButton = React.createClass({
 
   componentDidMount: function() {
     this.bookListener = BookStore.addListener(this.handleChange);
-    BookApiUtil.getUserReadings(this.props.user.id);
+    // BookApiUtil.getUserReadings(this.props.user.id);
 
     this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
     ShelfApiUtil.getShelves(SessionStore.currentUser().id);
