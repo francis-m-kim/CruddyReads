@@ -35,10 +35,11 @@ var AddToShelfButton = React.createClass({
     var reading = this.props.reading
     return (
       <li>
-        <label >
-
-          <input type="checkbox" checked={this.state.included} onChange={this.createDestroy}/>
-          {shelfName}
+        <label>
+          <div className="add-to-shelf group">
+            <input className="add-to-shelf-box" type="checkbox" checked={this.state.included} onChange={this.createDestroy}/>
+            <div className="shelf-name">{shelfName}</div>
+          </div>
         </label>
 
       </li>

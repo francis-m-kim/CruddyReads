@@ -1,0 +1,42 @@
+.shelf-header {
+  font-size: 23px;
+  margin-bottom: 2.5px;
+}
+
+.shelf-item {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgrey;
+}
+
+.item-image-column {
+  float: left;
+}
+.item-info-column {
+  float: left;
+  margin-left: 20px;
+  width: 400px;
+}
+
+
+.item-image {
+  width: 125px;
+}
+
+.item-title{
+  font-size: 16px;
+}
+.item-author{
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+.item-author:before{
+  content: "by "
+}
+.item-review{
+  font-size: 12px;
+}
+
+.float-status-buttons {
+  float: left;
+}

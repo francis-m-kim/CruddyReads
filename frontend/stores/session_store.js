@@ -11,8 +11,8 @@ var _currentUserHasBeenFetched = false;
 SessionStore.login = function(user) {
   _currentUser = user;
   _currentUserHasBeenFetched = true;
-  _errors = null;
 };
+
 
 
 SessionStore.logout = function(){

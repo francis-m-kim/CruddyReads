@@ -32,7 +32,7 @@ var LandingPage = React.createClass({
           </nav>
 
           <SignUpForm/>
-          <a href="/auth/twitter/"> LOGIN WITH TWITTER </a>
+
         </div>
       </div>
     );

@@ -14,21 +14,20 @@ var NavBar = React.createClass({
   },
 
   render: function() {
+    var user = this.state.currentUser
+    var mycrud = (user) ?
+      <li className="hover-hand" onClick = {this.goTo.bind(this, "mycrud")}>My CRUD</li> :
+        ""
     return (
       <nav className="main-nav group">
         <h1>CRUDDYREADS</h1>
         <ul className="links">
-          <li onClick = {this.goTo.bind(this, "mycrud")}>My CRUD</li>
-          <li onClick = {this.goTo.bind(this, "browse")}>Browse</li>
-          <li onClick = {this.goTo.bind(this, "community")}>Community</li>
-        </ul>
-
-        <input className="search" type="text" placeholder="Find CRUD"/>
-
-        <ul className="buttons">
-          <li>messages</li>
-          <li>friends</li>
-          <li><Link to={"users/" + this.state.currentUser.id}>me</Link></li>
+          {mycrud}
+          <li className="hover-hand" onClick = {this.goTo.bind(this, "browse")}>Browse</li>
+          <li className="hover-hand" onClick = {this.goTo.bind(this, "community")}>Community</li>
+          <li className="hover-hand" onClick = {this.goTo.bind(this, "users/" + this.state.currentUser.id)}>
+            {this.state.currentUser.username}
+          </li>
         </ul>
         <LogOutButton/>
       </nav>

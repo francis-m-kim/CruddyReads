@@ -1,16 +1,13 @@
 .reader-info {
-  margin: 15px 0px;;
-  /*background: rgb(255, 191, 68);*/
+  margin: 15px 0px;
 }
 
 .reader-info img {
   float:left;
   width: 200px;
-  /*border: dotted 2px orange;
-  border-radius: 75px;*/
 }
 
-.reader-details h1, li {
+.reader-details h1, .reader-details li {
     margin-bottom: 3px;
 }
 

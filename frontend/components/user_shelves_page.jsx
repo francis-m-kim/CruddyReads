@@ -88,10 +88,10 @@ var UserShelvesPage = React.createClass({
             <ul className="labels">
               <div className="status-labels">
 
-                  <li onClick={this.getReadingsByStatus.bind(this, "All")}>All Books</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "Have Read")}>Have Read</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "Reading Now")}>Reading Now</li>
-                  <li onClick={this.getReadingsByStatus.bind(this, "Will Read")}>Will Read</li>
+                  <li className="hover-hand" onClick={this.getReadingsByStatus.bind(this, "All")}>All Books</li>
+                  <li className="hover-hand" onClick={this.getReadingsByStatus.bind(this, "Have Read")}>Have Read</li>
+                  <li className="hover-hand" onClick={this.getReadingsByStatus.bind(this, "Reading Now")}>Reading Now</li>
+                  <li className="hover-hand" onClick={this.getReadingsByStatus.bind(this, "Will Read")}>Will Read</li>
 
               </div>
 

@@ -1,21 +1,60 @@
+.status-buttons {
+
+  width: 190px;
+  /*margin: 5px 0 0 5px;*/
+  background: red;
+}
+
+.fix-width {
+  margin-left: calc(10%);
+}
+
+.current-reading-status, .dropdown-button {
+  font-size: 13px;
+  padding: 5px;
+}
+
+.current-reading-status{
+  float: left;
+  width: calc(75%);
+  background: rgb(252, 215, 146);
+}
+
+
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-.reading-status{
-  float: left;
+.dropdown-button {
+  color: white;
+  background: green;
 }
 
-.drop-content {
+
+.dropdown-content {
+  background: yellow;
   display: none;
   position: absolute;
+  left: -100px;
   min-width: 100px;
 }
-.drop-content {
-  color: black;
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
-.dropdown:hover .drop-content {
-  display: block;
+.status-button {
+  float: right;
+}
+
+.add-to-shelf {
+  float: right;
+}
+
+.add-to-shelf-box {
+  float: left;
+}
+.review-button {
+  float: right;
 }

@@ -22,9 +22,11 @@ var ShelfLabel = React.createClass({
   },
   render: function() {
     return (
-      <li onClick={this.changeShelf} className="shelf-label">
-        {this.props.name}
-        <button onClick={this.removeShelf}>DELETE THIS</button>
+      <li className="shelf-label">
+        <div className="group">
+          <div className="shelf-label-name hover-hand" onClick={this.changeShelf}> {this.props.name}</div>
+          <button className="delete-shelf hover-hand" onClick={this.removeShelf}>✖</button>
+        </div>
       </li>
     );
   }

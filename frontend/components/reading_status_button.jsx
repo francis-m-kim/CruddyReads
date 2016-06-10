@@ -152,7 +152,7 @@ var ReadingStatusButton = React.createClass({
       <div>
         {
           statuses.map(function(status, i){
-            return <button key={i} onClick={this.updateStatus.bind(this, status)}>{status}</button>
+            return <button className="status-button hover-hand" key={i} onClick={this.updateStatus.bind(this, status)}>{status}</button>
           }.bind(this))
         }
         <ul>
@@ -174,15 +174,17 @@ var ReadingStatusButton = React.createClass({
       return true;
     }
     var reading = this.state.reading;
-    var reviewButton = isEmpty(reading) ? "" : <button onClick={this.openModal}>Add/Edit Review</button>
+    var reviewButton = isEmpty(reading) ? "" : <button className="review-button" onClick={this.openModal}>Add/Edit Review</button>
 
     return (
 
-      <div className="group">
-        <button className="reading-status" onClick={this.initialStatusClick}><em>{this.state.readingStatus}</em></button>
+      <div className="group status-buttons">
+        <div className="fix-width">
+          <button className="current-reading-status hover-hand" onClick={this.initialStatusClick}>{this.state.readingStatus}</button>
+        </div>
         <div className="dropdown">
-          <button className="drop-button">&darr;</button>
-          <div className="drop-content">
+          <button className="dropdown-button hover-hand">&#x21E9;</button>
+          <div className="dropdown-content">
 
             {this.otherButtons()}
 
@@ -194,16 +196,23 @@ var ReadingStatusButton = React.createClass({
           onRequestClose={this.closeModal}
           style={customStyles} >
 
-          <button onClick={this.closeModal}>close</button>
 
-          <form>
-            <img src={reading.image_url} width="100px"/>
-            Your review of <br/>
-            {reading.title}
-            {reading.author}
-            What did you think? <br/>
-            <textarea name="textarea" onChange={this.updateReview} value={this.state.review} placeholder="Enter your review." rows="10" cols="50" />
-            <input type="submit" onClick={this.addReview} value="Save"/>
+
+          <form className="group">
+            <div className="thumbnail-column">
+              <img src={reading.image_url} width="100px"/>
+            </div>
+            <div className="text-column">
+              Your review of
+            <div className="book-reviewed-title">{reading.title}</div>
+            <div className="book-reviewed-author">{reading.author}</div>
+            <div className="your-opinion">What did you think?</div>
+            <textarea className="review-text-box" name="textarea" onChange={this.updateReview} value={this.state.review} placeholder="Enter your review." rows="10" cols="50" />
+
+
+            <input className="save-button hover-hand" type="submit" onClick={this.addReview} value="Save"/>
+
+            </div>
           </form>
         </Modal>
 

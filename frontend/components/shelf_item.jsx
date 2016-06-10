@@ -11,12 +11,23 @@ var ShelfItem = React.createClass({
   render: function() {
     var reading = this.props.reading;
     return (
-      <div>
-        <Link to={"books/" + reading.id}><img src={reading.image_url} width="100"/></Link>
-        <li><em>{reading.title}</em></li>
-        <li>{reading.author}</li>
-        <li>{reading.review}</li>
-        <StatusButtons book_id={reading.id} user={SessionStore.currentUser()}/>
+      <div className="shelf-item group">
+
+        <div className="item-image-column">
+          <Link to={"books/" + reading.id}>
+            <img className="item-image" src={reading.image_url}/>
+          </Link>
+        </div>
+
+        <div className="item-info-column">
+          <li className="item-title">{reading.title}</li>
+          <li className="item-author">{reading.author}</li>
+          <li className="item-review">{reading.review}</li>
+        </div>
+
+        <div className="float-status-buttons">
+          <StatusButtons book_id={reading.id} user={SessionStore.currentUser()}/>
+        </div>
       </div>
     );
   }

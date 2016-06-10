@@ -22,8 +22,12 @@
 
 .labels {
   border-bottom: 1px solid lightgrey;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  /*padding-bottom: 5px;*/
+}
+
+.shelf-label {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 
@@ -31,26 +35,19 @@
   font-weight: bold;
   border-bottom: 1px solid lightgrey;
 
-  margin-bottom: 5px;
-  letter-spacing: .1em;
+  letter-spacing: .075em;
 }
 
 .status-labels li {
-  padding-bottom: 3px;
+  padding-bottom: 2px;
 }
 
-.shelf-label {
-  margin-bottom: 4px;
-}
 
 .shelf-info {
   float: left;
   margin-left: 30px;
 }
 
-.shelf-info h1 {
-  font-size: 23px;
-}
 
 .shelves-label-column input{
   width: 200px;
@@ -58,5 +55,18 @@
 }
 
 .shelves-label-column em {
-  margin: 3px 0;
+  margin: 6px 0 3px;
+}
+
+
+
+
+.shelf-label-name {
+  float: left;
+}
+
+.delete-shelf {
+  float:right;
+  background: white;
+  color: black;
 }

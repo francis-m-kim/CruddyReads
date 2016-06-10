@@ -10,23 +10,8 @@
   width: 200px;
 }
 
-/*.status-buttons {
-  margin-top:10px;
-  margin-left:45px;
-}
 
-.status-buttons *{
-  display: inline;
-  background: orange;
-  padding: 5px;
-}
-
-.reading-status{
-  float: left;
-  border-right: 1px solid white;
-}*/
-
-.drop-down-arrow {
+/*.drop-down-arrow {
   float: left;
 }
 
@@ -37,7 +22,7 @@
 .drop-down-arrow:hover .reading-options {
   display: block;
   margin-left: -50px;
-}
+}*/
 
 
 .book-details {

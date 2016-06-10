@@ -1,0 +1,29 @@
+.browse-item {
+  margin-top: 10px;
+}
+
+.browse-item .link {
+  float: left;
+}
+
+.browse-item img {
+  width: 200px;
+}
+
+.browse-item .title {
+  font-size: 20px;
+}
+
+.author {
+  padding-bottom: 2px;
+}
+.author:before {
+  content: "by ";
+}
+
+.info {
+  float: left;
+  margin-left: 30px;
+  text-align: justify;
+  width: 500px;
+}
