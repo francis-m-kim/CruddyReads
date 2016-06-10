@@ -44,6 +44,7 @@ var UserShelvesPage = React.createClass({
 
   handleBookChange: function() {
     this.setState({readings: BookStore.allReadings()})
+    console.log(this.state)
   },
 
   componentWillUnmount: function () {

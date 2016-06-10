@@ -35,7 +35,6 @@ module.exports = {
       type: "GET",
       data: {status: status},
       success: function(readings) {
-
         ServerActions.receiveReadings(readings)
       },
       error: function(error) {
