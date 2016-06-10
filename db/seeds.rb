@@ -57,10 +57,10 @@ b7.save
 # file = File.open("app/assets/images/imagename.jpeg")
 # b_.image = file
 # b_.save
-
-("aaa".."ape").each do |name|
-  User.create(username: name, email: name + "@crud.com", password: "password")
-end
+#
+# ("aaa".."ape").each do |name|
+#   User.create(username: name, email: name + "@crud.com", password: "password")
+# end
 
 u = User.create(username: "Guest", email: "guestaccount@crud.com", password: "password")
 
