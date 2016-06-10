@@ -7,7 +7,7 @@ var CurrentUserState = require("../mixins/current_user_state");
 var BookStore = require('../stores/book_store');
 var ShelfStore = require('../stores/shelf_store');
 var AddToShelfButton = require('./add_to_shelf_button');
-
+var Lifecycle = require('react-router').Lifecycle;
 var Modal = require('react-modal');
 
 var customStyles = {
@@ -47,7 +47,7 @@ var ReadingStatusButton = React.createClass({
 
   componentDidMount: function() {
     this.bookListener = BookStore.addListener(this.handleChange);
-    // BookApiUtil.getUserReadings(this.props.user.id);
+    BookApiUtil.getUserReadings(this.props.user.id);
 
     this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
     ShelfApiUtil.getShelves(SessionStore.currentUser().id);

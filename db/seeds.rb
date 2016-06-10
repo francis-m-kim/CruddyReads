@@ -65,8 +65,8 @@ end
 u = User.create(username: "Guest", email: "guestaccount@crud.com", password: "password")
 
 
-r1 = Reading.create(user_id: u.id, book_id: b1.id, review: "Insufferably, intolerably, incommunicably long.", status: "Have Read")
-r2 = Reading.create(user_id: u.id, book_id: b2.id, status: "Will Read")
+r1 = Reading.create(user_id: u.id, book_id: b2.id, review: "Insufferably, intolerably, incommunicably long.", status: "Have Read")
+r2 = Reading.create(user_id: u.id, book_id: b3.id, status: "Will Read")
 
 
 
