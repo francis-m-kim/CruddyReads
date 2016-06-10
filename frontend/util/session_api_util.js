@@ -3,16 +3,18 @@ var ServerActions = require('../actions/server_actions');
 
 module.exports = {
   signup: function(user, redirect) {
+
     $.ajax({
       url: "/api/users",
       type: "POST",
       data: {user: user},
       success: function(user) {
+
         ServerActions.receiveCurrentUser(user);
         redirect();
       },
       error: function(error) {
-        ServerActions.handleError(error)
+        ServerActions.handleSignUpError(error)
       }
     });
   },
@@ -22,13 +24,13 @@ module.exports = {
       type: "POST",
       data: {user: user},
       success: function(user) {
-        debugger;
+
         ServerActions.receiveCurrentUser(user);
         redirect();
       },
       error: function(error) {
-        debugger;
-        ServerActions.handleError(error)
+
+        ServerActions.handleSignInError(error)
       }
     });
   },

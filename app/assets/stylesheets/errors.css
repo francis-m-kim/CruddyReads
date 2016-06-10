@@ -1,0 +1,25 @@
+.errors:before {
+  content: "Let me help you with that. "
+}
+
+.errors {
+  font-size: 120px;
+  color: red;
+  text-align: center;
+}
+
+.error {
+  display: inline;
+}
+.error:after {
+  content: ". "
+}
+
+
+.login-errors {
+  font-size: 10px;
+}
+
+.login-error{
+
+}

@@ -9,10 +9,23 @@ var ServerActions = {
     })
   },
 
+  handleSignInError: function(error) {
+    AppDispatcher.dispatch({
+      actionType: "SIGN_IN_ERROR",
+      errors: error.responseJSON
+    })
+  },
   handleError: function(error) {
+    debugger;
     AppDispatcher.dispatch({
       actionType: "ERROR",
-      errors: error.responseJSON.errors
+      errors: error.responseJSON
+    })
+  },
+  handleSignUpError: function(error) {
+    AppDispatcher.dispatch({
+      actionType: "SIGN_UP_ERROR",
+      errors: error.responseJSON
     })
   },
 

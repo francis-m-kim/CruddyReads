@@ -2,11 +2,24 @@ var React = require("react");
 var UserActions = require("../actions/user_actions");
 var hashHistory = require('react-router').hashHistory;
 var CurrentUserState = require("../mixins/current_user_state");
+var SessionStore = require("../stores/session_store")
+var ErrorDisplay = require('./error_display');
 
 var SignUpForm = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
-    return {username:"", email:"", password: ""};
+    return {username:"", email:"", password: "", errors: []};
+  },
+
+  componentDidMount: function() {
+    this.errorListener = SessionStore.addListener(this.handleErrors);
+  },
+  handleErrors: function() {
+    this.setState( {errors: SessionStore.signUpErrors()} )
+  },
+
+  componentWillUnmount: function () {
+    this.errorListener.remove();
   },
 
   updateUsername: function(event) {
@@ -26,7 +39,7 @@ var SignUpForm = React.createClass({
       password: this.state.password
     }
     UserActions.signup(user, function() {
-      hashHistory.push("users/" + this.state.currentUser.id);
+      hashHistory.push("browse");
 
     }.bind(this));
     this.setState({username:"", email:"", password: ""});
@@ -36,19 +49,19 @@ var SignUpForm = React.createClass({
   loginAsGuest: function(event) {
     event.preventDefault();
     var user = {
-      email: "Guest",
+      email: "guestaccount@crud.com",
       password: "password"
     }
     UserActions.login(user, function() {
-      hashHistory.push("mycrud");
+      hashHistory.push("browse");
 
     }.bind(this));
 
   },
 
   render: function() {
+    var errors = (this.state.errors) ? <ErrorDisplay errors={this.state.errors}/> : ""
     return (
-
       <div id="signup-form">
         <header>New here? Create a free account!</header>
 
@@ -69,6 +82,7 @@ var SignUpForm = React.createClass({
 
           </div>
         </form>
+        {errors}
       </div>
     );
   }

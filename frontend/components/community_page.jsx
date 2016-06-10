@@ -28,7 +28,7 @@ var CommunityPage = React.createClass({
     return (
       <div>
         <NavBar/>
-        <ul>
+        <ul className="community-items">
           {
             readers.map(function(reader, i) {
               return <CommunityItem key={i} reader={reader}/>

@@ -55,13 +55,14 @@ b6.save
 # b_.image = file
 # b_.save
 
+# ("aaa".."ape").each do |name|
+#   User.create(username: name, email: name + "@crud.com", password: "password")
+# end
+
+u = User.create(username: "Guest", email: "guestaccount@crud.com", password: "password")
 
 
-u = User.create(username: "Guest", email: "Guest", password: "password")
-
-
-r1 = Reading.create(user_id: u.id, book_id: b1.id, review: "It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long. It was long.", status: "Have Read")
-
+r1 = Reading.create(user_id: u.id, book_id: b1.id, review: "Insufferably, intolerably, incommunicably long.", status: "Have Read")
 r2 = Reading.create(user_id: u.id, book_id: b2.id, status: "Will Read")
 
 

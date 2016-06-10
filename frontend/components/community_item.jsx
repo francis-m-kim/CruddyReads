@@ -9,9 +9,9 @@ var CommunityItem = React.createClass({
   render: function() {
     var reader = this.props.reader;
     return (
-      <div>
-        <Link to={"users/" + reader.id}><img width="50px" src={reader.image_url}/></Link>
-        {reader.username}
+      <div className="community-item">
+        <Link to={"users/" + reader.id}><img className="community-item-image" src={reader.image_url}/></Link>
+        <div className="community-username">{reader.username}</div>
       </div>
     );
   }

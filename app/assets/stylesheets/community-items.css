@@ -1,0 +1,15 @@
+.community-items{
+  margin-top: 10px;
+}
+.community-item{
+  float: left;
+  border:1px solid orange;
+}
+.community-username{
+  border: 1px solid red;
+  text-align: center;
+}
+
+.community-item-image{
+  width: 58.3px;
+}

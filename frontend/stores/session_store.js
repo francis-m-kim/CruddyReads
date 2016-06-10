@@ -17,7 +17,7 @@ SessionStore.login = function(user) {
 
 SessionStore.logout = function(){
   _currentUser = {};
-  _errors = null;
+  _errors = {};
   _currentUserHasBeenFetched = true;
 };
 
@@ -41,13 +41,26 @@ SessionStore.isUserLoggedIn = function () {
 
 
 SessionStore.setErrors = function(errors){
+
   _errors = errors;
+};
+SessionStore.setSignUpErrors = function(errors){
+  _errors['signup'] = errors
+};
+SessionStore.setSignInErrors = function(errors){
+  _errors['signin'] = errors
 };
 
 SessionStore.errors = function(){
-  if (_errors){
-    return [].slice.call(_errors);
-  }
+
+  return _errors;
+};
+
+SessionStore.signUpErrors = function(){
+  return _errors['signup'];
+};
+SessionStore.signInErrors = function(){
+  return _errors['signin'];
 };
 
 SessionStore.__onDispatch = function(payload) {
@@ -60,8 +73,12 @@ SessionStore.__onDispatch = function(payload) {
       SessionStore.logout();
       SessionStore.__emitChange();
       break;
-    case "ERROR":
-      SessionStore.setErrors(payload.errors);
+    case "SIGN_UP_ERROR":
+      SessionStore.setSignUpErrors(payload.errors);
+      SessionStore.__emitChange();
+      break;
+    case "SIGN_IN_ERROR":
+      SessionStore.setSignInErrors(payload.errors);
       SessionStore.__emitChange();
       break;
   }
