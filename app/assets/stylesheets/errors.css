@@ -15,9 +15,14 @@
   content: ". "
 }
 
-
+.fix-position {
+  position: relative;
+}
 .login-errors {
   font-size: 10px;
+  position: absolute;
+  left: -114px;
+  top: 25px;
 }
 
 .login-error{

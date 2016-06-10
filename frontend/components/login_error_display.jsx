@@ -5,7 +5,7 @@ var LoginErrorDisplay = React.createClass({
 
   render: function() {
     return (
-      <div className="float-errors">
+      <div className="fix-position">
         <ul className="login-errors">
           {
             this.props.errors.map(function(error, i){
