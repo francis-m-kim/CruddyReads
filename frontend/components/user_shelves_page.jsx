@@ -111,7 +111,7 @@ var UserShelvesPage = React.createClass({
             <input type="submit" onClick={this.handleSubmit}/>
 
           </div>
-          <Shelf shelfname={this.state.shelfName} readings={this.state.readings}/>
+          <Shelf shelfName={this.state.shelfName} readings={this.state.readings}/>
         </div>
 
       </div>

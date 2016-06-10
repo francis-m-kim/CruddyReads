@@ -16,7 +16,7 @@ var Shelf = React.createClass({
     if (readings) {
       return (
         <div className="shelf-info">
-          <h1 className="shelf-header">{this.props.shelfname}</h1>
+          <h1 className="shelf-header">{this.props.shelfName}</h1>
           <ul>
             {
               readings.map(function(reading, i) {

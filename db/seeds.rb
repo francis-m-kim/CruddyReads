@@ -1,27 +1,20 @@
 
-# Author.create(first_name: , last_name: )
+
+
+
 a1 = Author.create(first_name: "Leo", last_name: "Tolstoy")
-a2 = Author.create(first_name: "Charles", last_name: "Dickens")
-a3 = Author.create(first_name: "Leszek", last_name: "Kołakowski" )
-a4 = Author.create(first_name: "Evelyn", last_name: "Waugh" )
-
-
-
-Book.create(title: "War and Peace", author_id: a1.id, isbn: "0140447938", description: "Tolstoy's epic masterpiece intertwines the lives of private and public individuals during the time of the Napoleonic wars and the French invasion of Russia. The fortunes of the Rostovs and the Bolkonskys, of Pierre, Natasha, and Andrei, are intimately connected with the national history that is played out in parallel with their lives. Balls and soirees alternate with councils of war and the machinations of statesmen and generals, scenes of violent battles with everyday human passions in a work whose extraordinary imaginative power has never been surpassed. \n\nThe prodigious cast of characters, seem to act and move as if connected by threads of destiny as the novel relentlessly questions ideas of free will, fate, and providence. Yet Tolstoy's portrayal of marital relations and scenes of domesticity is as truthful and poignant as the grand themes that underlie them.")
-b1 = Book.find_by(title: "War and Peace")
-b1.image = "http://s3.amazonaws.com/cruddyreads-dev/books/images/000/000/001/original/war_and_peace.jpeg?1465400127"
-b1.save
-
-Book.create(title: "Anna Karenina", author_id: a2.id, isbn: "0143035002", description: "Leo Tolstoy’s classic story of doomed love is one of the most admired novels in world literature. Generations of readers have been enthralled by his magnificent heroine, the unhappily married Anna Karenina, and her tragic affair with dashing Count Vronsky.\n\nIn their world frivolous liaisons are commonplace, but Anna and Vronsky’s consuming passion makes them a target for scorn and leads to Anna’s increasing isolation. The heartbreaking trajectory of their relationship contrasts sharply with the colorful swirl of friends and family members who surround them, especially the newlyweds Kitty and Levin, who forge a touching bond as they struggle to make a life together. Anna Karenina is a masterpiece not only because of the unforgettable woman at its core and the stark drama of her fate, but also because it explores and illuminates the deepest questions about how to live a fulfilled life.")
+Book.create(title: "Anna Karenina", author_id: a1.id, isbn: "0143035002", description: "Leo Tolstoy’s classic story of doomed love is one of the most admired novels in world literature. Generations of readers have been enthralled by his magnificent heroine, the unhappily married Anna Karenina, and her tragic affair with dashing Count Vronsky.\n\nIn their world frivolous liaisons are commonplace, but Anna and Vronsky’s consuming passion makes them a target for scorn and leads to Anna’s increasing isolation. The heartbreaking trajectory of their relationship contrasts sharply with the colorful swirl of friends and family members who surround them, especially the newlyweds Kitty and Levin, who forge a touching bond as they struggle to make a life together. Anna Karenina is a masterpiece not only because of the unforgettable woman at its core and the stark drama of her fate, but also because it explores and illuminates the deepest questions about how to live a fulfilled life.")
 b2 = Book.find_by(title: "Anna Karenina")
 b2.image = "http://s3.amazonaws.com/cruddyreads-dev/books/images/000/000/002/original/anna_karenina.png?1465399989"
 b2.save
 
-Book.create(title: "A Tale of Two Cities", author_id: a3.id, isbn: "0486406512", description: "After eighteen years as a political prisoner in the Bastille, the ageing Doctor Manette is finally released and reunited with his daughter in England. There the lives of two very different men, Charles Darnay, an exiled French aristocrat, and Sydney Carton, a disreputable but brilliant English lawyer, become enmeshed through their love for Lucie Manette. From the tranquil roads of London, they are drawn against their will to the vengeful, bloodstained streets of Paris at the height of the Reign of Terror, and they soon fall under the lethal shadow of La Guillotine.")
+a2 = Author.create(first_name: "Charles", last_name: "Dickens")
+Book.create(title: "A Tale of Two Cities", author_id: a2.id, isbn: "0486406512", description: "After eighteen years as a political prisoner in the Bastille, the ageing Doctor Manette is finally released and reunited with his daughter in England. There the lives of two very different men, Charles Darnay, an exiled French aristocrat, and Sydney Carton, a disreputable but brilliant English lawyer, become enmeshed through their love for Lucie Manette. From the tranquil roads of London, they are drawn against their will to the vengeful, bloodstained streets of Paris at the height of the Reign of Terror, and they soon fall under the lethal shadow of La Guillotine.")
 b3 = Book.find_by(title: "A Tale of Two Cities")
 b3.image = "http://s3.amazonaws.com/cruddyreads-dev/books/images/000/000/003/original/tale_of_two_cities.jpeg?1465400074"
 b3.save
 
+a3 = Author.create(first_name: "Leszek", last_name: "Kołakowski" )
 b4 = Book.create(title: "Metaphysical Horror", author_id: a3.id, description: %Q[For over a century, philosophers have argued that philosophy is impossible or useless, or both. Although the basic notion dates back to the days of Socrates, there is still heated disagreement about the nature of truth, reality, knowledge, the good, and God. This may make little practical difference to our lives, but it leaves us with a feeling of radical uncertainty, a feeling described by Kolakowski as "metaphysical horror." "The horror is this," he says, "if nothing truly exists except the Absolute, the Absolute is nothing; if nothing truly exists except myself, I am nothing." The aim of this book, for Kolakowski, is finding a way out of this seeming dead end.
 
 In a trenchant analysis that serves as an introduction to nearly all of Western philosophy, Kolakowski confronts these dilemmas head on through examinations of several prominent philosophers including Descartes, Spinoza, Husserl, and many of the Neo-Platonists. He finds that philosophy may not provide definitive answers to the fundamental questions, yet the quest itself transforms our lives. It may undermine most of our certainties, yet it still leaves room for our spiritual yearnings and religious beliefs.
@@ -31,6 +24,8 @@ file = File.open("app/assets/images/mhorror.jpeg")
 b4.image = file
 b4.save
 
+
+a4 = Author.create(first_name: "Evelyn", last_name: "Waugh" )
 b5 = Book.create(title: "Decline and Fall" , author_id: a4.id, description: %Q[Expelled from Oxford for indecent behaviour, Paul Pennyfeather is oddly unsurprised to find himself qualifying for the position of schoolmaster at Llanabba Castle. His colleagues are an assortment of misfits, including Prendy (plagued by doubts) and captain Grimes, who is always in the soup (or just plain drunk). Then Sports Day arrives, and with it the delectable Margot Beste-Chetwynde, floating on a scented breeze. As the farce unfolds and the young run riot, no one is safe, least of all Paul. Taking its title from Edward Gibbon's Decline and Fall of the Roman Empire, Evelyn Waugh's first, funniest novel immediately caught the ear of the public with his account of an ingénu abroad in the decadent confusion of 1920s high society.])
 file = File.open("app/assets/images/decline.jpeg")
 b5.image = file
@@ -63,9 +58,9 @@ b7.save
 # b_.image = file
 # b_.save
 
-# ("aaa".."ape").each do |name|
-#   User.create(username: name, email: name + "@crud.com", password: "password")
-# end
+("aaa".."ape").each do |name|
+  User.create(username: name, email: name + "@crud.com", password: "password")
+end
 
 u = User.create(username: "Guest", email: "guestaccount@crud.com", password: "password")
 
