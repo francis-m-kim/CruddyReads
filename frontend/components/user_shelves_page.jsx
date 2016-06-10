@@ -97,9 +97,13 @@ var UserShelvesPage = React.createClass({
 
                 {
                   shelves.map(function(shelf, i) {
-                    shelf.name.length >= 27 ?
+                    var shelfname;
+                    if(shelf.name.length >= 27) {
                       shelfname = shelf.name.substring(0, 27) + "…":
+                    } else {
                       shelfname = shelf.name
+                    }
+
                     return <ShelfLabel key={i} shelfId={shelf.id} name={shelfname}/>
                   })
                 }
