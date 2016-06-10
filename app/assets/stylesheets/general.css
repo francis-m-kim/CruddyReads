@@ -11,6 +11,7 @@
   color: black;
 }
 
+
 script {
   display: none;
 }
@@ -47,14 +48,16 @@ input:not([type="submit"]):focus {
 }
 
 em {
-  display:inline-block;
+  display: block;
   padding: 3px 5px;
   font-style: normal;
   font-weight: bold;
   background: rgb(252, 215, 146);
 }
 
-
+span{
+  font-weight: bold;
+}
 
 .hover-hand {
   cursor: pointer; cursor: hand;

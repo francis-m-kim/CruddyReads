@@ -27,13 +27,13 @@ var ReaderBookList = React.createClass({
   },
 
   render: function() {
-    // debugger;
+    var username = this.props.username
     return (
       <div className="book-list">
         <ul>
           {
             this.state.books.map(function(book, i){
-              return( <BookListItem key={i} book={book}/> )
+              return( <BookListItem username={username} key={i} book={book}/> )
             })
           }
         </ul>

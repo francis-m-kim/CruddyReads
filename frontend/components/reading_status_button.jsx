@@ -38,7 +38,7 @@ var ReadingStatusButton = React.createClass({
   getInitialState: function() {
     // readingState = BookStore.findReading(this.props.book_id).status || "Will Read"
     // readingStatus = BookStore.findReading(this.props.book_id).status
-    var readingStatus = "Will Read"
+    var readingStatus = "Will Read";
     if (BookStore.findReading(this.props.book_id) && BookStore.findReading(this.props.book_id).status) {
       readingStatus = BookStore.findReading(this.props.book_id).status
     }
@@ -47,7 +47,7 @@ var ReadingStatusButton = React.createClass({
 
   componentDidMount: function() {
     this.bookListener = BookStore.addListener(this.handleChange);
-    // BookApiUtil.getUserReadings(this.props.user.id);
+    BookApiUtil.getUserReadings(this.props.user.id);
 
     this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
     ShelfApiUtil.getShelves(SessionStore.currentUser().id);
@@ -58,7 +58,7 @@ var ReadingStatusButton = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-    // debugger;
+
   },
 
   handleChange: function() {

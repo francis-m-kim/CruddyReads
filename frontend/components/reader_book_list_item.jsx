@@ -7,6 +7,12 @@ var ReaderBookListItem = React.createClass({
 
   render: function() {
     var book = this.props.book;
+    var nameSpan;
+    if (book.review) {
+      nameSpan = <span>{this.props.username} says:</span>
+    } else {
+      nameSpan = <span>{this.props.username} hasn't written anything yet.</span>
+    }
     return (
       <div className="book-list-item group">
         <li>
@@ -14,7 +20,8 @@ var ReaderBookListItem = React.createClass({
           <div className="book-list-item-details">
             <div className="title">{book.title}</div>
             <div className="author">{book.author}</div>
-            <div className="review">{book.review}</div>
+            {nameSpan}
+            <div className="review"> {book.review}</div>
           </div>
         </li>
 

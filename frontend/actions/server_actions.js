@@ -16,7 +16,6 @@ var ServerActions = {
     })
   },
   handleError: function(error) {
-    debugger;
     AppDispatcher.dispatch({
       actionType: "ERROR",
       errors: error.responseJSON

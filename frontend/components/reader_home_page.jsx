@@ -54,7 +54,7 @@ var ReaderHomePage = React.createClass({
               </ul>
             </div>
           </div>
-          <ReaderBookList userId={userId}/>
+          <ReaderBookList username={username} userId={userId}/>
         </div>
       );
     } else {

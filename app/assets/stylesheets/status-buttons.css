@@ -1,23 +1,28 @@
 .status-buttons {
-
-  width: 190px;
-  /*margin: 5px 0 0 5px;*/
-  background: red;
+  margin-top: 12px;
+  width: 185px;
+  float: left;
+  clear: left;
 }
 
 .fix-width {
-  margin-left: calc(10%);
 }
 
 .current-reading-status, .dropdown-button {
-  font-size: 13px;
-  padding: 5px;
+  font-size: 14px;
+  padding: 7px;
 }
 
 .current-reading-status{
   float: left;
+  margin-left: 18px;
   width: calc(75%);
-  background: rgb(252, 215, 146);
+
+  background: #ffeeb0;
+}
+
+.current-reading-status:hover{
+  background: #fcd87c;
 }
 
 
@@ -28,16 +33,22 @@
 
 .dropdown-button {
   color: white;
-  background: green;
+  background: #409D69;
+}
+
+.dropdown-button:hover {
+  color: white;
+  background: #1e7c47;
 }
 
 
 .dropdown-content {
-  background: yellow;
+  background: white;
+  border: 1px solid lightgrey;
   display: none;
   position: absolute;
-  left: -100px;
-  min-width: 100px;
+  left: -137px;
+  min-width: 161px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -45,16 +56,30 @@
 }
 
 .status-button {
-  float: right;
+  background: white;
+  color: black;
+  padding: 3px;
 }
 
 .add-to-shelf {
-  float: right;
+  padding: 3px;
 }
 
 .add-to-shelf-box {
-  float: left;
+  float:left;
+  margin: 3px;
 }
 .review-button {
-  float: right;
+  padding: 3px 34px;
+  margin: auto;
+  background: #fcd05f;
+}
+
+.review-button:hover {
+  background: #FDD893;
+}
+
+.review-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px #fcd05f;
 }
