@@ -3,13 +3,13 @@
 CruddyReads is a web application for keeping track of what books you and others are reading, sharing reviews, and organizing your books into virtual shelves. It was inspired by Goodreads and is built on a foundation of Ruby on Rails with React.js on the frontend.
 
 ###Landing Page:
-[![Landing](./docs/images/Cruddy-Landing.png)]
+![Landing](./docs/images/Cruddy-Landing.png)
 ###Browse Books:
-[![Browse Books](./docs/images/Cruddy-Browse-Books.png)]
+![Browse Books](./docs/images/Cruddy-Browse-Books.png)
 ###Add Reviews
-[![Add Reviews](./docs/images/Cruddy-Review.png)]
+![Add Reviews](./docs/images/Cruddy-Review.png)
 ###User Shelves
-[![User Shelves](./docs/images/Cruddy-User-Shelves.png)]
+![User Shelves](./docs/images/Cruddy-User-Shelves.png)
 
 
 ###User Readings Page:
