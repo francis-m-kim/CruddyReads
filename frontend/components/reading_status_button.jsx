@@ -174,7 +174,7 @@ var ReadingStatusButton = React.createClass({
       return true;
     }
     var reading = this.state.reading;
-    var reviewButton = isEmpty(reading) ? "" : <button className="review-button" onClick={this.openModal}>Add/Edit Review</button>
+    var reviewButton = isEmpty(reading) ? "" : <button className="review-button hover-hand" onClick={this.openModal}>Add/Edit Review</button>
 
     return (
 

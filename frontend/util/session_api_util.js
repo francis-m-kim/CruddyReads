@@ -40,7 +40,6 @@ module.exports = {
       type: "GET",
       success: function(user) {
         ServerActions.receiveCurrentUser(user);
-        debugger;
         redirect();
       },
       error: function(error) {

@@ -22,7 +22,6 @@ var ReaderHomePage = React.createClass({
     this.listener.remove();
   },
   componentWillReceiveProps: function(newProps) {
-    // debugger;
     ReaderApiUtil.getReader(newProps.params.id);
   },
 

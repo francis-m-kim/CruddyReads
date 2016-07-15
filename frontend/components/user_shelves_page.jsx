@@ -112,7 +112,7 @@ var UserShelvesPage = React.createClass({
 
             <em>Add a shelf:</em>
             <input type="text" value={this.state.shelfToAdd} onChange={this.newShelfChange}/>
-            <input type="submit" onClick={this.handleSubmit}/>
+            <input className="hover-hand" type="submit" onClick={this.handleSubmit}/>
 
           </div>
           <Shelf shelfName={this.state.shelfName} readings={this.state.readings}/>

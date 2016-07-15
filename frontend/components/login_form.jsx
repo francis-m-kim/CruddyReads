@@ -55,7 +55,7 @@ var LoginForm = React.createClass({
             <input type="password" placeholder="Password"
               value={this.state.password}
               onChange={this.updatePassword}/>
-            <input className="login-button" type="submit" value="Sign in"/>
+            <input className="login-button hover-hand" type="submit" value="Sign in"/>
           </form>
         </div>
 

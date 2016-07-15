@@ -17,7 +17,6 @@ var BrowseItem = React.createClass({
   render: function() {
     var user = SessionStore.currentUser();
     var book = this.props.book;
-    debugger;
     if (this.isEmpty(user) || user[0] == "Not logged in") {
 
       var shouldThereBeStatusButtons = ""

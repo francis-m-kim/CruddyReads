@@ -76,8 +76,8 @@ var SignUpForm = React.createClass({
             value={this.state.password}
             onChange={this.updatePassword}/>
           <div className="form-bottom group amatic size">
-            <input type="submit" value="Sign up"/>
-            <input type="submit" value="No time? Sign in as a guest!" onClick={this.loginAsGuest} id="guest"/>
+            <input className="hover-hand" type="submit" value="Sign up"/>
+            <input className="hover-hand" type="submit" value="No time? Sign in as a guest!" onClick={this.loginAsGuest} id="guest"/>
             <a href="/auth/twitter/"> Or log in with Twitter<img src={window.twitter_icon}/></a>
 
           </div>

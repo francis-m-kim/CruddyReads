@@ -62,3 +62,7 @@ span{
 .hover-hand {
   cursor: pointer; cursor: hand;
 }
+
+.hover-hand:hover {
+  cursor: pointer; cursor: hand;
+}

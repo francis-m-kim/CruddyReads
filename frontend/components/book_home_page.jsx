@@ -14,7 +14,6 @@ var ReadingStatusButton = require('./reading_status_button.jsx');
 var BookHomePage = React.createClass({
   mixins: [CurrentUserState],
   getInitialState: function() {
-    // debugger;
     return { book: BookStore.find(this.props.params.id) }
   },
   componentDidMount: function() {

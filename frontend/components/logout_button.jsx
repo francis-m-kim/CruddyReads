@@ -15,11 +15,11 @@ var LogOutButton = React.createClass({
   },
   render: function() {
     var user = SessionStore.currentUser();
-    
+
     if (this.isEmpty(user) || user[0] == "Not logged in") {
       var show = <LoginForm/>
     } else {
-      var show = (<button id="log-out" onClick={this.logout}>Log out</button>)
+      var show = (<button className="hover-hand" id="log-out" onClick={this.logout}>Log out</button>)
     }
 
     return (

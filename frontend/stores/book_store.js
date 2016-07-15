@@ -11,7 +11,6 @@ var _books = {};
 var _readings = {};
 
 BookStore.receiveBook = function(book) {
-  // debugger;
   _books[book.id] = book;
 };
 
