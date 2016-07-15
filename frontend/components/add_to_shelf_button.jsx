@@ -5,12 +5,17 @@ var ShelfAssignmentApiUtil = require('../util/shelf_assignment_api_util');
 
 var AddToShelfButton = React.createClass({
   getInitialState: function() {
-    return {included: false}
+    var include = false;
+    var reading = this.props.reading;
+    this.props.shelf.books.forEach(function(book){
+      if(book.reading_id === reading.reading_id) { include = true}
+    })
+    return {included: include}
   },
 
   createDestroy: function(event) {
     var create = !this.state.included;
-    this.setState({included: create})
+    this.setState({included: create});
     var assignment = {
       reading_id: this.props.reading.reading_id,
       shelf_id: this.props.shelf.id

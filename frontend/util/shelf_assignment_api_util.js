@@ -7,7 +7,7 @@ module.exports = {
       url: '/api/shelf_assignments/',
       data: {shelf_assignment: shelfAssignment},
       success: function(shelf) {
-        
+
       }
     })
   },
@@ -18,7 +18,7 @@ module.exports = {
       url: '/api/find_and_destroy/',
       data: {shelf_assignment: shelfAssignment},
       success: function(shelf) {
-        
+
       }
     })
   }

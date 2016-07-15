@@ -36,18 +36,18 @@ var ReadingStatusButton = React.createClass({
   mixins: [CurrentUserState],
 
   getInitialState: function() {
-    // readingState = BookStore.findReading(this.props.book_id).status || "Will Read"
-    // readingStatus = BookStore.findReading(this.props.book_id).status
     var readingStatus = "Will Read";
+    var readingObj = {}
     if (BookStore.findReading(this.props.book_id) && BookStore.findReading(this.props.book_id).status) {
-      readingStatus = BookStore.findReading(this.props.book_id).status
+      readingObj = BookStore.findReading(this.props.book_id);
+      readingStatus = BookStore.findReading(this.props.book_id).status;
     }
-    return {reading: {}, readingStatus: readingStatus, shelves: [], review: "", reviewModalIsOpen: false}
+
+    return {reading: readingObj, readingStatus: readingStatus, shelves: [], review: "", reviewModalIsOpen: false}
   },
 
   componentDidMount: function() {
     this.bookListener = BookStore.addListener(this.handleChange);
-    BookApiUtil.getUserReadings(this.props.user.id);
 
     this.shelfListener = ShelfStore.addListener(this.handleShelfChange);
     ShelfApiUtil.getShelves(SessionStore.currentUser().id);
@@ -57,9 +57,6 @@ var ReadingStatusButton = React.createClass({
     Modal.setAppElement('body');
   },
 
-  componentWillReceiveProps: function(newProps) {
-
-  },
 
   handleChange: function() {
     var reading = BookStore.findReading(this.props.book_id);
@@ -144,9 +141,9 @@ var ReadingStatusButton = React.createClass({
     var reading = this.state.reading;
 
     var isEmpty = function(obj) {
-      for (var x in obj) { return false; }
-      return true;
-    }
+     for (var x in obj) { return false; }
+     return true;
+   }
 
     return (
       <div>
@@ -158,9 +155,9 @@ var ReadingStatusButton = React.createClass({
         <ul>
           {
             shelves.map(function(shelf, i) {
-              if (! isEmpty(reading)) {
-                return <AddToShelfButton key={i} shelf={shelf} reading={reading} />
-              }
+
+              return <AddToShelfButton key={i} shelf={shelf} reading={reading} />
+
             }.bind(this))
           }
         </ul>
@@ -174,7 +171,7 @@ var ReadingStatusButton = React.createClass({
       return true;
     }
     var reading = this.state.reading;
-    var reviewButton = isEmpty(reading) ? "" : <button className="review-button hover-hand" onClick={this.openModal}>Add/Edit Review</button>
+    var reviewButton = <button className="review-button hover-hand" onClick={this.openModal}>Add/Edit Review</button>
 
     return (
 

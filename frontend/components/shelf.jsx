@@ -7,9 +7,7 @@ var BookApiUtil = require('../util/book_api_util');
 
 
 var Shelf = React.createClass({
-  componentWillReceiveProps: function(newProps){
-
-  },
+  
 
   render: function() {
     var readings = this.props.readings;

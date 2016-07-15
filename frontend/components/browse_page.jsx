@@ -1,7 +1,11 @@
 var React = require('react');
+var SessionStore = require('../stores/session_store')
 
 var BookStore = require('../stores/book_store');
 var BookApiUtil = require('../util/book_api_util');
+
+var ShelfStore = require('../stores/shelf_store');
+var ShelfApiUtil = require('../util/shelf_api_util');
 
 var NavBar = require('./nav_bar');
 var BrowseItem = require('./browse_item');
@@ -12,8 +16,12 @@ var BrowsePage = React.createClass({
   },
 
   componentDidMount: function() {
+
     this.listener = BookStore.addListener(this.handleChange);
+
     BookApiUtil.getAllBooks();
+    BookApiUtil.getUserReadings(SessionStore.currentUser().id);
+
   },
 
   handleChange: function() {

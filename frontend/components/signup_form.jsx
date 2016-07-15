@@ -53,7 +53,7 @@ var SignUpForm = React.createClass({
       password: "password"
     }
     UserActions.login(user, function() {
-      hashHistory.push("browse");
+      hashHistory.push("mycrud");
 
     }.bind(this));
 
