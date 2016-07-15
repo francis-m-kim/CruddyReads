@@ -25,16 +25,11 @@ module.exports = {
   resolve: {
     extensions: ["", ".js", ".jsx" ]
   },
-  resolve: {
-    alias: {
-      'react$': path.join(__dirname, 'node_modules', 'react','dist',
-        (IS_PRODUCTION ? 'react.min.js' : 'react.js')),
-      'react-dom$': path.join(__dirname, 'node_modules', 'react-dom','dist',
-        (IS_PRODUCTION ? 'react-dom.min.js' : 'react-dom.js')),
-      'redux$': path.join(__dirname, 'node_modules', 'redux','dist',
-        (IS_PRODUCTION ? 'redux.min.js' : 'redux.js')),
-      'react-redux$': path.join(__dirname, 'node_modules', 'react-redux','dist',
-        (IS_PRODUCTION ? 'react-redux.min.js' : 'react-redux.js'))
-    }
-  }
+  plugins: [
+    new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        },
+    })
+  ]
 };
