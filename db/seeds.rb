@@ -69,6 +69,61 @@ ShelfAssignment.create(reading_id: r1.id, shelf_id: s1.id)
 ShelfAssignment.create(reading_id: r2.id, shelf_id: s1.id)
 
 
-("aaa".."ape").each do |name|
-  User.create(username: name, email: name + "@crud.com", password: "password")
+users = [
+  "Lebron", "Melo", "Deron", "CP", "Blake", "Timmy",
+  "Kawhi", "Chris", "Jason", "Steph", "Andrea", "Kevin", "Jamal"
+]
+
+class Array
+  def sample_remove
+    sampled = self.sample
+    self.delete(sampled)
+    return sampled
+  end
+end
+
+Dir.foreach('app/assets/images/avatars/') do |image_name|
+  next if image_name == '.' or image_name == '..'
+  username = image_name.sub(".jpeg", "").capitalize
+  u = User.create(username: username, email: username + "@crud.com", password: "password")
+  f = File.open('app/assets/images/avatars/' + image_name)
+  u.avatar = f
+  u.save
+
+  user_books = [b2, b3, b4, b5, b6, b7]
+  user_responses = [
+    "I loved it.",
+    "I hated it.",
+    "It was alright.",
+    "It was a truly enlightening experience.",
+    "Ballin'.",
+    "Seriously awesome.",
+    "Absolutely abysmal.",
+    "A disgrace of the highest order.",
+    "A real page turner.",
+    "The summation of human knowledge.",
+    "I wish I had written this book.",
+    "Flagged for inappropriate content.",
+    "Crazy good.",
+    "Almost as good as 50 Shades.",
+    "Longwinded and pompous.",
+    "Short and to the point. Two thumbs way up.",
+    "Probably the best book I've ever read.",
+    "Maybe the second best book I've ever read.",
+    "Not even worth the paper it was printed on.",
+    "Makes a great paperweight!",
+    ""
+  ]
+
+
+  r1 = Reading.create(user_id: u.id, book_id: user_books.sample_remove.id, review: user_responses.sample_remove, status: "Have Read")
+  r2 = Reading.create(user_id: u.id, book_id: user_books.sample_remove.id, review: user_responses.sample_remove, status: "Have Read")
+
+  shelfname = username + "'s books"
+  Shelf.create(user_id: u.id, name: shelfname)
+  s1 = Shelf.find_by(name: shelfname)
+
+  ShelfAssignment.create(reading_id: r1.id, shelf_id: s1.id)
+  ShelfAssignment.create(reading_id: r2.id, shelf_id: s1.id)
+
 end
